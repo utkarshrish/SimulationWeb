@@ -1,0 +1,60 @@
+{
+  "graphTypes": [
+    {
+      "value": "operating_profit",
+      "units": "(in $US)",
+      "label": "Operating Profit",
+      "active": true
+    },
+    {
+      "value": "revenue",
+      "units": "(in $US)",
+      "label": "Revenue"
+    },
+    {
+      "value": "market_share",
+      "units": "(in %)",
+      "label": "Market Share"
+    },
+    {
+      "value": "brand_demand",
+      "units": "(in units)",
+      "label": "Brand Demand"
+    },
+    {
+      "value": "brand_sales",
+      "units": "(in units)",
+      "label": "Brand Sales"
+    },
+    {
+      "value": "formulation_demand",
+      "units": "(in units)",
+      "label": "Formulation Demand"
+    },
+    {
+      "value": "media_consumed",
+      "units": "",
+      "label": "Media Consumed"
+    },
+    {
+      "value": "equity_message_demand",
+      "units": "(in units)",
+      "label": "Brand Attribute Demand"
+    },
+    {
+      "value": "trade_channel_demand",
+      "units": "(in units)",
+      "label": "Trade Channel Demand"
+    },
+    {
+      "value": "price_point_demand",
+      "units": "(in units)",
+      "label": "Price Point Demand"
+    },
+    {
+      "value": "households",
+      "units": "",
+      "label": "Households"
+    }
+  ]
+}

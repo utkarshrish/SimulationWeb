@@ -1,0 +1,71 @@
+{
+  "weightage": {
+    "style": {
+      "pods": 5,
+      "liquid": 3,
+      "powder": 2,
+      "score": 2
+    },
+    "productPlacement": {
+      "odorElimination": 4,
+      "coldWater": 3,
+      "scent": 2,
+      "softness": 1,
+      "score": 2
+    },
+    "distribution": {
+      "convenience": 3,
+      "club": 3,
+      "grocery": 2,
+      "mass": 2,
+      "score": 1
+    },
+    "media": {
+      "print": 3,
+      "tv": 3,
+      "radio": 2,
+      "digitalAds": 2,
+      "score": 1
+    },
+    "incomeGroup": {
+      "0-19999": 2,
+      "20000-39999": 3,
+      "40000-59999": 3,
+      "60000+": 2,
+      "score": 1
+    },
+    "ethnicity": {
+      "northIndian": 3,
+      "southIndian": 3,
+      "northEastern": 2,
+      "kashmiri": 1,
+      "other": 1,
+      "score": 1
+    },
+    "householdSizes": {
+      "1": 2,
+      "2": 3,
+      "3": 3,
+      "4": 1,
+      "5": 1,
+      "score": 1
+    },
+    "region": {
+      "northEast": 1,
+      "northWest": 0.5,
+      "eastern": 0.5,
+      "central": 1,
+      "western": 2,
+      "south": 2,
+      "north": 3,
+      "score": 0
+    },
+    "age": {
+      "under35": 4,
+      "35-44": 3,
+      "45-54": 2,
+      "55+": 1,
+      "score": 1
+    }
+  }
+}

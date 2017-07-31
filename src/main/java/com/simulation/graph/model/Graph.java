@@ -1,15 +1,14 @@
-package com.simulation.graph;
+package com.simulation.graph.model;
 
 import org.springframework.data.annotation.Id;
 
-// tag::code[]
 public class Graph {
 
 	private @Id String type;
 	private String name;
 	private String model;
 
-	private Graph() {}
+	public Graph() {}
 
 	public Graph(String name, String type, String model) {
 		this.name = name;
@@ -41,4 +40,3 @@ public class Graph {
 		this.model = model;
 	}
 }
-// end::code[]

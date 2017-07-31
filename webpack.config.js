@@ -3,7 +3,8 @@ var path = require('path');
 module.exports = {
     entry: {
         result: './src/main/js/app.js',
-        makeDecision: './src/main/js/makeDecision.js'
+        makeDecision: './src/main/js/makeDecision.js',
+        reports: './src/main/js/reports.js'
     },
     devtool: 'sourcemaps',
     cache: true,

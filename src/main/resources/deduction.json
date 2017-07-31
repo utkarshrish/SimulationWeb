@@ -1,0 +1,50 @@
+{
+  "red": {
+    "style": 2,
+    "productPlacement": 2,
+    "distribution": 2,
+    "media": 2,
+    "incomeGroup": 2,
+    "ethnicity": 2,
+    "householdSizes": 2,
+    "region": 2,
+    "age": 2,
+    "deductionCap": 0.6
+  },
+  "green": {
+    "style": 2,
+    "productPlacement": 2,
+    "distribution": 2,
+    "media": 2,
+    "incomeGroup": 2,
+    "ethnicity": 2,
+    "householdSizes": 2,
+    "region": 2,
+    "age": 2,
+    "deductionCap": 0.6
+  },
+  "blue": {
+    "style": 2,
+    "productPlacement": 2,
+    "distribution": 2,
+    "media": 2,
+    "incomeGroup": 2,
+    "ethnicity": 2,
+    "householdSizes": 2,
+    "region": 2,
+    "age": 2,
+    "deductionCap": 0.6
+  },
+  "yellow": {
+    "style": 2,
+    "productPlacement": 2,
+    "distribution": 2,
+    "media": 2,
+    "incomeGroup": 2,
+    "ethnicity": 2,
+    "householdSizes": 2,
+    "region": 2,
+    "age": 2,
+    "deductionCap": 0.6
+  }
+}

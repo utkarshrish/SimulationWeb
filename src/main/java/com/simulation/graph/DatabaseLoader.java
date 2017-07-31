@@ -1,20 +1,7 @@
-/*
- * Copyright 2015 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.simulation.graph;
 
+import com.simulation.graph.model.Graph;
+import com.simulation.graph.model.GraphInput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -22,18 +9,16 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-/**
- * @author Greg Turnquist
- */
-// tag::code[]
 @Component
 public class DatabaseLoader implements CommandLineRunner {
 
 	private final GraphRepository repository;
+	private final GraphInputRepository inputRepository;
 
 	@Autowired
-	public DatabaseLoader(GraphRepository repository) {
+	public DatabaseLoader(GraphRepository repository, GraphInputRepository inputRepository) {
 		this.repository = repository;
+		this.inputRepository = inputRepository;
 	}
 
 	@Override
@@ -61,9 +46,50 @@ public class DatabaseLoader implements CommandLineRunner {
 		}
 		String revenue = buf.toString();
 
+		buf = new StringBuffer();
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"weightage.json"), "UTF-8"));
+		while ((str = br.readLine()) != null) {
+			buf.append(str);
+		}
+		String weightage = buf.toString();
+
+		buf = new StringBuffer();
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Blue2015.json"), "UTF-8"));
+		while ((str = br.readLine()) != null) {
+			buf.append(str);
+		}
+		String blue2015 = buf.toString();
+
+		buf = new StringBuffer();
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"deduction.json"), "UTF-8"));
+		while ((str = br.readLine()) != null) {
+			buf.append(str);
+		}
+		String deductionScore = buf.toString();
+
+		buf = new StringBuffer();
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"marketShare.json"), "UTF-8"));
+		while ((str = br.readLine()) != null) {
+			buf.append(str);
+		}
+		String marketShare = buf.toString();
+
+		buf = new StringBuffer();
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"styleFactor.json"), "UTF-8"));
+		while ((str = br.readLine()) != null) {
+			buf.append(str);
+		}
+		String styleFactor = buf.toString();
+
 		this.repository.save(new Graph("simulationGraph", "operating_profit", graphModel));
 		this.repository.save(new Graph("simulationGraph", "graphTypes", graphType));
 		this.repository.save(new Graph("simulationGraph", "revenue", revenue));
+		this.repository.save(new Graph("simulationGraph", "weightage", weightage));
+		this.repository.save(new Graph("simulationGraph", "deductions",  deductionScore));
+		this.repository.save(new Graph("simulationGraph", "marketShare",  marketShare));
+		this.repository.save(new Graph("simulationGraph", "styleFactor",  styleFactor));
+
+		this.inputRepository.save(new GraphInput("blue", "2015", blue2015));
 	}
 }
 // end::code[]

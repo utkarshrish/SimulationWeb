@@ -138,8 +138,10 @@ public class GraphService {
         blueCosts2015.setVariableCost(blueVariableCost);
         blueCosts2015.setMarketingCost(blueMarketingCost);
         blueCosts2015.setDistributionCost(blueDistributionCost);
+        blueCosts2015.setOtherCost(blueMarketingCost.add(blueDistributionCost));
         blueCosts2015.setTotalCost(blueTotalCost);
         blueCosts2015.setOperatingProfit(blueOperatingProfit);
+        blueCosts2015.setCumulativeOperatingProfit(blueOperatingProfit);
         blueCosts2015.setFixedCost(FIXED_COST);
         return blueCosts2015;
     }

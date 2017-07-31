@@ -16,15 +16,17 @@ public class Cost {
     private BigDecimal variableCost;
     private BigDecimal marketingCost;
     private BigDecimal distributionCost;
+    private BigDecimal otherCost;
     private BigDecimal totalCost;
     private BigDecimal operatingProfit;
+    private BigDecimal cumulativeOperatingProfit;
     private BigDecimal fixedCost;
 
     public Cost() {}
 
     public Cost(String type, String year, BigDecimal productionInputUnits, BigDecimal maxProductionUnitsDemand, BigDecimal actualDemand,
                  BigDecimal inventory, BigDecimal revenue, BigDecimal unitCost, BigDecimal variableCost, BigDecimal marketingCost,
-                 BigDecimal distributionCost, BigDecimal totalCost, BigDecimal operatingProfit, BigDecimal fixedCost) {
+                 BigDecimal distributionCost, BigDecimal totalCost, BigDecimal operatingProfit, BigDecimal fixedCost, BigDecimal cumulativeOperatingProfit) {
         this.type = type;
         this.year = year;
         this.productionInputUnits = productionInputUnits;
@@ -39,6 +41,7 @@ public class Cost {
         this.totalCost = totalCost;
         this.operatingProfit = operatingProfit;
         this.fixedCost = fixedCost;
+        this.cumulativeOperatingProfit = cumulativeOperatingProfit;
     }
 
     public String getType() {
@@ -149,7 +152,23 @@ public class Cost {
         return fixedCost;
     }
 
+    public BigDecimal getCumulativeOperatingProfit() {
+        return cumulativeOperatingProfit;
+    }
+
+    public void setCumulativeOperatingProfit(BigDecimal cumulativeOperatingProfit) {
+        this.cumulativeOperatingProfit = cumulativeOperatingProfit;
+    }
+
     public void setFixedCost(BigDecimal fixedCost) {
         this.fixedCost = fixedCost;
+    }
+
+    public BigDecimal getOtherCost() {
+        return otherCost;
+    }
+
+    public void setOtherCost(BigDecimal otherCost) {
+        this.otherCost = otherCost;
     }
 }

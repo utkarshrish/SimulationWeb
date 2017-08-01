@@ -1,5 +1,6 @@
 package com.simulation.graph;
 
+import com.google.gson.Gson;
 import com.simulation.graph.model.Cost;
 import com.simulation.graph.model.Graph;
 import com.simulation.graph.model.GraphInput;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class HomeController {
@@ -45,16 +47,9 @@ public class HomeController {
 		return "reports";
 	}
 
-	@RequestMapping(value = "/abc", method = RequestMethod.GET)
-	public ResponseEntity<?> getUser(HttpServletRequest request) {
-		HashMap composition = new HashMap();
-		composition.put("abc", "abc");
-		return new ResponseEntity(composition, HttpStatus.OK);
-	}
-
 	@RequestMapping(value = "/submitGraph", method = {RequestMethod.POST})
 	@ResponseBody
-	public ResponseEntity<UserInput> saveGraph(@RequestBody UserInput graphInput) throws IOException {
+	public ResponseEntity<String> saveGraph(@RequestBody String graphInput) throws IOException {
 		GraphInput blue2015GraphInput = inputRepository.findOne("blue");
 
 		Graph marketShareGraph = repository.findOne("marketShare");

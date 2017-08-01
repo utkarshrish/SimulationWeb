@@ -1,12 +1,15 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const client = require('./client');
+const CheckboxFilters = require('./modules/checkboxForm');
 
 class Reports extends React.Component {
 
     constructor(props){
         super(props);
-        this.state = {costs: []};
+        this.state = {costs: [], selectedCheckboxes: new Set()};
+        this.handleFormSubmit = this.handleFormSubmit.bind(this);
+        this.toggleCheckboxFilters = this.toggleCheckboxFilters.bind(this);
     }
 
     componentDidMount() {
@@ -15,10 +18,32 @@ class Reports extends React.Component {
         });
     }
 
+    handleFormSubmit(event){
+        event.preventDefault();
+
+        for (const checkbox of this.state.selectedCheckboxes) {
+            console.log(checkbox, 'is selected.');
+        }
+    }
+
+    toggleCheckboxFilters(label){
+        let selectedCheckboxes = this.state.selectedCheckboxes;
+        if (selectedCheckboxes.has(label)) {
+            selectedCheckboxes.delete(label);
+        } else {
+            selectedCheckboxes.add(label);
+        }
+        this.setState({selectedCheckboxes: selectedCheckboxes});
+    }
+
     render() {
+        let incomeFilters = {"All Incomes":"All Incomes", "No Income Focus":"No Income Focus", "$20,000 - $39,999":"$20,000 - $39,999", "$40,000 - $59,999":"$40,000 - $59,999", "$60,000 and Over":"$60,000 and Over"};
         return (
             <div className="Reports">
-                <p>{JSON.stringify(this.state.costs)}</p>
+                <form onSubmit={this.handleFormSubmit}>
+                    <CheckboxFilters filters={incomeFilters} toggleCheckboxFilters={this.toggleCheckboxFilters}/>
+                    <button className="btn btn-default" type="submit">Save</button>
+                </form>
                 <table>
                     <thead>
                         <tr class="l1 number">
@@ -35,7 +60,6 @@ class Reports extends React.Component {
                     </thead>
                     <tbody>
                         <CostRow rowCss="l2 number" costs={this.state.costs} costProperty="revenue" costPropertyName="Revenue"/>
-
                         <tr className="l2 number">
                             <td>Costs</td>
                             <td></td>

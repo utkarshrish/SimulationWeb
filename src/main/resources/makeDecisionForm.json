@@ -1,0 +1,60 @@
+{
+  "style": {
+    "pods": "Pods",
+    "liquid": "Liquid",
+    "powder": "Powder"
+  },
+  "productPlacement": {
+    "odorElimination": "Odor elimination",
+    "coldWater":"Cold Water",
+    "scent":"Scent",
+    "softness":"Softness"
+  },
+  "distribution": {
+    "convenience":"Convenience",
+    "club": "Club",
+    "grocery": "Grocery",
+    "mass": "Mass"
+  },
+  "media": {
+    "print": "Print",
+    "tv": "TV",
+    "radio": "Radio",
+    "digitalAds":"Digital Ads"
+  },
+  "incomeGroup": {
+    "0-19999": "0-19999",
+    "20000-39999": "20000-39999",
+    "40000-59999": "40000-59999",
+    "60000+": "60000+"
+  },
+  "ethnicity": {
+    "northIndian":"North Indian",
+    "southIndian":"South Indian",
+    "northEastern":"North Eastern",
+    "kashmiri":"Kashmiri",
+    "other":"Other"
+  },
+  "householdSizes": {
+    "1": "1",
+    "2": "2",
+    "3": "3",
+    "4": "4",
+    "5+": "5"
+  },
+  "region": {
+    "northeast":"NorthEast",
+    "northwest":"NorthWest",
+    "eastern":"Eastern",
+    "central":"Central",
+    "western":"Western",
+    "south":"South",
+    "north":"North"
+  },
+  "age": {
+    "under35": "Under 35",
+    "35-44": "35-44",
+    "45-54": "45-54",
+    "55+": "55+"
+  }
+}

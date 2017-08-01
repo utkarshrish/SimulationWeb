@@ -81,6 +81,13 @@ public class DatabaseLoader implements CommandLineRunner {
 		}
 		String styleFactor = buf.toString();
 
+		buf = new StringBuffer();
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"makeDecisionForm.json"), "UTF-8"));
+		while ((str = br.readLine()) != null) {
+			buf.append(str);
+		}
+		String makeDecisionForm = buf.toString();
+
 		this.repository.save(new Graph("simulationGraph", "operating_profit", graphModel));
 		this.repository.save(new Graph("simulationGraph", "graphTypes", graphType));
 		this.repository.save(new Graph("simulationGraph", "revenue", revenue));
@@ -88,6 +95,7 @@ public class DatabaseLoader implements CommandLineRunner {
 		this.repository.save(new Graph("simulationGraph", "deductions",  deductionScore));
 		this.repository.save(new Graph("simulationGraph", "marketShare",  marketShare));
 		this.repository.save(new Graph("simulationGraph", "styleFactor",  styleFactor));
+		this.repository.save(new Graph("simulationGraph", "makeDecisionForm",  makeDecisionForm));
 
 		this.inputRepository.save(new GraphInput("blue", "2015", blue2015));
 	}

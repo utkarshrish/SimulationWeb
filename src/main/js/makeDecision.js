@@ -1,5 +1,7 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
+const Nav = require('react-bootstrap/lib/Nav');
+const NavItem = require('react-bootstrap/lib/NavItem');
 const client = require('./client');
 const CheckboxFilters = require('./modules/checkboxForm');
 
@@ -11,23 +13,25 @@ class MakeDecision extends React.Component {
             makeDecisionForm: [],
             graphInput:{},
             filters:[],
-            "style": "pods",
-            "productPlacement":"odorElimination",
-            "distribution": {
-                "convenience":"",
-                "club": "",
-                "grocery": "",
-                "mass": ""
+            style: "pods",
+            productPlacement:"odorElimination",
+            distribution: {
+                convenience:"",
+                club: "",
+                grocery: "",
+                mass: ""
             },
-            "media": {
-                "print": "",
-                "tv": "",
-                "radio": "",
-                "digitalAds":""
+            media: {
+                print: "",
+                tv: "",
+                radio: "",
+                digitalAds:""
             },
-            "unitPrice": 0,
-            "unitCost" : 0,
-            "productionUnit": "",
+            unitPrice: 0,
+            unitCost : 0,
+            productionUnit: "",
+            buttonClass: "",
+            year:"2015",
             selectedCheckboxes: new Set()
         };
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -50,9 +54,6 @@ class MakeDecision extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        for (const checkbox of this.state.selectedCheckboxes) {
-            console.log(checkbox, 'is selected.');
-        }
 
         let graphInput = {};
         var selectedCheckboxes = this.state.selectedCheckboxes;
@@ -78,13 +79,14 @@ class MakeDecision extends React.Component {
         graphInput["productionUnit"] = this.state.productionUnit;
         graphInput["distribution"] = this.state.distribution;
         graphInput["media"] = this.state.media;
+        graphInput["year"] =  this.state.year;
 
         console.log(JSON.stringify(graphInput));
 
         client({
             method: 'POST',
             path: '/submitGraph',
-            entity: JSON.stringify(graphInput),
+            entity: graphInput,
             headers:    {
                 'Content-Type': 'application/json',
                 'Accept': 'application/hal+json'
@@ -115,15 +117,30 @@ class MakeDecision extends React.Component {
     handleChangeNormal(event) {
         event.preventDefault();
         this.setState({[event.target.name]: event.target.value});
+        this.setState({buttonClass: "active"})
     }
 
     render() {
-        var filters = ["incomeGroup", "ethnicity","householdSizes", "region", "age"];
+        var filters = {
+            "incomeGroup": "Income Group",
+            "ethnicity": "Ethnicity",
+            "householdSizes":"HouseholdSizes",
+            "region": "Region",
+            "age":"Age"
+        };
+
         var styleAndProduct = ["style", "productPlacement"];
         var makeDecisionForm = this.state.makeDecisionForm.model;
         if(makeDecisionForm !== undefined){
             var makeDecisionFormModel = JSON.parse(makeDecisionForm);
             return (
+                <div className="container">
+                    <Nav bsStyle="pills" activeKey={3}>
+                        <NavItem eventKey={1} href="/reports">Reports</NavItem>
+                        <NavItem eventKey={2} href="/explorer">Data Explorer</NavItem>
+                        <NavItem eventKey={3} href="/makeDecision"> | Make Decision</NavItem>
+                    </Nav>
+                    <div className="row">
             <form onSubmit={this.handleSubmit}>
                 <div className="decisions">
                     <section className="row">
@@ -132,7 +149,7 @@ class MakeDecision extends React.Component {
                             <div className="btn-group">
                                 <div>
                                     {Object.keys(makeDecisionFormModel["style"]).map((styleType) =>
-                                        <label className="btn btn-info btn-xs">
+                                        <label className={"btn btn-info btn-xs " + this.state.buttonClass}>
                                             <input type="radio" value={styleType}
                                                    checked={styleType === this.state.style}
                                                    onChange={this.handleChangeNormal}
@@ -205,7 +222,7 @@ class MakeDecision extends React.Component {
                             <div className="row">
                                 <div className="col-xs-2"></div>
                                 {Object.keys(makeDecisionFormModel["media"]).map((inputBox) =>
-                                    <div className="col-xs-2 number">{makeDecisionFormModel["distribution"][inputBox]}</div>
+                                    <div className="col-xs-2 number">{makeDecisionFormModel["media"][inputBox]}</div>
                                 )}
                             </div>
                         </div>
@@ -225,18 +242,23 @@ class MakeDecision extends React.Component {
                     <h3>Target Market Segment for Decisions<span data-toggle="popover" data-info="target-market-segment" data-original-title="" title=""></span></h3>
                     <section className="row" data-valid="target_decision">
                         <div className="col-xs-8" id="filter">
-                            <h5>Filters</h5>
-                            {filters.map((filter) =>
-                                <div>
-                                    <p>{filter}</p>
-                                    <CheckboxFilters type="checkbox" filters={makeDecisionFormModel[filter]} toggleCheckboxFilters={this.toggleCheckboxFilters}/>
-                                </div>
-                            )}
+                            <ul className="filter">
+                                {Object.keys(filters).map((filter) =>
+                                    <li>
+                                        <div>
+                                            <p>{filters[filter]}</p>
+                                            <CheckboxFilters type="checkbox" filters={makeDecisionFormModel[filter]} toggleCheckboxFilters={this.toggleCheckboxFilters}/>
+                                        </div>
+                                    </li>
+                                )}
+                            </ul>
                         </div>
                     </section>
                 </div>
                 <input type="submit" value="Submit" />
             </form>
+                </div>
+                </div>
             )
         } else {
             return (

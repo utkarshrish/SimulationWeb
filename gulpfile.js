@@ -13,11 +13,11 @@ gulp.task('css', ['clean'], function() {
   };
 
   return gulp.src([
-    './views/*.less',
-    '!./views/mixins/*',
-    '!./views/typography.less'
+    './src/main/views/*.less',
+    '!./src/main/views/mixins/*',
+    '!./src/main/views/typography.less'
   ]).pipe(less(
-      {paths: [path.join(__dirname, 'views', 'page')]}
+      {paths: './src/main/views'}
     ).on('error', onError))
     .pipe(cleanCSS({
       level: {
@@ -26,11 +26,11 @@ gulp.task('css', ['clean'], function() {
         }
       }
     }))
-    .pipe(gulp.dest('./build'))
+    .pipe(gulp.dest('./src/main/resources/static'))
 });
 
 gulp.task('watch', function() {
-  gulp.watch('./views/*.@(less|css)', ['css']);
+  gulp.watch('./views/**/*.@(less|css)', ['css']);
 });
 
 gulp.task('clean', function() {

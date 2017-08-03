@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,9 +35,9 @@ public class HomeController {
 	@Autowired
 	CostsRepository costsRepository;
 
-	@RequestMapping(value = "/results")
+	@RequestMapping(value = "/explorer")
 	public String index() {
-		return "index";
+		return "explorer";
 	}
 
 	@RequestMapping(value = "/makeDecision")
@@ -47,18 +50,23 @@ public class HomeController {
 		return "reports";
 	}
 
+	static Gson gson = new Gson();
+
 	@RequestMapping(value = "/submitGraph", method = {RequestMethod.POST})
 	@ResponseBody
-	public ResponseEntity<String> saveGraph(@RequestBody String graphInput) throws IOException {
-		GraphInput blue2015GraphInput = inputRepository.findOne("blue");
+	public ResponseEntity<Map> saveGraph(@RequestBody Map graphInput) throws IOException {
+		final String year = graphInput.get("year").toString();
 
+		GraphInput blueGraphInput = new GraphInput("blue"+ year, year, graphInput.toString());
+//		GraphInput blue2015GraphInput = inputRepository.findOne("blue");
+		this.inputRepository.save(blueGraphInput);
 		Graph marketShareGraph = repository.findOne("marketShare");
 		Graph deductionGraph = repository.findOne("deductions");
 		Graph weightageGraph = repository.findOne("weightage");
 		Graph styleFactorGraph = repository.findOne("styleFactor");
 
-		Cost blueCosts2015 = graphService.calculateOperatingProfit(blue2015GraphInput,marketShareGraph,deductionGraph,weightageGraph,styleFactorGraph);
-		costsRepository.save(blueCosts2015);
+		Cost blueCosts = graphService.calculateOperatingProfit(graphInput,marketShareGraph,deductionGraph,weightageGraph,styleFactorGraph, year);
+		costsRepository.save(blueCosts);
 		return new ResponseEntity("Successfully login", HttpStatus.OK);
 	}
 

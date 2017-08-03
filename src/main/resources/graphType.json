@@ -1,60 +1,48 @@
 {
-  "graphTypes": [
-    {
-      "value": "operating_profit",
+  "graphTypes": {
+    "operatingProfit": {
       "units": "(in $US)",
-      "label": "Operating Profit",
-      "active": true
+      "label": "Operating Profit"
     },
-    {
-      "value": "revenue",
+    "revenue": {
       "units": "(in $US)",
       "label": "Revenue"
     },
-    {
-      "value": "market_share",
+    "marketShare": {
       "units": "(in %)",
       "label": "Market Share"
     },
-    {
-      "value": "brand_demand",
+    "brandDemand": {
       "units": "(in units)",
       "label": "Brand Demand"
     },
-    {
-      "value": "brand_sales",
+    "brandSales": {
       "units": "(in units)",
       "label": "Brand Sales"
     },
-    {
-      "value": "formulation_demand",
+    "formulationDemand": {
       "units": "(in units)",
       "label": "Formulation Demand"
     },
-    {
-      "value": "media_consumed",
+    "mediaConsumed": {
       "units": "",
       "label": "Media Consumed"
     },
-    {
-      "value": "equity_message_demand",
+    "equityMessageDemand": {
       "units": "(in units)",
       "label": "Brand Attribute Demand"
     },
-    {
-      "value": "trade_channel_demand",
+    "tradeChannelDemand": {
       "units": "(in units)",
       "label": "Trade Channel Demand"
     },
-    {
-      "value": "price_point_demand",
+    "pricePointDemand": {
       "units": "(in units)",
       "label": "Price Point Demand"
     },
-    {
-      "value": "households",
+    "households": {
       "units": "",
       "label": "Households"
     }
-  ]
+  }
 }

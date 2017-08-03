@@ -12,18 +12,10 @@ class CheckboxFilters extends React.Component {
 
         toggleCheckboxFilters(label);
     }
-//{this.props.filters.keys().map((filterLabel,filterKey)=>
-//<li>
-//<Checkbox label={filterLabel} handleCheckboxChange={this.toggleCheckbox} key={filterKey}/>
-//</li>
-//)}
-//    var filterKeys = [];
-//    for(var filterKey in this.props.filters){
-//    filterKeys.push(filterKey);
-//}
+
     render() {
         return (
-            <ul>
+            <ul className="sub-filters">
                 {Object.keys(this.props.filters).map((filterKey) =>
                     <li>
                         <Checkbox

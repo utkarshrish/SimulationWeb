@@ -3,8 +3,8 @@ package com.simulation.graph.service;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.simulation.graph.model.Cost;
+import com.simulation.graph.model.CostFactor;
 import com.simulation.graph.model.Graph;
-import com.simulation.graph.model.GraphInput;
 import com.simulation.graph.model.UserInput;
 import org.springframework.stereotype.Service;
 
@@ -44,9 +44,8 @@ public class GraphService {
             Map graphWeightageDataPointModel = (Map)graphWeightageDataPointModelMap.get(dataPoint);
             //type:pods
             for(Object type : dataInput.keySet()){
-
-                BigDecimal weightagePerDatapoint = new BigDecimal((Double)graphWeightageDataPointModel.get(type));
-                BigDecimal dataInputPerDatapoint = new BigDecimal((Double)dataInput.get(type.toString()));
+                BigDecimal weightagePerDatapoint = new BigDecimal(graphWeightageDataPointModel.get(type).toString());
+                BigDecimal dataInputPerDatapoint = new BigDecimal(dataInput.get(type.toString()).toString());
                 dataInputScore =  dataInputScore.add(dataInputPerDatapoint).multiply(weightagePerDatapoint);
 //                long maxWeightage = 0L;
 //                if((Long)graphWeightageModel.get(dataPoint).get(type) > maxWeightage){
@@ -54,7 +53,7 @@ public class GraphService {
 //                }
 //                maxDataInputScore +=  check logic
             }
-            score = new BigDecimal((Double)graphWeightageDataPointModel.get("score"));
+            score = new BigDecimal(graphWeightageDataPointModel.get("score").toString());
             graphScore.put(dataPoint, score.multiply(dataInputScore));
         }
 
@@ -66,26 +65,25 @@ public class GraphService {
         return blueScore.divide(BENCHMARK_SCORE, RoundingMode.FLOOR).subtract(BASE_SCORE).subtract(graphInputModel.getUnitPrice()).add(BLUE_BENCHMARK_PRICE) ;
     }
 
-    public Cost calculateOperatingProfit(GraphInput graphInput, Graph marketShare, Graph deduction, Graph weightage, Graph styleFactor){
+    public Cost calculateOperatingProfit(Map graphInput, Graph marketShare, Graph deduction, Graph weightage, Graph styleFactor, String year){
 
-        HashMap graphInputReader = gson.fromJson(graphInput.getUserInput(), HashMap.class);
         UserInput graphInputModel = new UserInput();
-        BigDecimal unitPrice = new BigDecimal((Double)graphInputReader.get("unitPrice"));
+        BigDecimal unitPrice = convertMillion(graphInput.get("unitPrice").toString());
         graphInputModel.setUnitPrice(unitPrice);
-        BigDecimal productionUnit = new BigDecimal((Double)graphInputReader.get("productionUnit"));
+        BigDecimal productionUnit = convertMillion(graphInput.get("productionUnit").toString());
         graphInputModel.setProductionUnit(productionUnit);
-        BigDecimal unitCost = new BigDecimal((Double)graphInputReader.get("unitCost"));
+        BigDecimal unitCost = convertMillion(graphInput.get("unitCost").toString());
         graphInputModel.setUnitCost(unitCost);
         HashMap<String, Map> blue2015dataPoints = new HashMap<>();
-        blue2015dataPoints.put("style",(Map)graphInputReader.get("style"));
-        blue2015dataPoints.put("productPlacement",(Map)graphInputReader.get("productPlacement"));
-        blue2015dataPoints.put("distribution",(Map)graphInputReader.get("distribution"));
-        blue2015dataPoints.put("media",(Map)graphInputReader.get("media"));
-        blue2015dataPoints.put("incomeGroup",(Map)graphInputReader.get("incomeGroup"));
-        blue2015dataPoints.put("ethnicity",(Map)graphInputReader.get("ethnicity"));
-        blue2015dataPoints.put("householdSizes",(Map)graphInputReader.get("householdSizes"));
-        blue2015dataPoints.put("region",(Map)graphInputReader.get("region"));
-        blue2015dataPoints.put("age",(Map)graphInputReader.get("age"));
+        blue2015dataPoints.put("style",(Map)graphInput.get("style"));
+        blue2015dataPoints.put("productPlacement",(Map)graphInput.get("productPlacement"));
+        blue2015dataPoints.put("distribution",(Map)graphInput.get("distribution"));
+        blue2015dataPoints.put("media",(Map)graphInput.get("media"));
+        blue2015dataPoints.put("incomeGroup",(Map)graphInput.get("incomeGroup"));
+        blue2015dataPoints.put("ethnicity",(Map)graphInput.get("ethnicity"));
+        blue2015dataPoints.put("householdSizes",(Map)graphInput.get("householdSizes"));
+        blue2015dataPoints.put("region",(Map)graphInput.get("region"));
+        blue2015dataPoints.put("age",(Map)graphInput.get("age"));
         graphInputModel.setDataPoint(blue2015dataPoints);
 
         Map<String, Map> graphWeightageModel = gson.fromJson(weightage.getModel(), new TypeToken<Map<String, Map>>(){}.getType());
@@ -127,8 +125,8 @@ public class GraphService {
         BigDecimal blueOperatingProfit =  blueRevenue.subtract(blueTotalCost);
 
         Cost blueCosts2015 = new Cost();
-        blueCosts2015.setType("blue2015");
-        blueCosts2015.setYear("2015");
+        blueCosts2015.setType("blue" + year);
+        blueCosts2015.setYear(year);
         blueCosts2015.setProductionInputUnits(blueProductionInputUnits);
         blueCosts2015.setMaxProductionUnitsDemand(blueMaxProductionUnitsDemand);
         blueCosts2015.setActualDemand(blueActualDemand);
@@ -146,19 +144,32 @@ public class GraphService {
         return blueCosts2015;
     }
 
+    private BigDecimal convertMillion(String input){
+        if(input.indexOf("M")>0){
+            BigDecimal number = new BigDecimal(input.split("M")[0]);
+            return number.movePointRight(6);
+        } else if(input.indexOf("m")>0){
+            BigDecimal number = new BigDecimal(input.split("m")[0]);
+            return number.movePointRight(6);
+        }
+        return new BigDecimal(input);
+    }
+
     private BigDecimal calculateUnitCost(UserInput graphInputModel, Map<String, BigDecimal> styleFactorModel){
         Map styleInput =  graphInputModel.getDataPoint().get("style");
 
         String selectedStyle = "";
         for(Object style : styleInput.keySet()){
-            Double styleDataPoint = (Double) styleInput.get(style);
-            if(styleDataPoint>0){
+            BigDecimal styleDataPoint = new BigDecimal(styleInput.get(style).toString());
+            if(styleDataPoint.intValue()>0){
                 selectedStyle = style.toString();
                 break;
             }
         }
 
-        return graphInputModel.getUnitCost().multiply(styleFactorModel.get(selectedStyle));
+        final float effectiveUnitCost = CostFactor.UNIT_COST.getCostFactor() * CostFactor.valueOf(selectedStyle.toUpperCase()).getCostFactor();
+
+        return new BigDecimal(effectiveUnitCost).multiply(styleFactorModel.get(selectedStyle));
     }
 
     private BigDecimal calculateYearlyDeductions(Map<String, Map<String, BigDecimal>> graphDeductions, String productName, Map<String, BigDecimal> marketShareModel, BigDecimal delta){

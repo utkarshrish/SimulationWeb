@@ -1,15 +1,15 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
+const Nav = require('react-bootstrap/lib/Nav');
+const Table = require('react-bootstrap/lib/Table');
+const NavItem = require('react-bootstrap/lib/NavItem');
 const client = require('./client');
-const CheckboxFilters = require('./modules/checkboxForm');
 
 class Reports extends React.Component {
 
     constructor(props){
         super(props);
-        this.state = {costs: [], selectedCheckboxes: new Set()};
-        this.handleFormSubmit = this.handleFormSubmit.bind(this);
-        this.toggleCheckboxFilters = this.toggleCheckboxFilters.bind(this);
+        this.state = {costs: [], filterFactor : []};
     }
 
     componentDidMount() {
@@ -18,35 +18,19 @@ class Reports extends React.Component {
         });
     }
 
-    handleFormSubmit(event){
-        event.preventDefault();
-
-        for (const checkbox of this.state.selectedCheckboxes) {
-            console.log(checkbox, 'is selected.');
-        }
-    }
-
-    toggleCheckboxFilters(label){
-        let selectedCheckboxes = this.state.selectedCheckboxes;
-        if (selectedCheckboxes.has(label)) {
-            selectedCheckboxes.delete(label);
-        } else {
-            selectedCheckboxes.add(label);
-        }
-        this.setState({selectedCheckboxes: selectedCheckboxes});
-    }
-
     render() {
         let incomeFilters = {"All Incomes":"All Incomes", "No Income Focus":"No Income Focus", "$20,000 - $39,999":"$20,000 - $39,999", "$40,000 - $59,999":"$40,000 - $59,999", "$60,000 and Over":"$60,000 and Over"};
         return (
+            <div className="container">
+                <Nav bsStyle="pills" activeKey={1}>
+                    <NavItem eventKey={1} href="/reports">Reports</NavItem>
+                    <NavItem eventKey={2} href="/explorer">Data Explorer</NavItem>
+                    <NavItem eventKey={3} href="/makeDecision"> | Make Decision</NavItem>
+                </Nav>
             <div className="Reports">
-                <form onSubmit={this.handleFormSubmit}>
-                    <CheckboxFilters filters={incomeFilters} toggleCheckboxFilters={this.toggleCheckboxFilters}/>
-                    <button className="btn btn-default" type="submit">Save</button>
-                </form>
-                <table>
+                <Table condensed hover>
                     <thead>
-                        <tr class="l1 number">
+                        <tr className="l1 number">
                             <td></td>
                             <td>2015</td>
                             <td>2016</td>
@@ -80,9 +64,9 @@ class Reports extends React.Component {
                     <tfoot>
                         <CostRow rowCss="l2 number" costs={this.state.costs} costProperty="cumulativeOperatingProfit" costPropertyName="Cumulative Operating Profit"/>
                     </tfoot>
-                </table>
+                </Table>
             </div>
-
+            </div>
         );
     }
 }

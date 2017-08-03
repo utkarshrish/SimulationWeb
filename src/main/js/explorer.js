@@ -1,21 +1,38 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
+const Accordion = require('react-bootstrap/lib/Accordion');
+const Panel = require('react-bootstrap/lib/Panel');
+const Nav = require('react-bootstrap/lib/Nav');
+const NavItem = require('react-bootstrap/lib/NavItem');
+const Checkbox = require('./modules/checkbox');
 const client = require('./client');
 
 class App extends React.Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {graph: [], graphTypes: [], graphOption: 'operating_profit'};
+		this.state = {
+			graph: [],
+			graphTypes:[],
+			graphOption: 'operatingProfit',
+			filterFactors: [],
+			selectedCheckboxes: new Set()
+		};
+
 		this.updateGraphFilter = this.updateGraphFilter.bind(this);
+		this.toggleCheckboxFilters = this.toggleCheckboxFilters.bind(this);
 	}
 
 	componentDidMount() {
-		client({method: 'GET', path: '/api/graphs/operating_profit'}).done(response => {
+		client({method: 'GET', path: '/api/graphs/operatingProfit'}).done(response => {
 			this.setState({graph: response.entity});
 		});
 		client({method: 'GET', path: '/api/graphs/graphTypes'}).done(response => {
 			this.setState({graphTypes: response.entity});
+		});
+
+		client({method: 'GET', path: '/api/graphs/explorerFilterFactor'}).done(response => {
+			this.setState({filterFactors: JSON.parse(response.entity.model)});
 		});
 	}
 
@@ -30,27 +47,62 @@ class App extends React.Component {
 		});
 	}
 
+	toggleCheckboxFilters(label){
+		let selectedCheckboxes = this.state.selectedCheckboxes;
+		if (selectedCheckboxes.has(label)) {
+			selectedCheckboxes.delete(label);
+		} else {
+			selectedCheckboxes.add(label);
+		}
+		this.setState({selectedCheckboxes: selectedCheckboxes});
+	}
+
 	render() {
-		var graphTypes = this.state.graphTypes.model;
+		let graphTypes = this.state.graphTypes.model;
 		if(graphTypes !== undefined) {
 			var graphTypesModel = JSON.parse(graphTypes);
+			let eventKey = 1;
 			return (
-				<div className="graph">
-					<SimulationGraph graph={this.state.graph}/>
-					<div className="GraphTypes">
-						<ul>
-							{graphTypesModel.graphTypes.map((graphType) =>
-								<li>
-									<label>
-										<input type="radio" name="variable" value={graphType.value}
-											   checked={graphType.value === this.state.graphOption}
+				<div className="container">
+					<Nav bsStyle="pills" activeKey={2}>
+						<NavItem eventKey={1} href="/reports">Reports</NavItem>
+						<NavItem eventKey={2} href="/explorer">Data Explorer</NavItem>
+						<NavItem eventKey={3} href="/makeDecision"> | Make Decision</NavItem>
+					</Nav>
+					<div className="row">
+						<div className="cols-xs-12">
+							<div className="GraphTypes cols-xs-3">
+								<ul>
+									{Object.keys(graphTypesModel.graphTypes).map((graphType) =>
+									<li>
+										<label>
+											<input type="radio" name="variable" value={graphType}
+											   checked={graphType === this.state.graphOption}
 											   onChange={this.updateGraphFilter}/>
-										{graphType.label}
-									</label>
-								</li>
-							)}
-						</ul>
-
+											{graphTypesModel.graphTypes[graphType]["label"]}
+										</label>
+									</li>
+									)}
+								</ul>
+							</div>
+							<SimulationGraph graph={this.state.graph}
+									label={graphTypesModel.graphTypes[this.state.graphOption]["label"]}
+									units={graphTypesModel.graphTypes[this.state.graphOption]["units"]}
+							/>
+							<div className="GraphFilters cols-xs-3">
+								<h4>Filters</h4>
+								<Accordion trigger="Start here">
+									{Object.keys(this.state.filterFactors).map((filterFactor) =>
+										<Panel header={filterFactor} eventKey={eventKey++}>
+											{Object.keys(this.state.filterFactors[filterFactor]).map((factorType) =>
+												<Checkbox type="checkbox" label={factorType} filterKey={factorType}
+													handleCheckboxChange={this.toggleCheckboxFilters}/>
+											)}
+										</Panel>
+									)}
+								</Accordion>
+							</div>
+						</div>
 					</div>
 				</div>
 			);
@@ -65,9 +117,9 @@ class App extends React.Component {
 class SimulationGraph extends React.Component{
 	render() {
 		function createXLegends(xAxisTicks, length){
-			var xLegends = {};
-			var axisItemSize = Object.keys(xAxisTicks).length - 1;
-			var xAxisTick = 0;
+			let xLegends = {};
+			let axisItemSize = Object.keys(xAxisTicks).length - 1;
+			let xAxisTick = 0;
 
 			xAxisTicks.map((axisTick) =>
 				xLegends[axisTick.text] = length/axisItemSize*xAxisTick++);
@@ -75,10 +127,10 @@ class SimulationGraph extends React.Component{
 		}
 
 		function createYLegends(yAxisTicks, length){
-			var yLegends = {};
-			var axisItemSize = Object.keys(yAxisTicks).length - 1;
+			let yLegends = {};
+			let axisItemSize = Object.keys(yAxisTicks).length - 1;
 
-			var yAxisTick = axisItemSize;
+			let yAxisTick = axisItemSize;
 
 			yAxisTicks.map((axisTick) =>
 				yLegends[axisTick.text] = length/axisItemSize*yAxisTick--);
@@ -86,22 +138,25 @@ class SimulationGraph extends React.Component{
 			return yLegends;
 		}
 
-		var graph = this.props.graph.model;
+		let graph = this.props.graph.model;
 		if(graph !== undefined) {
-			var model = JSON.parse(graph);
-			var width = model.width;
-			var height = model.height;
+			let model = JSON.parse(graph);
+			let width = model.width;
+			let height = model.height;
 
-			var viewBox = "0 0 ".concat(width.toString(), " ", height.toString());
+			let viewBox = "0 0 ".concat(width.toString(), " ", height.toString());
 
-			var xLegends = createXLegends(model.xAxis.ticks, model.xAxis.width);
-			var yLegends = createYLegends(model.yAxis.ticks, model.yAxis.height);
+			let xLegends = createXLegends(model.xAxis.ticks, model.xAxis.width);
+			let yLegends = createYLegends(model.yAxis.ticks, model.yAxis.height);
 
-			var transformGraphData = "translate(".concat(model.graphTransformAxisX.toString(), ",", model.graphTransformAxisY, ")");
+			let transformGraphData = "translate(".concat(model.graphTransformAxisX.toString(), ",", model.graphTransformAxisY, ")");
 
 			return (
-			<div className="SimulationGraph">
-
+			<div className="SimulationGraph cols-xs-7">
+				<h4>
+					<span>{this.props.label}     </span>
+					<small>{this.props.units}</small>
+				</h4>
 				<svg width={width} viewBox={viewBox} preserveAspectRatio="xMinYMin" className="graph" height={height} aria-labelledby="c-title  c-desc">
 
 					<GraphAxis transformAxisX={model.xAxis.transformAxisX} transformAxisY={model.xAxis.transformAxisY} legends={xLegends} strategy="xAxis" axisTicks={model.xAxis.ticks} length={model.xAxis.width} unit={model.xAxis.unit}/>
@@ -127,8 +182,8 @@ class SimulationGraph extends React.Component{
 
 class GraphAxis extends React.Component {
 	render() {
-		var transformAxis = "translate(".concat(this.props.transformAxisX, "," , this.props.transformAxisY, ")");
-		var axisPath;
+		let transformAxis = "translate(".concat(this.props.transformAxisX, "," , this.props.transformAxisY, ")");
+		let axisPath;
 
 		if(this.props.strategy==="xAxis") {
 			axisPath = {
@@ -144,7 +199,7 @@ class GraphAxis extends React.Component {
 				]
 			};
 
-			var transformY = 0;
+			let transformY = 0;
 
 			return (
 				<g transform={transformAxis}>
@@ -167,7 +222,7 @@ class GraphAxis extends React.Component {
 				]
 			};
 
-			var transformX = 0;
+			let transformX = 0;
 
 			return (
 				<g transform={transformAxis}>
@@ -181,19 +236,19 @@ class GraphAxis extends React.Component {
 
 class TickItem extends React.Component {
 	render(){
-		var strategy = this.props.strategy;
-		var tickTextLengthEm = strategy==="xAxis" ? ".71em" : ".35em";
-		var tickXTextLength = strategy==="xAxis" ? 0 : -10;
-		var tickYTextLength = strategy==="xAxis" ? 12 : 0;
-		var tickTextStyle = strategy==="xAxis" ? 'middle' : 'end';
+		let strategy = this.props.strategy;
+		let tickTextLengthEm = strategy==="xAxis" ? ".71em" : ".35em";
+		let tickXTextLength = strategy==="xAxis" ? 0 : -10;
+		let tickYTextLength = strategy==="xAxis" ? 12 : 0;
+		let tickTextStyle = strategy==="xAxis" ? 'middle' : 'end';
 
-		var tickLineX = strategy==="xAxis" ? 0 : -6;
-		var tickLineY = strategy==="xAxis" ? 6 : 0;
+		let tickLineX = strategy==="xAxis" ? 0 : -6;
+		let tickLineY = strategy==="xAxis" ? 6 : 0;
 
 		//props.text = 2015;
 		//props.transformX = 0;
 		//props.transformY = 0;
-		var transform = "translate("+ this.props.transformX + "," + this.props.transformY + ")";
+		let transform = "translate("+ this.props.transformX + "," + this.props.transformY + ")";
 		//style={{marginRight: spacing + 'em'}}
 		return(
 			<g className="axis" transform={transform} opacity="1">
@@ -206,7 +261,7 @@ class TickItem extends React.Component {
 
 class GraphPathItem extends React.Component {
 	render() {
-		var path = "";
+		let path = "";
 
 		if (this.props.yMax != undefined) {
 			this.props.pathCoordinates.map(

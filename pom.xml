@@ -74,7 +74,7 @@
 							<goal>install-node-and-npm</goal>
 						</goals>
 						<configuration>
-							<nodeVersion>v4.4.5</nodeVersion>
+							<nodeVersion>v6.9.2</nodeVersion>
 							<npmVersion>3.9.2</npmVersion>
 						</configuration>
 					</execution>
@@ -92,6 +92,15 @@
 						<goals>
 							<goal>webpack</goal>
 						</goals>
+					</execution>
+					<execution>
+						<id>gulp build</id>
+						<goals>
+							<goal>gulp</goal>
+						</goals>
+						<configuration>
+							<arguments>css</arguments>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

@@ -2,7 +2,7 @@ var path = require('path');
 
 module.exports = {
     entry: {
-        result: './src/main/js/app.js',
+        explorer: './src/main/js/explorer.js',
         makeDecision: './src/main/js/makeDecision.js',
         reports: './src/main/js/reports.js'
     },

@@ -10,29 +10,20 @@ class Checkbox extends React.Component {
 
     toggleCheckboxChange(){
         const { handleCheckboxChange, label } = this.props;
-
-        this.setState(({ isChecked }) => (
-        {
-            isChecked: !isChecked
-        }
-        ));
-
+        this.setState(({ isChecked }) => ({ isChecked: !isChecked}));
         handleCheckboxChange(label);
     }
 
     render() {
         const { label, filterKey, type, boxCss, boxCssName } = this.props;
         const { isChecked } = this.state;
-
+        let active = "";
+        if(isChecked){
+            active = " active";
+        }
         return (
-                <label className={boxCss} >
-                    <input
-                        type={type}
-                        value={filterKey}
-                        checked={isChecked}
-                        onChange={this.toggleCheckboxChange}
-                    />
-
+                <label className={boxCss + active} >
+                    <input type={type} value={filterKey} checked={isChecked} onChange={this.toggleCheckboxChange}/>
                     {label}
                 </label>
         );

@@ -10,7 +10,7 @@ public class Graph {
 
 	public Graph() {}
 
-	public Graph(String name, String type, String model) {
+	public Graph(String type,String name, String model) {
 		this.name = name;
 		this.type = type;
 		this.model = model;

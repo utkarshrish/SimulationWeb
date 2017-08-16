@@ -4,7 +4,7 @@
   "description": "Demo of ReactJS + Spring Data REST",
   "repository": {
     "type": "git",
-    "url": "git@github.com:spring-guides/tut-react-and-spring-data-rest.git"
+    "url": "git@github.com:utkarshrish/SimulationWeb.git"
   },
   "keywords": [
     "rest",
@@ -13,12 +13,9 @@
     "data",
     "react"
   ],
-  "author": "Greg L. Turnquist",
+  "author": "Utkarsh Srivastava",
   "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/spring-guides/tut-react-and-spring-data-rest/issues"
-  },
-  "homepage": "https://github.com/spring-guides/tut-react-and-spring-data-rest",
+  "homepage": "https://github.com/utkarshrish/SimulationWeb",
   "dependencies": {
     "react": "^15.3.2",
     "react-dom": "^15.3.2",

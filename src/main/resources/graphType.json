@@ -12,37 +12,9 @@
       "units": "(in %)",
       "label": "Market Share"
     },
-    "brandDemand": {
+    "actualDemand": {
       "units": "(in units)",
       "label": "Brand Demand"
-    },
-    "brandSales": {
-      "units": "(in units)",
-      "label": "Brand Sales"
-    },
-    "formulationDemand": {
-      "units": "(in units)",
-      "label": "Formulation Demand"
-    },
-    "mediaConsumed": {
-      "units": "",
-      "label": "Media Consumed"
-    },
-    "equityMessageDemand": {
-      "units": "(in units)",
-      "label": "Brand Attribute Demand"
-    },
-    "tradeChannelDemand": {
-      "units": "(in units)",
-      "label": "Trade Channel Demand"
-    },
-    "pricePointDemand": {
-      "units": "(in units)",
-      "label": "Price Point Demand"
-    },
-    "households": {
-      "units": "",
-      "label": "Households"
     }
   }
 }

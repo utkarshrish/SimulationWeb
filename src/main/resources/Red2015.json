@@ -1,6 +1,6 @@
 {
-  "unitPrice": 8.0,
-  "unitCost" : 6.0,
+  "unitPrice": 8.00,
+  "unitCost" : 6.00,
   "productionUnit":25000000,
   "style": {
     "pods": 1,

@@ -61,25 +61,60 @@ public class DatabaseLoader implements CommandLineRunner {
 		String blue2015 = buf.toString();
 
 		buf = new StringBuffer();
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Green2015.json"), "UTF-8"));
+		while ((str = br.readLine()) != null) {
+			buf.append(str);
+		}
+		String green2015 = buf.toString();
+
+		buf = new StringBuffer();
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Yellow2015.json"), "UTF-8"));
+		while ((str = br.readLine()) != null) {
+			buf.append(str);
+		}
+		String yellow2015 = buf.toString();
+
+		buf = new StringBuffer();
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Red2015.json"), "UTF-8"));
+		while ((str = br.readLine()) != null) {
+			buf.append(str);
+		}
+		String red2015 = buf.toString();
+
+		buf = new StringBuffer();
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Red2016.json"), "UTF-8"));
+		while ((str = br.readLine()) != null) {
+			buf.append(str);
+		}
+		String red2016 = buf.toString();
+
+		buf = new StringBuffer();
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Yellow2016.json"), "UTF-8"));
+		while ((str = br.readLine()) != null) {
+			buf.append(str);
+		}
+		String yellow2016 = buf.toString();
+
+		buf = new StringBuffer();
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Green2016.json"), "UTF-8"));
+		while ((str = br.readLine()) != null) {
+			buf.append(str);
+		}
+		String green2016 = buf.toString();
+
+		buf = new StringBuffer();
 		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"deduction.json"), "UTF-8"));
 		while ((str = br.readLine()) != null) {
 			buf.append(str);
 		}
 		String deductionScore = buf.toString();
 
-		buf = new StringBuffer();
-		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"marketShare.json"), "UTF-8"));
-		while ((str = br.readLine()) != null) {
-			buf.append(str);
-		}
-		String marketShare = buf.toString();
-
-		buf = new StringBuffer();
-		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"styleFactor.json"), "UTF-8"));
-		while ((str = br.readLine()) != null) {
-			buf.append(str);
-		}
-		String styleFactor = buf.toString();
+//		buf = new StringBuffer();
+//		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"marketShare.json"), "UTF-8"));
+//		while ((str = br.readLine()) != null) {
+//			buf.append(str);
+//		}
+//		String marketShare = buf.toString();
 
 		buf = new StringBuffer();
 		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"makeDecisionForm.json"), "UTF-8"));
@@ -95,17 +130,26 @@ public class DatabaseLoader implements CommandLineRunner {
 		}
 		String explorerFilterFactor = buf.toString();
 
-		this.repository.save(new Graph("simulationGraph", "operatingProfit", graphModel));
-		this.repository.save(new Graph("simulationGraph", "graphTypes", graphType));
-		this.repository.save(new Graph("simulationGraph", "revenue", revenue));
-		this.repository.save(new Graph("simulationGraph", "weightage", weightage));
-		this.repository.save(new Graph("simulationGraph", "deductions",  deductionScore));
-		this.repository.save(new Graph("simulationGraph", "marketShare",  marketShare));
-		this.repository.save(new Graph("simulationGraph", "styleFactor",  styleFactor));
-		this.repository.save(new Graph("simulationGraph", "makeDecisionForm",  makeDecisionForm));
-		this.repository.save(new Graph("simulationGraph", "explorerFilterFactor",  explorerFilterFactor));
+		this.repository.save(new Graph("operatingProfit", "simulationGraph", graphModel));
+		this.repository.save(new Graph("graphTypes", "simulationGraph", graphType));
+		this.repository.save(new Graph("revenue", "simulationGraph", revenue));
+		this.repository.save(new Graph("weightage", "simulationGraph", weightage));
+		this.repository.save(new Graph("deductions", "simulationGraph",  deductionScore));
+//		this.repository.save(new Graph("marketShare", "simulationGraph",  marketShare));
+		this.repository.save(new Graph("makeDecisionForm", "simulationGraph", makeDecisionForm));
+		this.repository.save(new Graph("explorerFilterFactor", "simulationGraph", explorerFilterFactor));
+
+//		Graph costYearlyInitial = new Graph("reports", "simulationGraph", "");
+//		this.repository.save(costYearlyInitial);
 
 		this.inputRepository.save(new GraphInput("blue", "2015", blue2015));
+		this.inputRepository.save(new GraphInput("green2015", "2015", green2015));
+		this.inputRepository.save(new GraphInput("yellow2015", "2015", yellow2015));
+		this.inputRepository.save(new GraphInput("red2015", "2015", red2015));
+
+		this.inputRepository.save(new GraphInput("green2016", "2016", green2016));
+		this.inputRepository.save(new GraphInput("yellow2016", "2016", yellow2016));
+		this.inputRepository.save(new GraphInput("red2016", "2016", red2016));
 	}
 }
 // end::code[]

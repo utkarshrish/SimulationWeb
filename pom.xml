@@ -15,12 +15,20 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>Simulation-Web</name>
-	<description>Simulation Web</description>
+	<name>Simulation-App</name>
+	<description>Simulation App</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
+		<start-class>com.simulation.graph.SimulationApplication</start-class>
+
+		<buildType>sandbox</buildType>
+		<buildNumber>0</buildNumber>
+		<buildBranch>local</buildBranch>
+		<changeNumber>local</changeNumber>
+		<depotInfo>none</depotInfo>
+		<buildTime>${maven.build.timestamp}</buildTime>
 	</properties>
 
 	<dependencies>
@@ -58,6 +66,38 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-war</id>
+						<phase>package</phase>
+						<goals>
+							<goal>war</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<archive>
+						<manifestEntries>
+							<Application-Name>${project.name}</Application-Name>
+							<Application-Version>${project.version}</Application-Version>
+							<Application-Description>${project.description}</Application-Description>
+							<Implementation-Title>${project.name}</Implementation-Title>
+							<Built-By>${user.name}</Built-By>
+							<Build-Jdk>${java.version}</Build-Jdk>
+							<Build-Time>${buildTime}</Build-Time>
+							<Build>${buildType}</Build>
+							<Branch>${buildBranch}</Branch>
+							<Depot>${depotInfo}</Depot>
+							<mainClass>${start-class}</mainClass>
+						</manifestEntries>
+					</archive>
+				</configuration>
 			</plugin>
 
 			<plugin>

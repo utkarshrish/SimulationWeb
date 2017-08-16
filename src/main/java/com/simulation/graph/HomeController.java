@@ -1,27 +1,25 @@
 package com.simulation.graph;
 
 import com.google.gson.Gson;
-import com.simulation.graph.model.Cost;
 import com.simulation.graph.model.Graph;
 import com.simulation.graph.model.GraphInput;
-import com.simulation.graph.model.UserInput;
 import com.simulation.graph.service.GraphService;
+import com.simulation.graph.service.ReportService;
+import com.simulation.graph.service.SimulationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.Formatter;
-import java.util.HashMap;
 import java.util.Map;
 
 @Controller
 public class HomeController {
+
+	@Autowired
+	private SimulationService simulationService;
 
 	@Autowired
 	private GraphService graphService;
@@ -30,10 +28,10 @@ public class HomeController {
 	private GraphRepository repository;
 
 	@Autowired
-	private GraphInputRepository inputRepository;
+	private ReportService reportService;
 
 	@Autowired
-	CostsRepository costsRepository;
+	private GraphInputRepository inputRepository;
 
 	@RequestMapping(value = "/explorer")
 	public String index() {
@@ -58,26 +56,15 @@ public class HomeController {
 		final String year = graphInput.get("year").toString();
 
 		GraphInput blueGraphInput = new GraphInput("blue"+ year, year, graphInput.toString());
-//		GraphInput blue2015GraphInput = inputRepository.findOne("blue");
 		this.inputRepository.save(blueGraphInput);
-		Graph marketShareGraph = repository.findOne("marketShare");
+
 		Graph deductionGraph = repository.findOne("deductions");
 		Graph weightageGraph = repository.findOne("weightage");
-		Graph styleFactorGraph = repository.findOne("styleFactor");
 
-		Cost blueCosts = graphService.calculateOperatingProfit(graphInput,marketShareGraph,deductionGraph,weightageGraph,styleFactorGraph, year);
-		costsRepository.save(blueCosts);
+		simulationService.buildReports(graphInput , deductionGraph,weightageGraph, year);
+		graphService.buildGraph();
+		reportService.buildReportPage();
+
 		return new ResponseEntity("Successfully login", HttpStatus.OK);
-	}
-
-	private Graph createGraph(String type, String year) throws IOException {
-		String str = "";
-		StringBuffer buf = new StringBuffer();
-		BufferedReader br = new BufferedReader(new InputStreamReader(HomeController.class.getResourceAsStream("/" + type +".json"), "UTF-8"));
-		while ((str = br.readLine()) != null) {
-			buf.append(str);
-		}
-		String blue2015 = buf.toString();
-		return new Graph(type, year , blue2015);
 	}
 }

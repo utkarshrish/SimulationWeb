@@ -31,7 +31,7 @@ class MakeDecision extends React.Component {
             unitCost : 0,
             productionUnit: "",
             buttonClass: "",
-            year:"2015",
+            year:"2016",
             selectedCheckboxes: new Set()
         };
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -63,7 +63,7 @@ class MakeDecision extends React.Component {
             var graphFilter = new Object();
             for(var filterKey in makeDecisionFormModel[filter]){
                 allFilterKeys.push(filterKey);
-                if(selectedCheckboxes.has(filterKey)>0
+                if(selectedCheckboxes.has(makeDecisionFormModel[filter][filterKey])>0
                     || this.state.style === filterKey
                     || this.state.productPlacement === filterKey){
                     graphFilter[filterKey] = 1;
@@ -110,7 +110,7 @@ class MakeDecision extends React.Component {
         event.preventDefault();
         var inputBoxGroupName = this.state[event.target.name.split(".")[0]];
         var inputBoxKey = event.target.name.split(".")[1];
-        inputBoxGroupName[inputBoxKey] = event.target.value;
+        inputBoxGroupName[inputBoxKey] = event.target.value/100;
         this.setState({[event.target.name.split(".")[0]]: inputBoxGroupName});
     }
 
@@ -262,7 +262,7 @@ class MakeDecision extends React.Component {
             )
         } else {
             return (
-                <p>A</p>
+                <p></p>
             )
         }
     }

@@ -1,18 +1,16 @@
 package com.simulation.graph.model;
 
-import org.springframework.data.annotation.Id;
-
 import java.math.BigDecimal;
 
 public class Cost {
-    private @Id String type;
-    private String year;
+    private BigDecimal marketShare;
     private BigDecimal productionInputUnits;
     private BigDecimal maxProductionUnitsDemand;
     private BigDecimal actualDemand;
     private BigDecimal inventory;
     private BigDecimal revenue;
     private BigDecimal unitCost;
+    private BigDecimal unitPrice;
     private BigDecimal variableCost;
     private BigDecimal marketingCost;
     private BigDecimal distributionCost;
@@ -24,17 +22,18 @@ public class Cost {
 
     public Cost() {}
 
-    public Cost(String type, String year, BigDecimal productionInputUnits, BigDecimal maxProductionUnitsDemand, BigDecimal actualDemand,
-                 BigDecimal inventory, BigDecimal revenue, BigDecimal unitCost, BigDecimal variableCost, BigDecimal marketingCost,
-                 BigDecimal distributionCost, BigDecimal totalCost, BigDecimal operatingProfit, BigDecimal fixedCost, BigDecimal cumulativeOperatingProfit) {
-        this.type = type;
-        this.year = year;
+    public Cost(BigDecimal productionInputUnits, BigDecimal maxProductionUnitsDemand, BigDecimal actualDemand,
+                 BigDecimal inventory, BigDecimal revenue, BigDecimal unitPrice, BigDecimal unitCost, BigDecimal variableCost, BigDecimal marketingCost,
+                 BigDecimal distributionCost, BigDecimal totalCost, BigDecimal marketShare,
+                BigDecimal operatingProfit, BigDecimal fixedCost, BigDecimal cumulativeOperatingProfit) {
+        this.marketShare = marketShare;
         this.productionInputUnits = productionInputUnits;
         this.maxProductionUnitsDemand = maxProductionUnitsDemand;
         this.actualDemand = actualDemand;
         this.inventory = inventory;
         this.revenue = revenue;
         this.unitCost = unitCost;
+        this.unitPrice = unitPrice;
         this.variableCost = variableCost;
         this.marketingCost = marketingCost;
         this.distributionCost = distributionCost;
@@ -44,20 +43,12 @@ public class Cost {
         this.cumulativeOperatingProfit = cumulativeOperatingProfit;
     }
 
-    public String getType() {
-        return type;
+    public BigDecimal getMarketShare() {
+        return marketShare;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getYear() {
-        return year;
-    }
-
-    public void setYear(String year) {
-        this.year = year;
+    public void setMarketShare(BigDecimal marketShare) {
+        this.marketShare = marketShare;
     }
 
     public BigDecimal getProductionInputUnits() {
@@ -106,6 +97,14 @@ public class Cost {
 
     public void setUnitCost(BigDecimal unitCost) {
         this.unitCost = unitCost;
+    }
+
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
     public BigDecimal getVariableCost() {

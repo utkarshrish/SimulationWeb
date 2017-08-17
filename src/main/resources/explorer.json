@@ -1,0 +1,606 @@
+{
+  "unitPrice": [
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "8"
+        },
+        {
+          "x": "2016",
+          "y": "8"
+        }
+      ],
+      "type": "red"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "8"
+        },
+        {
+          "x": "2016",
+          "y": "8"
+        }
+      ],
+      "type": "yellow"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "8"
+        },
+        {
+          "x": "2016",
+          "y": "8"
+        }
+      ],
+      "type": "green"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "3.5"
+        },
+        {
+          "x": "2016",
+          "y": "4"
+        }
+      ],
+      "type": "blue"
+    }
+  ],
+  "productionInputUnits": [
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "25"
+        },
+        {
+          "x": "2016",
+          "y": "25"
+        }
+      ],
+      "type": "red"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "25"
+        },
+        {
+          "x": "2016",
+          "y": "25"
+        }
+      ],
+      "type": "yellow"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "25"
+        },
+        {
+          "x": "2016",
+          "y": "25"
+        }
+      ],
+      "type": "green"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "18"
+        },
+        {
+          "x": "2016",
+          "y": "20"
+        }
+      ],
+      "type": "blue"
+    }
+  ],
+  "unitPriceYAxis": {
+    "transformY": 0,
+    "unit": "",
+    "ticks": [
+      {
+        "text": "0"
+      },
+      {
+        "text": "3.2"
+      },
+      {
+        "text": "6.4"
+      },
+      {
+        "text": "9.6"
+      },
+      {
+        "text": "12.8"
+      },
+      {
+        "text": "16"
+      }
+    ],
+    "transformAxisX": 33,
+    "transformAxisY": 6,
+    "height": 340
+  },
+  "xAxis": {
+    "transformY": 0,
+    "unit": "y",
+    "ticks": [
+      {
+        "text": "2015"
+      },
+      {
+        "text": "2016"
+      },
+      {
+        "text": "2017"
+      },
+      {
+        "text": "2018"
+      },
+      {
+        "text": "2019"
+      },
+      {
+        "text": "2020"
+      },
+      {
+        "text": "2021"
+      },
+      {
+        "text": "2022"
+      }
+    ],
+    "transformAxisX": 33,
+    "width": 547,
+    "transformAxisY": 346
+  },
+  "inventoryYAxis": {
+    "transformY": 0,
+    "unit": "",
+    "ticks": [
+      {
+        "text": "0"
+      },
+      {
+        "text": "8.64"
+      },
+      {
+        "text": "17.28"
+      },
+      {
+        "text": "25.92"
+      },
+      {
+        "text": "34.56"
+      },
+      {
+        "text": "43.2"
+      }
+    ],
+    "transformAxisX": 33,
+    "transformAxisY": 6,
+    "height": 340
+  },
+  "marketShareYAxis": {
+    "transformY": 0,
+    "unit": "%",
+    "ticks": [
+      {
+        "text": "0"
+      },
+      {
+        "text": "20"
+      },
+      {
+        "text": "40"
+      },
+      {
+        "text": "60"
+      },
+      {
+        "text": "80"
+      },
+      {
+        "text": "100"
+      }
+    ],
+    "transformAxisX": 33,
+    "transformAxisY": 6,
+    "height": 340
+  },
+  "inventory": [
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "0"
+        },
+        {
+          "x": "2016",
+          "y": "0"
+        }
+      ],
+      "type": "red"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "18"
+        },
+        {
+          "x": "2016",
+          "y": "21.6"
+        }
+      ],
+      "type": "yellow"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "2"
+        },
+        {
+          "x": "2016",
+          "y": "9.12"
+        }
+      ],
+      "type": "green"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "0"
+        },
+        {
+          "x": "2016",
+          "y": "0"
+        }
+      ],
+      "type": "blue"
+    }
+  ],
+  "actualDemandYAxis": {
+    "transformY": 0,
+    "unit": "M",
+    "ticks": [
+      {
+        "text": "0"
+      },
+      {
+        "text": "10"
+      },
+      {
+        "text": "20"
+      },
+      {
+        "text": "30"
+      },
+      {
+        "text": "40"
+      },
+      {
+        "text": "50"
+      }
+    ],
+    "transformAxisX": 33,
+    "transformAxisY": 6,
+    "height": 340
+  },
+  "productionInputUnitsYAxis": {
+    "transformY": 0,
+    "unit": "M",
+    "ticks": [
+      {
+        "text": "0"
+      },
+      {
+        "text": "10"
+      },
+      {
+        "text": "20"
+      },
+      {
+        "text": "30"
+      },
+      {
+        "text": "40"
+      },
+      {
+        "text": "50"
+      }
+    ],
+    "transformAxisX": 33,
+    "transformAxisY": 6,
+    "height": 340
+  },
+  "revenue": [
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "200"
+        },
+        {
+          "x": "2016",
+          "y": "200"
+        }
+      ],
+      "type": "red"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "56"
+        },
+        {
+          "x": "2016",
+          "y": "27.2"
+        }
+      ],
+      "type": "yellow"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "184"
+        },
+        {
+          "x": "2016",
+          "y": "127.01"
+        }
+      ],
+      "type": "green"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "63"
+        },
+        {
+          "x": "2016",
+          "y": "80"
+        }
+      ],
+      "type": "blue"
+    }
+  ],
+  "actualDemand": [
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "25"
+        },
+        {
+          "x": "2016",
+          "y": "25"
+        }
+      ],
+      "type": "red"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "7"
+        },
+        {
+          "x": "2016",
+          "y": "3.4"
+        }
+      ],
+      "type": "yellow"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "23"
+        },
+        {
+          "x": "2016",
+          "y": "15.88"
+        }
+      ],
+      "type": "green"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "18"
+        },
+        {
+          "x": "2016",
+          "y": "20"
+        }
+      ],
+      "type": "blue"
+    }
+  ],
+  "marketShare": [
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "38.88"
+        },
+        {
+          "x": "2016",
+          "y": "32.54"
+        }
+      ],
+      "type": "red"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "3.4"
+        },
+        {
+          "x": "2016",
+          "y": "1.64"
+        }
+      ],
+      "type": "yellow"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "15.88"
+        },
+        {
+          "x": "2016",
+          "y": "9.54"
+        }
+      ],
+      "type": "green"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "41.85"
+        },
+        {
+          "x": "2016",
+          "y": "56.27"
+        }
+      ],
+      "type": "blue"
+    }
+  ],
+  "revenueYAxis": {
+    "transformY": 0,
+    "unit": "M",
+    "ticks": [
+      {
+        "text": "0"
+      },
+      {
+        "text": "80"
+      },
+      {
+        "text": "160"
+      },
+      {
+        "text": "240"
+      },
+      {
+        "text": "320"
+      },
+      {
+        "text": "400"
+      }
+    ],
+    "transformAxisX": 33,
+    "transformAxisY": 6,
+    "height": 340
+  },
+  "width": 600,
+  "graphTransformAxisX": 33,
+  "graphTransformAxisY": 6,
+  "operatingProfitYAxis": {
+    "transformY": 0,
+    "unit": "M",
+    "ticks": [
+      {
+        "text": "-150"
+      },
+      {
+        "text": "-90"
+      },
+      {
+        "text": "-30"
+      },
+      {
+        "text": "30"
+      },
+      {
+        "text": "90"
+      },
+      {
+        "text": "150"
+      }
+    ],
+    "transformAxisX": 33,
+    "transformAxisY": 6,
+    "height": 340
+  },
+  "height": 375,
+  "operatingProfit": [
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "76.15"
+        },
+        {
+          "x": "2016",
+          "y": "76.15"
+        }
+      ],
+      "type": "red"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "-67.85"
+        },
+        {
+          "x": "2016",
+          "y": "-96.65"
+        }
+      ],
+      "type": "yellow"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "60.15"
+        },
+        {
+          "x": "2016",
+          "y": "3.16"
+        }
+      ],
+      "type": "green"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "-28.97"
+        },
+        {
+          "x": "2016",
+          "y": "-21.08"
+        }
+      ],
+      "type": "blue"
+    }
+  ]
+}

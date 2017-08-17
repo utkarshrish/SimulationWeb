@@ -130,6 +130,20 @@ public class DatabaseLoader implements CommandLineRunner {
 		}
 		String explorerFilterFactor = buf.toString();
 
+		buf = new StringBuffer();
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"reportsGraph.json"), "UTF-8"));
+		while ((str = br.readLine()) != null) {
+			buf.append(str);
+		}
+		String reportsGraph = buf.toString();
+
+		buf = new StringBuffer();
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"explorer.json"), "UTF-8"));
+		while ((str = br.readLine()) != null) {
+			buf.append(str);
+		}
+		String explorer = buf.toString();
+
 		this.repository.save(new Graph("operatingProfit", "simulationGraph", graphModel));
 		this.repository.save(new Graph("graphTypes", "simulationGraph", graphType));
 		this.repository.save(new Graph("revenue", "simulationGraph", revenue));
@@ -138,6 +152,8 @@ public class DatabaseLoader implements CommandLineRunner {
 //		this.repository.save(new Graph("marketShare", "simulationGraph",  marketShare));
 		this.repository.save(new Graph("makeDecisionForm", "simulationGraph", makeDecisionForm));
 		this.repository.save(new Graph("explorerFilterFactor", "simulationGraph", explorerFilterFactor));
+		this.repository.save(new Graph("explorer", "simulationGraph", explorer));
+		this.repository.save(new Graph("reportsGraph", "simulationGraph", reportsGraph));
 
 //		Graph costYearlyInitial = new Graph("reports", "simulationGraph", "");
 //		this.repository.save(costYearlyInitial);

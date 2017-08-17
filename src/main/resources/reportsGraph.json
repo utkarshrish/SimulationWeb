@@ -1,0 +1,208 @@
+{
+  "unitPrice": [
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "8"
+        },
+        {
+          "x": "2016",
+          "y": "8"
+        }
+      ],
+      "type": "red"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "8"
+        },
+        {
+          "x": "2016",
+          "y": "8"
+        }
+      ],
+      "type": "yellow"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "8"
+        },
+        {
+          "x": "2016",
+          "y": "8"
+        }
+      ],
+      "type": "green"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "3.5"
+        },
+        {
+          "x": "2016",
+          "y": "4"
+        }
+      ],
+      "type": "blue"
+    }
+  ],
+  "unitPriceYAxis": {
+    "transformY": 0,
+    "unit": "",
+    "ticks": [
+      {
+        "text": "0"
+      },
+      {
+        "text": "20"
+      },
+      {
+        "text": "40"
+      },
+      {
+        "text": "60"
+      },
+      {
+        "text": "80"
+      },
+      {
+        "text": "100"
+      }
+    ],
+    "transformAxisX": 33,
+    "transformAxisY": 6,
+    "height": 340
+  },
+  "xAxis": {
+    "transformY": 0,
+    "unit": "y",
+    "ticks": [
+      {
+        "text": "2015"
+      },
+      {
+        "text": "2016"
+      },
+      {
+        "text": "2017"
+      },
+      {
+        "text": "2018"
+      },
+      {
+        "text": "2019"
+      },
+      {
+        "text": "2020"
+      },
+      {
+        "text": "2021"
+      },
+      {
+        "text": "2022"
+      }
+    ],
+    "transformAxisX": 33,
+    "width": 547,
+    "transformAxisY": 346
+  },
+  "production": [
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "18"
+        },
+        {
+          "x": "2016",
+          "y": "20"
+        }
+      ],
+      "type": "productionInputUnits"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "18"
+        },
+        {
+          "x": "2016",
+          "y": "20"
+        }
+      ],
+      "type": "actualDemand"
+    },
+    {
+      "data": [
+        {
+          "x": "2015",
+          "y": "0"
+        },
+        {
+          "x": "2016",
+          "y": "0"
+        }
+      ],
+      "type": "inventory"
+    }
+  ],
+  "incomeStatement": {
+    "2015": {
+      "otherCost": "13.66M",
+      "revenue": "63M",
+      "variableCost": "68.31M",
+      "fixedCost": "10M",
+      "cumulativeOperatingProfit": "-50.05M",
+      "totalCost": "91.97M",
+      "operatingProfit": "-28.97M"
+    },
+    "2016": {
+      "otherCost": "15.18M",
+      "revenue": "80M",
+      "variableCost": "75.9M",
+      "fixedCost": "10M",
+      "cumulativeOperatingProfit": "-21.08M",
+      "totalCost": "101.08M",
+      "operatingProfit": "-21.08M"
+    }
+  },
+  "width": 600,
+  "graphTransformAxisX": 33,
+  "graphTransformAxisY": 6,
+  "productionYAxis": {
+    "transformY": 0,
+    "unit": "M",
+    "ticks": [
+      {
+        "text": "0"
+      },
+      {
+        "text": "20"
+      },
+      {
+        "text": "40"
+      },
+      {
+        "text": "60"
+      },
+      {
+        "text": "80"
+      },
+      {
+        "text": "100"
+      }
+    ],
+    "transformAxisX": 33,
+    "transformAxisY": 6,
+    "height": 340
+  },
+  "height": 375
+}

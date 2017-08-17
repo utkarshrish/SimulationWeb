@@ -1,0 +1,20 @@
+{
+  "graphTypes": {
+    "operatingProfit": {
+      "units": "(in $US)",
+      "label": "Operating Profit"
+    },
+    "revenue": {
+      "units": "(in $US)",
+      "label": "Revenue"
+    },
+    "marketShare": {
+      "units": "(in %)",
+      "label": "Market Share"
+    },
+    "actualDemand": {
+      "units": "(in units)",
+      "label": "Brand Demand"
+    }
+  }
+}

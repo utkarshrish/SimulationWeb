@@ -1,5 +1,6 @@
 package com.simulation.graph;
 
+import com.auth0.SessionUtils;
 import com.google.gson.Gson;
 import com.simulation.graph.model.Graph;
 import com.simulation.graph.model.GraphInput;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.Map;
 
@@ -34,7 +36,16 @@ public class HomeController {
 	private GraphInputRepository inputRepository;
 
 	@RequestMapping(value = "/explorer")
-	public String index() {
+	public String index(final Map<String, Object> model, final HttpServletRequest req) {
+		String accessToken = (String) SessionUtils.get(req, "accessToken");
+		String idToken = (String) SessionUtils.get(req, "idToken");
+		if (accessToken != null) {
+			model.put("userId", accessToken);
+		} else if (idToken != null) {
+			model.put("userId", idToken);
+		} else {
+			model.put("userId", "Utk");
+		}
 		return "explorer";
 	}
 
@@ -47,8 +58,6 @@ public class HomeController {
 	public String reports() {
 		return "reports";
 	}
-
-	static Gson gson = new Gson();
 
 	@RequestMapping(value = "/submitGraph", method = {RequestMethod.POST})
 	@ResponseBody

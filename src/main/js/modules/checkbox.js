@@ -15,7 +15,7 @@ class Checkbox extends React.Component {
     }
 
     render() {
-        const { label, filterKey, type, boxCss, boxCssName } = this.props;
+        const { label, filterKey, type, boxCss} = this.props;
         const { isChecked } = this.state;
         let active = "";
         if(isChecked){

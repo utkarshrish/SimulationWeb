@@ -63,6 +63,12 @@ class App extends React.Component {
 			let eventKey = 1;
 			return (
 				<div className="container">
+					<div className="header clearfix">
+						<Nav bsStyle="pills" pullRight="true">
+							<NavItem eventKey={1} href="/logout">Logout</NavItem>
+						</Nav>
+						<h3 className="text-muted">Analytics Simulation</h3>
+					</div>
 					<Nav bsStyle="pills" activeKey={2}>
 						<NavItem eventKey={1} href="/reports">Reports</NavItem>
 						<NavItem eventKey={2} href="/explorer">Data Explorer</NavItem>
@@ -106,6 +112,9 @@ class App extends React.Component {
 							</div>
 						</div>
 					</div>
+					<footer class="footer">
+						<p> &copy; 2017 Analytics Simulation</p>
+					</footer>
 				</div>
 			);
 		}else {
@@ -118,6 +127,6 @@ class App extends React.Component {
 
 ReactDOM.render(
 	<App />,
-	document.getElementById('react')
+	document.getElementById('explorer')
 )
 

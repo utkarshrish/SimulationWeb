@@ -129,19 +129,24 @@ class MakeDecision extends React.Component {
             "age":"Age"
         };
 
-        var styleAndProduct = ["style", "productPlacement"];
         var makeDecisionForm = this.state.makeDecisionForm.model;
         if(makeDecisionForm !== undefined){
             var makeDecisionFormModel = JSON.parse(makeDecisionForm);
             return (
                 <div className="container">
+                    <div className="header clearfix">
+                        <Nav bsStyle="pills" pullRight="true">
+                            <NavItem eventKey={1} href="/logout">Logout</NavItem>
+                        </Nav>
+                        <h3 className="text-muted">Analytics Simulation</h3>
+                    </div>
                     <Nav bsStyle="pills" activeKey={3}>
                         <NavItem eventKey={1} href="/reports">Reports</NavItem>
                         <NavItem eventKey={2} href="/explorer">Data Explorer</NavItem>
                         <NavItem eventKey={3} href="/makeDecision"> | Make Decision</NavItem>
                     </Nav>
                     <div className="row">
-            <form onSubmit={this.handleSubmit}>
+                    <form onSubmit={this.handleSubmit}>
                 <div className="decisions">
                     <section className="row">
                         <div className="col-xs-4 formulation">
@@ -257,7 +262,10 @@ class MakeDecision extends React.Component {
                 </div>
                 <input type="submit" value="Submit" />
             </form>
-                </div>
+                    </div>
+                    <footer class="footer">
+                        <p> &copy; 2017 Analytics Simulation</p>
+                    </footer>
                 </div>
             )
         } else {

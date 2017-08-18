@@ -43,6 +43,12 @@ class Reports extends React.Component {
             let costModel = JSON.parse(costs);
             return (
                 <div className="container">
+                    <div className="header clearfix">
+                        <Nav bsStyle="pills" pullRight="true">
+                            <NavItem eventKey={1} href="/logout">Logout</NavItem>
+                        </Nav>
+                        <h3 className="text-muted">Analytics Simulation</h3>
+                    </div>
                     <Nav bsStyle="pills" activeKey={1}>
                         <NavItem eventKey={1} href="/reports">Reports</NavItem>
                         <NavItem eventKey={2} href="/explorer">Data Explorer</NavItem>
@@ -69,6 +75,9 @@ class Reports extends React.Component {
                             </div>
                         </div>
                     </div>
+                    <footer class="footer">
+                        <p> &copy; 2017 Analytics Simulation</p>
+                    </footer>
                 </div>
             );
         }else {

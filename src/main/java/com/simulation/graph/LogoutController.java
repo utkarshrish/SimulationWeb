@@ -17,7 +17,7 @@ public class LogoutController {
     protected String logout(final HttpServletRequest req) {
         logger.debug("Performing logout");
         invalidateSession(req);
-        return "redirect:" + req.getContextPath() + "/";
+        return "redirect:" + req.getContextPath() + "/login";
     }
 
     private void invalidateSession(HttpServletRequest request) {

@@ -36,21 +36,20 @@ public class HomeController {
 	private GraphInputRepository inputRepository;
 
 	@RequestMapping(value = "/explorer")
-	public String index(final Map<String, Object> model, final HttpServletRequest req) {
+	public String index(final HttpServletRequest req) {
 		String accessToken = (String) SessionUtils.get(req, "accessToken");
 		String idToken = (String) SessionUtils.get(req, "idToken");
-		if (accessToken != null) {
-			model.put("userId", accessToken);
-		} else if (idToken != null) {
-			model.put("userId", idToken);
-		} else {
-			model.put("userId", "Utk");
-		}
+
+		System.out.println(accessToken + "\n" + idToken);
 		return "explorer";
 	}
 
 	@RequestMapping(value = "/makeDecision")
-	public String makeDecision() {
+	public String makeDecision(final HttpServletRequest req) {
+		String accessToken = (String) SessionUtils.get(req, "accessToken");
+		String idToken = (String) SessionUtils.get(req, "idToken");
+		System.out.println(accessToken + "\n" + idToken);
+
 		return "makeDecision";
 	}
 

@@ -5,7 +5,8 @@ module.exports = {
     entry: {
         explorer: './src/main/js/explorer.js',
         makeDecision: './src/main/js/makeDecision.js',
-        reports: './src/main/js/reports.js'
+        reports: './src/main/js/reports.js',
+        dashboard: './src/main/js/dashboard.js'
     },
     devtool: 'sourcemaps',
     cache: true,

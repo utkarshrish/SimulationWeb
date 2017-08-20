@@ -58,6 +58,11 @@ public class HomeController {
 		return "reports";
 	}
 
+	@RequestMapping(value = "/dashboard")
+	public String dashboard() {
+		return "dashboard";
+	}
+
 	@RequestMapping(value = "/submitGraph", method = {RequestMethod.POST})
 	@ResponseBody
 	public ResponseEntity<Map> saveGraph(@RequestBody Map graphInput) throws IOException {

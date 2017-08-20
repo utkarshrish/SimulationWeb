@@ -46,7 +46,7 @@ class SimulationGraph extends React.Component{
         let transformGraphData = "translate(".concat(model.graphTransformAxisX.toString(), ",", model.graphTransformAxisY, ")");
 
         return (
-            <div className="SimulationGraph cols-xs-7">
+            <div className="SimulationGraph cols-xs-6">
                 <h4>
                     <span>{this.props.label}     </span>
                     <small>{this.props.units}</small>

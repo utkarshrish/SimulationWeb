@@ -144,12 +144,19 @@ public class DatabaseLoader implements CommandLineRunner {
 		}
 		String explorer = buf.toString();
 
+		buf = new StringBuffer();
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"marketShare.json"), "UTF-8"));
+		while ((str = br.readLine()) != null) {
+			buf.append(str);
+		}
+		String marketShare = buf.toString();
+
 		this.repository.save(new Graph("operatingProfit", "simulationGraph", graphModel));
 		this.repository.save(new Graph("graphTypes", "simulationGraph", graphType));
 		this.repository.save(new Graph("revenue", "simulationGraph", revenue));
 		this.repository.save(new Graph("weightage", "simulationGraph", weightage));
 		this.repository.save(new Graph("deductions", "simulationGraph",  deductionScore));
-//		this.repository.save(new Graph("marketShare", "simulationGraph",  marketShare));
+		this.repository.save(new Graph("marketShare", "simulationGraph",  marketShare));
 		this.repository.save(new Graph("makeDecisionForm", "simulationGraph", makeDecisionForm));
 		this.repository.save(new Graph("explorerFilterFactor", "simulationGraph", explorerFilterFactor));
 		this.repository.save(new Graph("explorer", "simulationGraph", explorer));

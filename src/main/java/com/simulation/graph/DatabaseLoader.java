@@ -173,6 +173,18 @@ public class DatabaseLoader implements CommandLineRunner {
 		this.inputRepository.save(new GraphInput("green2016", "2016", green2016));
 		this.inputRepository.save(new GraphInput("yellow2016", "2016", yellow2016));
 		this.inputRepository.save(new GraphInput("red2016", "2016", red2016));
+
+		this.inputRepository.save(new GraphInput("green2017", "2017", green2016));
+		this.inputRepository.save(new GraphInput("yellow2017", "2017", yellow2016));
+		this.inputRepository.save(new GraphInput("red2017", "2017", red2016));
+
+		this.inputRepository.save(new GraphInput("green2018", "2018", green2016));
+		this.inputRepository.save(new GraphInput("yellow2018", "2018", yellow2016));
+		this.inputRepository.save(new GraphInput("red2018", "2018", red2016));
+
+		this.inputRepository.save(new GraphInput("green2019", "2019", green2016));
+		this.inputRepository.save(new GraphInput("yellow2019", "2019", yellow2016));
+		this.inputRepository.save(new GraphInput("red2019", "2019", red2016));
 	}
 }
 // end::code[]

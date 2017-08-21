@@ -2,12 +2,15 @@ package com.simulation.graph;
 
 import com.auth0.SessionUtils;
 import com.google.gson.Gson;
+import com.nimbusds.jose.Payload;
 import com.simulation.graph.model.Graph;
 import com.simulation.graph.model.GraphInput;
 import com.simulation.graph.service.GraphService;
 import com.simulation.graph.service.ReportService;
 import com.simulation.graph.service.SimulationService;
+import com.nimbusds.jwt.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -37,18 +40,21 @@ public class HomeController {
 
 	@RequestMapping(value = "/explorer")
 	public String index(final HttpServletRequest req) {
-		String accessToken = (String) SessionUtils.get(req, "accessToken");
-		String idToken = (String) SessionUtils.get(req, "idToken");
-
-		System.out.println(accessToken + "\n" + idToken);
 		return "explorer";
 	}
 
 	@RequestMapping(value = "/makeDecision")
-	public String makeDecision(final HttpServletRequest req) {
-		String accessToken = (String) SessionUtils.get(req, "accessToken");
-		String idToken = (String) SessionUtils.get(req, "idToken");
-		System.out.println(accessToken + "\n" + idToken);
+	public String makeDecision(final HttpServletRequest req, Map<String, Object> model) {
+
+		final String idToken = (String) SessionUtils.get(req, "idToken");
+		SignedJWT signedJWT;
+		try {
+			signedJWT = SignedJWT.parse(idToken);
+			final Payload payload = signedJWT.getPayload();
+			model.put("year", this.repository.findOne(payload.toJSONObject().get("sub").toString()).getModel());
+		} catch (java.text.ParseException e) {
+			model.put("year", "2017");
+		}
 
 		return "makeDecision";
 	}
@@ -59,13 +65,22 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/dashboard")
-	public String dashboard() {
+	public String dashboard(final HttpServletRequest req, Map<String, Object> model) {
+		String idToken = (String) SessionUtils.get(req, "idToken");
+		SignedJWT signedJWT;
+		try {
+			signedJWT = SignedJWT.parse(idToken);
+			final Payload payload = signedJWT.getPayload();
+			model.put("year", Integer.valueOf(this.repository.findOne(payload.toJSONObject().get("sub").toString()).getModel())-1);
+		} catch (java.text.ParseException e) {
+			model.put("year", "2016");
+		}
 		return "dashboard";
 	}
 
 	@RequestMapping(value = "/submitGraph", method = {RequestMethod.POST})
 	@ResponseBody
-	public ResponseEntity<Map> saveGraph(@RequestBody Map graphInput) throws IOException {
+	public ResponseEntity<Map> saveGraph(final HttpServletRequest req, @RequestBody Map graphInput) throws IOException {
 		final String year = graphInput.get("year").toString();
 
 		GraphInput blueGraphInput = new GraphInput("blue"+ year, year, graphInput.toString());
@@ -77,6 +92,16 @@ public class HomeController {
 		simulationService.buildReports(graphInput , deductionGraph,weightageGraph, year);
 		graphService.buildGraph();
 		reportService.buildReportPage();
+
+		String idToken = (String) SessionUtils.get(req, "idToken");
+		SignedJWT signedJWT;
+		try {
+			signedJWT = SignedJWT.parse(idToken);
+			final Payload payload = signedJWT.getPayload();
+			this.repository.save(new Graph(payload.toJSONObject().get("sub").toString(), "simulationGraph", String.valueOf(Integer.valueOf(year)+1)));
+		} catch (java.text.ParseException e) {
+
+		}
 
 		return new ResponseEntity("Successfully login", HttpStatus.OK);
 	}

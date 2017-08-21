@@ -11,13 +11,11 @@ class Dashboard extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            year: "2016",
-            expandedSector: null,
+            year: document.getElementById('user').innerText,
             dashboard: [],
             marketData: [],
             years:["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022"]
         };
-        this.handleMouseEnterOnSector = this.handleMouseEnterOnSector.bind(this);
     }
 
     componentDidMount() {
@@ -27,10 +25,6 @@ class Dashboard extends React.Component {
         client({method: 'GET', path: '/api/graphs/marketShare'}).done(response => {
             this.setState({marketData: response.entity});
         });
-    }
-
-    handleMouseEnterOnSector(sector) {
-        this.setState({expandedSector: sector});
     }
 
     render() {
@@ -45,14 +39,6 @@ class Dashboard extends React.Component {
                 {label: "Fresh", value: marketShareModel[this.state.year]["yellow"], color: "#ff0"},
                 {label: "Store", value: marketShareModel[this.state.year]["red"], color: "#cb2027"}
             ];
-
-            //const marketSharePieModel = [
-            //    {label: "Facebook", value: 100, color: "#3b5998"},
-            //    {label: "Twitter", value: 60, color: "#00aced"},
-            //    {label: "Google Plus", value: 30, color: "#dd4b39"},
-            //    {label: "Pinterest", value: 20, color: "#cb2027"},
-            //    {label: "Linked In", value: 10, color: "#007bb6"}
-            //];
 
             const {expandedSector} = this.state;
 
@@ -79,12 +65,8 @@ class Dashboard extends React.Component {
                             <div className="cols-xs-4">
                                 <PieChart
                                 data={ marketSharePieModel }
-                                expandedSector={expandedSector}
-                                onSectorHover={this.handleMouseEnterOnSector}
                                 sectorStrokeWidth={0}
                                 viewBoxWidth={50}
-                                expandOnHover
-                                shrinkOnTouchEnd
                             />
                             </div>
                         </div>

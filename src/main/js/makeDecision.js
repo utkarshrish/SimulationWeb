@@ -31,7 +31,7 @@ class MakeDecision extends React.Component {
             unitCost : 0,
             productionUnit: "",
             buttonClass: "",
-            year:"2016",
+            year: document.getElementById('user').innerText,
             selectedCheckboxes: new Set()
         };
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -133,6 +133,7 @@ class MakeDecision extends React.Component {
         if(makeDecisionForm !== undefined){
             var makeDecisionFormModel = JSON.parse(makeDecisionForm);
             return (
+
                 <div className="container">
                     <div className="header clearfix">
                         <Nav bsStyle="pills" pullRight="true">
@@ -151,7 +152,7 @@ class MakeDecision extends React.Component {
                 <div className="decisions">
                     <section className="row">
                         <div className="col-xs-4 formulation">
-                            <h3>Formulation in 2020<span data-toggle="popover" data-info="formulation" data-original-title="" title=""></span></h3>
+                            <h3>Formulation in {this.state.year}<span data-toggle="popover" data-info="formulation" data-original-title="" title=""></span></h3>
                             <div className="btn-group">
                                 <div>
                                     {Object.keys(makeDecisionFormModel["style"]).map((styleType) =>
@@ -167,7 +168,7 @@ class MakeDecision extends React.Component {
                             </div>
                         </div>
                         <div className="col-xs-8 features">
-                            <h3>Product Features and Positioning in 2020<span data-toggle="popover" data-info="product-features" data-original-title="" title=""></span></h3>
+                            <h3>Product Features and Positioning in {this.state.year}<span data-toggle="popover" data-info="product-features" data-original-title="" title=""></span></h3>
                             <div className="btn-group">
                                 {Object.keys(makeDecisionFormModel["productPlacement"]).map((styleType) =>
                                     <label className="btn btn-info btn-xs">
@@ -183,7 +184,7 @@ class MakeDecision extends React.Component {
                     </section>
                     <section id="forecast-select" className="row">
                         <div className="col-xs-4 unit-decision-cont invalid" id="demand">
-                            <h3>Units to Produce in 2020</h3>
+                            <h3>Units to Produce in {this.state.year}</h3>
                             <input type="text" value={this.state.productionUnit} name="productionUnit" onChange={this.handleChangeNormal}/>
                             <small className="text-nowrap">units</small> &nbsp;
                             <div className="col-xs-4">
@@ -192,13 +193,13 @@ class MakeDecision extends React.Component {
                             <div className="fill-in" data-field-name="production_decision">Click here to fill in the previous year's value</div>
                         </div>
                         <div className="col-xs-4 forecast-obscure price-decision-cont invalid">
-                            <h3>Channel Price in 2020</h3>
+                            <h3>Channel Price in {this.state.year}</h3>
                             <input type="text" value={this.state.unitPrice} name={"unitPrice"} onChange={this.handleChangeNormal}/>
                             <small className="text-nowrap">per 100 loads</small>
                             <div className="fill-in" data-field-name="price_decision">Click here to fill in the previous year's value</div>
                         </div>
                     </section>
-                    <h3>Trade Channel Spend in 2020<span data-toggle="popover" data-info="trade-channel-spend" data-original-title="" title=""></span></h3>
+                    <h3>Trade Channel Spend in {this.state.year}<span data-toggle="popover" data-info="trade-channel-spend" data-original-title="" title=""></span></h3>
                     <section className="row trade-channel-spend" data-valid="trade_channel_spend_decision">
                         <div className="col-xs-8">
                             <div className="row">
@@ -222,7 +223,7 @@ class MakeDecision extends React.Component {
                             </div>
                         </div>
                     </section>
-                    <h3>Media Spend in 2020<span data-toggle="popover" data-info="media-spend" data-original-title="" title=""></span></h3>
+                    <h3>Media Spend in {this.state.year}<span data-toggle="popover" data-info="media-spend" data-original-title="" title=""></span></h3>
                     <section className="row media-spend" data-valid="media_spend_decision">
                         <div className="col-xs-8">
                             <div className="row">

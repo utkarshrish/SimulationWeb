@@ -31,7 +31,7 @@ class MakeDecision extends React.Component {
             unitCost : 0,
             productionUnit: "",
             buttonClass: "",
-            year: document.getElementById('user').innerText,
+            year: document.getElementById('user').innerText.trim(),
             selectedCheckboxes: new Set()
         };
         this.handleSubmit = this.handleSubmit.bind(this);

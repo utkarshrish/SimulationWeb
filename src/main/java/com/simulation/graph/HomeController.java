@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.text.ParseException;
 import java.util.Map;
 
 @Controller
@@ -68,13 +69,21 @@ public class HomeController {
 	public String dashboard(final HttpServletRequest req, Map<String, Object> model) {
 		String idToken = (String) SessionUtils.get(req, "idToken");
 		SignedJWT signedJWT;
+		final Payload payload;
 		try {
 			signedJWT = SignedJWT.parse(idToken);
-			final Payload payload = signedJWT.getPayload();
-			model.put("year", Integer.valueOf(this.repository.findOne(payload.toJSONObject().get("sub").toString()).getModel())-1);
-		} catch (Exception e) {
+			payload = signedJWT.getPayload();
+			if(this.repository.findOne(payload.toJSONObject().get("sub").toString()) != null){
+				model.put("year", Integer.valueOf(this.repository.findOne(payload.toJSONObject().get("sub").toString()).getModel())-1);
+			} else{
+				this.repository.save(new Graph(payload.toJSONObject().get("sub").toString(), "simulationGraph", "2017"));
+				model.put("year", "2016");
+			}
+		}
+		catch (ParseException e){
 			model.put("year", "2016");
 		}
+
 		return "dashboard";
 	}
 

@@ -52,7 +52,7 @@ public class HomeController {
 			signedJWT = SignedJWT.parse(idToken);
 			final Payload payload = signedJWT.getPayload();
 			model.put("year", this.repository.findOne(payload.toJSONObject().get("sub").toString()).getModel());
-		} catch (java.text.ParseException e) {
+		} catch (Exception e) {
 			model.put("year", "2017");
 		}
 
@@ -72,7 +72,7 @@ public class HomeController {
 			signedJWT = SignedJWT.parse(idToken);
 			final Payload payload = signedJWT.getPayload();
 			model.put("year", Integer.valueOf(this.repository.findOne(payload.toJSONObject().get("sub").toString()).getModel())-1);
-		} catch (java.text.ParseException e) {
+		} catch (Exception e) {
 			model.put("year", "2016");
 		}
 		return "dashboard";

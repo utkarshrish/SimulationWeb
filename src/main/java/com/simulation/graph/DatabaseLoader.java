@@ -151,6 +151,13 @@ public class DatabaseLoader implements CommandLineRunner {
 		}
 		String marketShare = buf.toString();
 
+		buf = new StringBuffer();
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"reports.json"), "UTF-8"));
+		while ((str = br.readLine()) != null) {
+			buf.append(str);
+		}
+		String reports = buf.toString();
+
 		this.repository.save(new Graph("operatingProfit", "simulationGraph", graphModel));
 		this.repository.save(new Graph("graphTypes", "simulationGraph", graphType));
 		this.repository.save(new Graph("revenue", "simulationGraph", revenue));
@@ -161,6 +168,7 @@ public class DatabaseLoader implements CommandLineRunner {
 		this.repository.save(new Graph("explorerFilterFactor", "simulationGraph", explorerFilterFactor));
 		this.repository.save(new Graph("explorer", "simulationGraph", explorer));
 		this.repository.save(new Graph("reportsGraph", "simulationGraph", reportsGraph));
+		this.repository.save(new Graph("reports", "simulationGraph", reports));
 
 //		Graph costYearlyInitial = new Graph("reports", "simulationGraph", "");
 //		this.repository.save(costYearlyInitial);

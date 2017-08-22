@@ -107,7 +107,7 @@ public class HomeController {
 		try {
 			signedJWT = SignedJWT.parse(idToken);
 			final Payload payload = signedJWT.getPayload();
-			this.repository.save(new Graph(payload.toJSONObject().get("sub").toString(), "simulationGraph", year));
+			this.repository.save(new Graph(payload.toJSONObject().get("sub").toString(), "simulationGraph", String.valueOf(Integer.valueOf(year)+1)));
 		} catch (java.text.ParseException e) {
 
 		}

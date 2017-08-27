@@ -76,8 +76,59 @@ public class HomeController {
 			if(this.repository.findOne(payload.toJSONObject().get("sub").toString()) != null){
 				model.put("year", Integer.valueOf(this.repository.findOne(payload.toJSONObject().get("sub").toString()).getModel())-1);
 			} else{
-				this.repository.save(new Graph(payload.toJSONObject().get("sub").toString(), "simulationGraph", "2017"));
-				model.put("year", "2016");
+				this.inputRepository.save(putGraph("green", "2015"));
+				this.inputRepository.save(putGraph("green", "2016"));
+				this.inputRepository.save(putGraph("green", "2017"));
+				this.inputRepository.save(putGraph("green", "2018"));
+				this.inputRepository.save(putGraph("green", "2019"));
+				this.inputRepository.save(putGraph("green", "2020"));
+				this.inputRepository.save(putGraph("green", "2021"));
+				this.inputRepository.save(putGraph("green", "2022"));
+
+				this.inputRepository.save(putGraph("red", "2015"));
+				this.inputRepository.save(putGraph("red", "2016"));
+				this.inputRepository.save(putGraph("red", "2017"));
+				this.inputRepository.save(putGraph("red", "2018"));
+				this.inputRepository.save(putGraph("red", "2019"));
+				this.inputRepository.save(putGraph("red", "2020"));
+				this.inputRepository.save(putGraph("red", "2021"));
+				this.inputRepository.save(putGraph("red", "2022"));
+
+				this.inputRepository.save(putGraph("yellow", "2015"));
+				this.inputRepository.save(putGraph("yellow", "2016"));
+				this.inputRepository.save(putGraph("yellow", "2017"));
+				this.inputRepository.save(putGraph("yellow", "2018"));
+				this.inputRepository.save(putGraph("yellow", "2019"));
+				this.inputRepository.save(putGraph("yellow", "2020"));
+				this.inputRepository.save(putGraph("yellow", "2021"));
+				this.inputRepository.save(putGraph("yellow", "2022"));
+
+				GraphInput blue2015 = putGraph("blue", "2015");
+				GraphInput blue2016 = putGraph("blue", "2016");
+				GraphInput blue2017 = putGraph("blue", "2017");
+				GraphInput blue2018 = putGraph("blue", "2018");
+				this.inputRepository.save(blue2015);
+				this.inputRepository.save(blue2016);
+				this.inputRepository.save(blue2017);
+				this.inputRepository.save(blue2018);
+
+				this.repository.save(new Graph(payload.toJSONObject().get("sub").toString(), "simulationGraph", "2018"));
+				model.put("year", "2018");
+
+				final Graph deductionGraph = repository.findOne("deductions");
+				final Graph weightageGraph = repository.findOne("weightage");
+				simulationService.buildReports(blue2015.getUserInput() , deductionGraph, weightageGraph, "2015");
+				graphService.buildGraph();
+				reportService.buildReportPage();
+				simulationService.buildReports(blue2015.getUserInput() , deductionGraph, weightageGraph, "2016");
+				graphService.buildGraph();
+				reportService.buildReportPage();
+				simulationService.buildReports(blue2015.getUserInput() , deductionGraph, weightageGraph, "2017");
+				graphService.buildGraph();
+				reportService.buildReportPage();
+				simulationService.buildReports(blue2015.getUserInput() , deductionGraph, weightageGraph, "2018");
+				graphService.buildGraph();
+				reportService.buildReportPage();
 			}
 		}
 		catch (ParseException e){
@@ -89,7 +140,7 @@ public class HomeController {
 
 	@RequestMapping(value = "/submitGraph", method = {RequestMethod.POST})
 	@ResponseBody
-	public ResponseEntity<Map> saveGraph(final HttpServletRequest req, @RequestBody Map graphInput) throws IOException {
+	public String saveGraph(final HttpServletRequest req, @RequestBody Map graphInput) throws IOException {
 		final String year = graphInput.get("year").toString();
 
 		GraphInput blueGraphInput = new GraphInput("blue"+ year, year, graphInput.toString());
@@ -112,6 +163,30 @@ public class HomeController {
 
 		}
 
-		return new ResponseEntity("Successfully login", HttpStatus.OK);
+//		return new ResponseEntity("Successfully login", HttpStatus.OK);
+		String redirectUri = req.getScheme() + "://" + req.getServerName()  + "/dashboard";
+		return "redirect:" + redirectUri;
+	}
+
+	private GraphInput putGraph(String product, String year){
+		StringBuffer buf = new StringBuffer();
+		String str;
+		BufferedReader br = null;
+		try{
+			br = new BufferedReader(new InputStreamReader(HomeController.class.getResourceAsStream(
+					"/initialData/"+ product + "/"+ product + year +".json"), "UTF-8"));
+			while ((str = br.readLine()) != null) {
+				buf.append(str);
+			}
+		} catch (IOException e){
+
+		} finally {
+			try {
+				br.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return new GraphInput(product + year, year, buf.toString());
 	}
 }

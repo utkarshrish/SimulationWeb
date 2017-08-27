@@ -1,0 +1,63 @@
+{
+  "unitPrice": 6.5,
+  "unitCost" : 4.0,
+  "productionUnit":20000000,
+  "style": {
+    "pods": 0,
+    "liquid": 0,
+    "powder": 1
+  },
+  "productPlacement": {
+    "odorElimination": 0,
+    "coldWater": 0,
+    "scent": 0,
+    "softness": 1
+  },
+  "distribution": {
+    "convenience": 25,
+    "club": 25,
+    "grocery": 25,
+    "mass": 25
+  },
+  "media": {
+    "print": 25,
+    "tv": 25,
+    "radio": 25,
+    "digitalAds": 25
+  },
+  "incomeGroup": {
+    "0-19999": 1,
+    "20000-39999": 1,
+    "40000-59999": 1,
+    "60000+": 1
+  },
+  "ethnicity": {
+    "northIndian": 1,
+    "southIndian": 1,
+    "northEastern": 1,
+    "kashmiri": 1,
+    "other": 1
+  },
+  "householdSizes": {
+    "1": 1,
+    "2": 1,
+    "3": 1,
+    "4": 1,
+    "5+": 1
+  },
+  "region": {
+    "northEast": 1,
+    "northWest": 1,
+    "eastern": 1,
+    "central": 1,
+    "western": 1,
+    "south": 1,
+    "north": 1
+  },
+  "age": {
+    "under35": 1,
+    "35-44": 1,
+    "45-54": 1,
+    "55+": 1
+  }
+}

@@ -6,6 +6,7 @@ import com.simulation.graph.GraphInputRepository;
 import com.simulation.graph.GraphRepository;
 import com.simulation.graph.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -222,22 +223,27 @@ public class SimulationService {
             productCost.put(product, yearlyCost);
         }
 
-
         Graph marketShareGraphUpdated = new Graph("marketShare", "simulationGraph", gson.toJson(marketShareYearly));
         this.repository.save(marketShareGraphUpdated);
 
         Map<String, Map<String,Cost>> costYearly = new HashMap<>();
         Graph explorerGraph = repository.findOne("reports");
-        final Map<String, Map<String,Cost>> previousCostYearly = gson.fromJson(explorerGraph.getModel()
-                , new TypeToken<Map<String, Map<String, Cost>>>(){}.getType());
+        if(explorerGraph != null){
+            final Map<String, Map<String,Cost>> previousCostYearly = gson.fromJson(explorerGraph.getModel()
+                    , new TypeToken<Map<String, Map<String, Cost>>>(){}.getType());
 
-        if(previousCostYearly != null) {
             costYearly.putAll(previousCostYearly);
+
         }
+
         costYearly.put(year,productCost);
 
         Graph costYearlyUpdated = new Graph("reports", "simulationGraph", gson.toJson(costYearly));
         this.repository.save(costYearlyUpdated);
+    }
+
+    public void buildReports(String graphInput, Graph deduction, Graph weightage, String year){
+        buildReports(gson.fromJson(graphInput, Map.class), deduction, weightage, year);
     }
 
     private UserInput buildGraphInput(Map graphInput){

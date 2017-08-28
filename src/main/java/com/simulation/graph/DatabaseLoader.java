@@ -158,41 +158,39 @@ public class DatabaseLoader implements CommandLineRunner {
 		}
 		String reports = buf.toString();
 
-		this.repository.save(new Graph("operatingProfit", "simulationGraph", graphModel));
+//		this.repository.save(new Graph("operatingProfit", "simulationGraph", graphModel));
 		this.repository.save(new Graph("graphTypes", "simulationGraph", graphType));
 		this.repository.save(new Graph("revenue", "simulationGraph", revenue));
 		this.repository.save(new Graph("weightage", "simulationGraph", weightage));
 		this.repository.save(new Graph("deductions", "simulationGraph",  deductionScore));
-		this.repository.save(new Graph("marketShare", "simulationGraph",  marketShare));
 		this.repository.save(new Graph("makeDecisionForm", "simulationGraph", makeDecisionForm));
 		this.repository.save(new Graph("explorerFilterFactor", "simulationGraph", explorerFilterFactor));
-		this.repository.save(new Graph("explorer", "simulationGraph", explorer));
-		this.repository.save(new Graph("reportsGraph", "simulationGraph", reportsGraph));
-		this.repository.save(new Graph("reports", "simulationGraph", reports));
+//		this.repository.save(new Graph("explorer", "simulationGraph", explorer));
+//		this.repository.save(new Graph("reportsGraph", "simulationGraph", reportsGraph));
+//		this.repository.save(new Graph("reports", "simulationGraph", reports));
 
 //		Graph costYearlyInitial = new Graph("reports", "simulationGraph", "");
 //		this.repository.save(costYearlyInitial);
 
-		this.inputRepository.save(new GraphInput("blue", "2015", blue2015));
-		this.inputRepository.save(new GraphInput("green2015", "2015", green2015));
-		this.inputRepository.save(new GraphInput("yellow2015", "2015", yellow2015));
-		this.inputRepository.save(new GraphInput("red2015", "2015", red2015));
-
-		this.inputRepository.save(new GraphInput("green2016", "2016", green2016));
-		this.inputRepository.save(new GraphInput("yellow2016", "2016", yellow2016));
-		this.inputRepository.save(new GraphInput("red2016", "2016", red2016));
-
-		this.inputRepository.save(new GraphInput("green2017", "2017", green2016));
-		this.inputRepository.save(new GraphInput("yellow2017", "2017", yellow2016));
-		this.inputRepository.save(new GraphInput("red2017", "2017", red2016));
-
-		this.inputRepository.save(new GraphInput("green2018", "2018", green2016));
-		this.inputRepository.save(new GraphInput("yellow2018", "2018", yellow2016));
-		this.inputRepository.save(new GraphInput("red2018", "2018", red2016));
-
-		this.inputRepository.save(new GraphInput("green2019", "2019", green2016));
-		this.inputRepository.save(new GraphInput("yellow2019", "2019", yellow2016));
-		this.inputRepository.save(new GraphInput("red2019", "2019", red2016));
+//		this.inputRepository.save(new GraphInput("blue", "2015", blue2015));
+//		this.inputRepository.save(new GraphInput("green2015", "2015", green2015));
+//		this.inputRepository.save(new GraphInput("yellow2015", "2015", yellow2015));
+//		this.inputRepository.save(new GraphInput("red2015", "2015", red2015));
+//
+//		this.inputRepository.save(new GraphInput("green2016", "2016", green2016));
+//		this.inputRepository.save(new GraphInput("yellow2016", "2016", yellow2016));
+//		this.inputRepository.save(new GraphInput("red2016", "2016", red2016));
+//
+//		this.inputRepository.save(new GraphInput("green2017", "2017", green2016));
+//		this.inputRepository.save(new GraphInput("yellow2017", "2017", yellow2016));
+//		this.inputRepository.save(new GraphInput("red2017", "2017", red2016));
+//
+//		this.inputRepository.save(new GraphInput("green2018", "2018", green2016));
+//		this.inputRepository.save(new GraphInput("yellow2018", "2018", yellow2016));
+//		this.inputRepository.save(new GraphInput("red2018", "2018", red2016));
+//
+//		this.inputRepository.save(new GraphInput("green2019", "2019", green2016));
+//		this.inputRepository.save(new GraphInput("yellow2019", "2019", yellow2016));
+//		this.inputRepository.save(new GraphInput("red2019", "2019", red2016));
 	}
 }
-// end::code[]

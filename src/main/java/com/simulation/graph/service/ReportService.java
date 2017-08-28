@@ -53,8 +53,8 @@ public class ReportService {
         return GraphUtil.PRICE_FORMAT.format(GraphUtil.buildPointRepresentation(graphLegendValue, unit)) + unit;
     }
 
-    public void buildReportPage(){
-        Graph reports = repository.findOne("reports");
+    public void buildReportPage(String userId){
+        Graph reports = repository.findOne(userId + "_reports");
         Map<String, Map<String, Map<String, BigDecimal>>> reportsStored = gson.fromJson(reports.getModel()
                 , new TypeToken<Map<String,Map<String, Map<String, BigDecimal>>>>(){}.getType());
 
@@ -94,7 +94,7 @@ public class ReportService {
             graphDataProductList.add(productDataMap);
         }
 
-        Graph explorer = repository.findOne("explorer");
+        Graph explorer = repository.findOne(userId + "_explorer");
         Map<String, Object> explorerGraph = gson.fromJson(explorer.getModel(), new TypeToken<Map<String,Object>>(){}.getType());
 
         Map<String, Object> reportsGraph = new HashMap<>();
@@ -109,7 +109,7 @@ public class ReportService {
         reportsGraph.put("unitPrice", explorerGraph.get("unitPrice"));
         reportsGraph.put("production", graphDataProductList);
 
-        Graph explorerGraphUpdated = new Graph("reportsGraph", "simulationGraph", gson.toJson(reportsGraph));
+        Graph explorerGraphUpdated = new Graph(userId + "_reportsGraph", "simulationGraph", gson.toJson(reportsGraph));
         this.repository.save(explorerGraphUpdated);
     }
 }

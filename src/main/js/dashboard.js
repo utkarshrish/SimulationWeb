@@ -10,8 +10,10 @@ class Dashboard extends React.Component {
 
     constructor(props){
         super(props);
+        const userData = document.getElementById('user').innerText.trim();
         this.state = {
-            year: document.getElementById('user').innerText.trim(),
+            year: userData.substring("_")[0],
+            user: userData.substring("_")[1],
             dashboard: [],
             marketData: [],
             years:["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022"]
@@ -19,10 +21,10 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount() {
-        client({method: 'GET', path: '/api/graphs/explorer'}).done(response => {
+        client({method: 'GET', path: '/api/graphs/'+ this.state.user + '_' +'explorer'}).done(response => {
             this.setState({dashboard: response.entity});
         });
-        client({method: 'GET', path: '/api/graphs/marketShare'}).done(response => {
+        client({method: 'GET', path: '/api/graphs/'+ this.state.user + '_' +'marketShare'}).done(response => {
             this.setState({marketData: response.entity});
         });
     }

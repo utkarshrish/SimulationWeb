@@ -155,7 +155,7 @@ public class SimulationService {
         return productMarketShare;
     }
 
-    public void buildReports(Map graphInput, Graph deduction, Graph weightage, String year){
+    public void buildReports(String userId, Map graphInput, Graph deduction, Graph weightage, String year){
         final Map<String, UserInput> graphInputModels = new HashMap<>();
         graphInputModels.put("red", buildGraphInput("red", year));
         graphInputModels.put("green", buildGraphInput("green", year));
@@ -163,7 +163,7 @@ public class SimulationService {
         graphInputModels.put("blue", buildGraphInput(graphInput));
 //        graphInputModels.put("blue", buildGraphInput("blue", year));
 
-        Graph marketShareGraph = repository.findOne("marketShare");
+        Graph marketShareGraph = repository.findOne(userId + "_marketShare");
         Map<String, Map<String, BigDecimal>> marketShareStored = gson.fromJson(marketShareGraph.getModel()
                 , new TypeToken<Map<String,Map<String, BigDecimal>>>(){}.getType());
         Map<String, BigDecimal> yearlyMarketShare = marketShareStored.get(String.valueOf(Integer.valueOf(year)-1));
@@ -222,22 +222,27 @@ public class SimulationService {
             productCost.put(product, yearlyCost);
         }
 
-
-        Graph marketShareGraphUpdated = new Graph("marketShare", "simulationGraph", gson.toJson(marketShareYearly));
+        Graph marketShareGraphUpdated = new Graph(userId + "_marketShare", "simulationGraph", gson.toJson(marketShareYearly));
         this.repository.save(marketShareGraphUpdated);
 
         Map<String, Map<String,Cost>> costYearly = new HashMap<>();
-        Graph explorerGraph = repository.findOne("reports");
-        final Map<String, Map<String,Cost>> previousCostYearly = gson.fromJson(explorerGraph.getModel()
-                , new TypeToken<Map<String, Map<String, Cost>>>(){}.getType());
+        Graph explorerGraph = repository.findOne(userId + "_reports");
+        if(explorerGraph != null){
+            final Map<String, Map<String,Cost>> previousCostYearly = gson.fromJson(explorerGraph.getModel()
+                    , new TypeToken<Map<String, Map<String, Cost>>>(){}.getType());
 
-        if(previousCostYearly != null) {
             costYearly.putAll(previousCostYearly);
+
         }
+
         costYearly.put(year,productCost);
 
-        Graph costYearlyUpdated = new Graph("reports", "simulationGraph", gson.toJson(costYearly));
+        Graph costYearlyUpdated = new Graph(userId + "_reports", "simulationGraph", gson.toJson(costYearly));
         this.repository.save(costYearlyUpdated);
+    }
+
+    public void buildReports(String userId, String graphInput, Graph deduction, Graph weightage, String year){
+        buildReports(userId, gson.fromJson(graphInput, Map.class), deduction, weightage, year);
     }
 
     private UserInput buildGraphInput(Map graphInput){
@@ -251,17 +256,17 @@ public class SimulationService {
         BigDecimal unitCost = convertMillion(graphInput.get("unitCost").toString());
         graphInputModel.setUnitCost(unitCost);
 
-        HashMap<String, Map> blue2015dataPoints = new HashMap<>();
-        blue2015dataPoints.put("style",(Map)graphInput.get("style"));
-        blue2015dataPoints.put("productPlacement",(Map)graphInput.get("productPlacement"));
-        blue2015dataPoints.put("distribution",(Map)graphInput.get("distribution"));
-        blue2015dataPoints.put("media",(Map)graphInput.get("media"));
-        blue2015dataPoints.put("incomeGroup",(Map)graphInput.get("incomeGroup"));
-        blue2015dataPoints.put("ethnicity",(Map)graphInput.get("ethnicity"));
-        blue2015dataPoints.put("householdSizes",(Map)graphInput.get("householdSizes"));
-        blue2015dataPoints.put("region",(Map)graphInput.get("region"));
-        blue2015dataPoints.put("age",(Map)graphInput.get("age"));
-        graphInputModel.setDataPoint(blue2015dataPoints);
+        HashMap<String, Map> blueDataPoints = new HashMap<>();
+        blueDataPoints.put("style",(Map)graphInput.get("style"));
+        blueDataPoints.put("productPlacement",(Map)graphInput.get("productPlacement"));
+        blueDataPoints.put("distribution",(Map)graphInput.get("distribution"));
+        blueDataPoints.put("media",(Map)graphInput.get("media"));
+        blueDataPoints.put("incomeGroup",(Map)graphInput.get("incomeGroup"));
+        blueDataPoints.put("ethnicity",(Map)graphInput.get("ethnicity"));
+        blueDataPoints.put("householdSizes",(Map)graphInput.get("householdSizes"));
+        blueDataPoints.put("region",(Map)graphInput.get("region"));
+        blueDataPoints.put("age",(Map)graphInput.get("age"));
+        graphInputModel.setDataPoint(blueDataPoints);
         return graphInputModel;
     }
 

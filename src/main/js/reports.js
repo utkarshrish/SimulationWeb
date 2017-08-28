@@ -11,6 +11,7 @@ class Reports extends React.Component {
     constructor(props){
         super(props);
         this.state = {
+            user: document.getElementById('user').innerText.trim(),
             reports: [],
             graphOption : "incomeStatement",
             graphTypes : {
@@ -25,7 +26,7 @@ class Reports extends React.Component {
     }
 
     componentDidMount() {
-        client({method: 'GET', path: '/api/graphs/reportsGraph'}).done(response => {
+        client({method: 'GET', path: '/api/graphs/'+ this.state.user + '_' +'reportsGraph'}).done(response => {
             this.setState({reports: response.entity});
         });
     }

@@ -13,6 +13,7 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			user: document.getElementById('user').innerText.trim(),
 			graph: [],
 			graphTypes:[],
 			graphOption: 'operatingProfit',
@@ -25,7 +26,7 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
-		client({method: 'GET', path: '/api/graphs/explorer'}).done(response => {
+		client({method: 'GET', path: '/api/graphs/'+ this.state.user + '_' +'explorer'}).done(response => {
 			this.setState({graph: response.entity});
 		});
 		client({method: 'GET', path: '/api/graphs/graphTypes'}).done(response => {

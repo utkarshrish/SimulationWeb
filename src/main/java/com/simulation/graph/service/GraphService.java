@@ -31,8 +31,8 @@ public class GraphService {
     @Autowired
     private GraphRepository repository;
 
-    public void buildGraph(){
-        Graph reportsGraph = repository.findOne("reports");
+    public void buildGraph(String userId){
+        Graph reportsGraph = repository.findOne(userId + "_reports");
         Map<String,Map<String, Map<String, BigDecimal>>> reportsStored = gson.fromJson(reportsGraph.getModel()
                 , new TypeToken<Map<String,Map<String, Map<String, BigDecimal>>>>(){}.getType());
 
@@ -55,7 +55,7 @@ public class GraphService {
             }
         }
 
-        Graph explorerGraphUpdated = new Graph("explorer", "simulationGraph", gson.toJson(explorerGraph));
+        Graph explorerGraphUpdated = new Graph(userId + "_explorer", "simulationGraph", gson.toJson(explorerGraph));
         this.repository.save(explorerGraphUpdated);
     }
 

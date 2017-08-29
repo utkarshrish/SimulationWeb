@@ -2,6 +2,7 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const Nav = require('react-bootstrap/lib/Nav');
 const NavItem = require('react-bootstrap/lib/NavItem');
+const ProgressBar = require('react-bootstrap/lib/ProgressBar');
 const client = require('./client');
 const CheckboxFilters = require('./modules/checkboxForm');
 
@@ -16,21 +17,20 @@ class MakeDecision extends React.Component {
             style: "pods",
             productPlacement:"odorElimination",
             distribution: {
-                convenience:"",
-                club: "",
-                grocery: "",
-                mass: ""
+                convenience: 0.0,
+                club: 0.0,
+                grocery: 0.0,
+                mass: 0.0
             },
             media: {
-                print: "",
-                tv: "",
-                radio: "",
-                digitalAds:""
+                print: 0.0,
+                tv: 0.0,
+                radio: 0.0,
+                digitalAds: 0.0
             },
-            unitPrice: 0,
-            unitCost : 0,
+            unitPrice: 0.0,
+            unitCost : 0.0,
             productionUnit: "",
-            buttonClass: "",
             year: document.getElementById('user').innerText.trim(),
             selectedCheckboxes: new Set()
         };
@@ -115,9 +115,9 @@ class MakeDecision extends React.Component {
     }
 
     handleChangeNormal(event) {
-        event.preventDefault();
-        this.setState({[event.target.name]: event.target.value});
-        this.setState({buttonClass: "active"})
+        this.setState({
+            [event.target.name]: event.target.value
+        });
     }
 
     render() {
@@ -132,7 +132,26 @@ class MakeDecision extends React.Component {
         var makeDecisionForm = this.state.makeDecisionForm.model;
         if(makeDecisionForm !== undefined){
             var makeDecisionFormModel = JSON.parse(makeDecisionForm);
-            const style = this.state.style;
+
+            var productionUnit = this.state.productionUnit;
+            var tradeChannelSpend;
+            var mediaSpend;
+            if(productionUnit.indexOf("M") > 0){
+                productionUnit = productionUnit.match(/\d+/)[0];
+                tradeChannelSpend = 0.4 * productionUnit * this.state.unitPrice ;
+                mediaSpend = 0.3 * productionUnit * this.state.unitPrice;
+                tradeChannelSpend = tradeChannelSpend + "M";
+                mediaSpend = mediaSpend + "M";
+            } else if(productionUnit.indexOf("m") > 0){
+                productionUnit = productionUnit.match(/\d+/)[0];
+                tradeChannelSpend = 0.4 * productionUnit * this.state.unitPrice ;
+                mediaSpend = 0.3 * productionUnit * this.state.unitPrice;
+                tradeChannelSpend = tradeChannelSpend + "m";
+                mediaSpend = mediaSpend + "m";
+            } else {
+                tradeChannelSpend = 0.4 * productionUnit * this.state.unitPrice ;
+                mediaSpend = 0.3 * productionUnit * this.state.unitPrice;
+            }
             return (
 
                 <div className="container">
@@ -157,11 +176,11 @@ class MakeDecision extends React.Component {
                             <div className="btn-group">
                                 <div>
                                     {Object.keys(makeDecisionFormModel["style"]).map((styleType) =>
-                                        <label className={"btn btn-info btn-xs " + this.state.buttonClass}>
+                                        <label className={"btn btn-info btn-xs "}>
                                             <input type="radio" value={styleType}
-                                                   checked={styleType === style}
+                                                   checked={styleType === this.state.style}
                                                    onChange={this.handleChangeNormal}
-                                                   name={"style"}/>
+                                                   name="style"/>
                                             {makeDecisionFormModel["style"][styleType]}
                                         </label>
                                     )}
@@ -176,7 +195,7 @@ class MakeDecision extends React.Component {
                                         <input type="radio" value={styleType}
                                                checked={styleType === this.state.productPlacement}
                                                onChange={this.handleChangeNormal}
-                                               name={"productPlacement"}/>
+                                               name="productPlacement"/>
                                         {makeDecisionFormModel["productPlacement"][styleType]}
                                     </label>
                                 )}
@@ -211,7 +230,7 @@ class MakeDecision extends React.Component {
                                 <div className="col-xs-2 number">Total</div>
                             </div>
                         </div>
-                        <div className="col-xs-4">Total Trade Channel Budget: <span data-field="total_trade_channel_spend" data-format="usd-big" data-format-max="1000000">$15.0M</span></div>
+                        <div className="col-xs-4">Total Trade Channel Budget: <span data-field="total_trade_channel_spend" data-format="usd-big" data-format-max="1000000">{"$" + tradeChannelSpend}</span></div>
                         <div className="col-xs-8">
                             <div className="row">
                                 <div className="col-xs-2"></div>
@@ -223,6 +242,17 @@ class MakeDecision extends React.Component {
                                 <div className="col-xs-2 number trade-channel-total invalid-highlight" data-format="percent" data-format-max="1000">100.0%</div>
                             </div>
                         </div>
+                        <div className="col-xs-4">
+                            <div className="row">
+                                <ProgressBar>
+                                    <ProgressBar bsStyle="success" now={this.state.distribution.convenience * 100} key={1} />
+                                    <ProgressBar bsStyle="info" now={this.state.distribution.club * 100} key={2} />
+                                    <ProgressBar bsStyle="warning" now={this.state.distribution.grocery * 100} key={3} />
+                                    <ProgressBar bsStyle="danger" now={this.state.distribution.mass * 100} key={4} />
+                                </ProgressBar>
+                            </div>
+                        </div>
+
                     </section>
                     <h4>Media Spend in {this.state.year}<span data-toggle="popover" data-info="media-spend" data-original-title="" title=""></span></h4>
                     <section className="row media-spend" data-valid="media_spend_decision">
@@ -232,9 +262,10 @@ class MakeDecision extends React.Component {
                                 {Object.keys(makeDecisionFormModel["media"]).map((inputBox) =>
                                     <div className="col-xs-2 number">{makeDecisionFormModel["media"][inputBox]}</div>
                                 )}
+                                <div className="col-xs-2 number">Total</div>
                             </div>
                         </div>
-                        <div className="col-xs-4">Total Media Budget: <span data-field="total_media_spend" data-format="usd-big" data-format-max="1000000">$6.1M</span></div>
+                        <div className="col-xs-4">Total Media Budget: <span data-field="total_media_spend" data-format="usd-big" data-format-max="1000000">{"$" + mediaSpend}</span></div>
                         <div className="col-xs-8">
                             <div className="row">
                                 <div className="col-xs-2"></div>
@@ -244,6 +275,16 @@ class MakeDecision extends React.Component {
                                     </div>
                                 )}
                                 <div className="col-xs-2 number media-total invalid-highlight" data-format="percent" data-format-max="1000">100.0%</div>
+                            </div>
+                        </div>
+                        <div className="col-xs-4">
+                            <div className="row">
+                                <ProgressBar>
+                                    <ProgressBar bsStyle="success" now={this.state.media.print * 100} key={1} />
+                                    <ProgressBar bsStyle="info" now={this.state.media.tv * 100} key={2} />
+                                    <ProgressBar bsStyle="warning" now={this.state.media.radio * 100} key={3} />
+                                    <ProgressBar bsStyle="danger" now={this.state.media.digitalAds * 100} key={4} />
+                                </ProgressBar>
                             </div>
                         </div>
                     </section>

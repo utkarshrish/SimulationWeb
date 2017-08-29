@@ -9,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ReportService {
@@ -34,7 +32,7 @@ public class ReportService {
     static {
         PRODUCTION_LEGENDS = new ArrayList<>();
         PRODUCTION_LEGENDS.add("productionInputUnits");
-        PRODUCTION_LEGENDS.add("actualDemand");
+        PRODUCTION_LEGENDS.add("maxProductionUnitsDemand");
         PRODUCTION_LEGENDS.add("inventory");
     }
 
@@ -60,7 +58,7 @@ public class ReportService {
 
         final Map<String, Map<String, String>> incomeStatements = new HashMap<>();
         BigDecimal cumulativeProfit = new BigDecimal("0.0");
-        for(String year: reportsStored.keySet()){
+        for(String year: reportsStored.keySet().stream().sorted().collect(Collectors.toList())){
             Map<String, BigDecimal> blueReportsStored = reportsStored.get(year).get("blue");
 
             Map<String, String> incomeStatement = new HashMap<>();
@@ -109,7 +107,7 @@ public class ReportService {
         reportsGraph.put("unitPrice", explorerGraph.get("unitPrice"));
         reportsGraph.put("production", graphDataProductList);
 
-        Graph explorerGraphUpdated = new Graph(userId + "_reportsGraph", "simulationGraph", gson.toJson(reportsGraph));
+        Graph explorerGraphUpdated = new Graph(userId +"_reportsGraph", "simulationGraph", gson.toJson(reportsGraph));
         this.repository.save(explorerGraphUpdated);
     }
 }

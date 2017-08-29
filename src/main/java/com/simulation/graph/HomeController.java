@@ -8,6 +8,8 @@ import com.simulation.graph.service.GraphService;
 import com.simulation.graph.service.ReportService;
 import com.simulation.graph.service.SimulationService;
 import com.nimbusds.jwt.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +37,8 @@ public class HomeController {
 	@Autowired
 	private GraphInputRepository inputRepository;
 
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	@RequestMapping(value = "/explorer")
 	public String index(final HttpServletRequest req, Map<String, Object> model) {
 		final String idToken = (String) SessionUtils.get(req, "idToken");
@@ -47,7 +51,7 @@ public class HomeController {
 			model.put("user", userId);
 		}
 		catch (ParseException e){
-			System.out.print("parsing exception");
+			logger.info("parsing exception");
 		}
 		return "explorer";
 	}
@@ -80,7 +84,7 @@ public class HomeController {
 			model.put("user", userId);
 		}
 		catch (ParseException e){
-			System.out.print("parsing exception");
+			logger.info("parsing exception");
 		}
 		return "reports";
 	}
@@ -130,7 +134,7 @@ public class HomeController {
 			model.put("user", userId + "_" + year);
 		}
 		catch (ParseException e){
-			System.out.print("parsing exception");
+			logger.info("parsing exception");
 		}
 
 		return "dashboard";
@@ -158,7 +162,7 @@ public class HomeController {
 			graphService.buildGraph(userId);
 			reportService.buildReportPage(userId);
 		} catch (java.text.ParseException e) {
-
+			logger.info("parsing exception");
 		}
 
 //		return new ResponseEntity("Successfully login", HttpStatus.OK);
@@ -189,13 +193,7 @@ public class HomeController {
 				buf.append(str);
 			}
 		} catch (IOException e){
-
-		} finally {
-			try {
-				br.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			logger.info("parsing exception");
 		}
 		String yearS = String.valueOf(year);
 		return new GraphInput(product + yearS, yearS, buf.toString());
@@ -211,13 +209,7 @@ public class HomeController {
 				buf.append(str);
 			}
 		} catch (IOException e){
-
-		} finally {
-			try {
-				br.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			logger.info("parsing exception");
 		}
 		return new Graph(type, name, buf.toString());
 	}
@@ -242,6 +234,7 @@ public class HomeController {
 			this.repository.delete(userId + "_explorer");
 
 		} catch (Exception e) {
+			logger.info("parsing exception");
 		}
 
 		return "redirect:" + req.getContextPath() + "/login";

@@ -43,7 +43,7 @@ public class GraphService {
         explorerGraph.put("graphTransformAxisY", 6);
         explorerGraph.put("xAxis", GraphUtil.createXAxis());
         explorerGraph.put("marketShareYAxis", GraphUtil.createYAxis(0, 100, "%"));
-        explorerGraph.put("operatingProfitYAxis", GraphUtil.createYAxis(-150, 150, "M"));
+        explorerGraph.put("operatingProfitYAxis", GraphUtil.createYAxis(-300, 300, "M"));
 
         for(String graphLegend: GRAPH_LEGENDS){
             final List<Map<String, Object>> graphData = createGraphData(reportsStored, graphLegend);

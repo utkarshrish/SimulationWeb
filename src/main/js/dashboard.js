@@ -10,10 +10,9 @@ class Dashboard extends React.Component {
 
     constructor(props){
         super(props);
-        const userData = document.getElementById('user').innerText.trim();
         this.state = {
-            year: userData.substring("_")[0],
-            user: userData.substring("_")[1],
+            year: document.getElementById('user').innerText.trim().split("_")[1],
+            user: document.getElementById('user').innerText.trim().split("_")[0],
             dashboard: [],
             marketData: [],
             years:["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022"]

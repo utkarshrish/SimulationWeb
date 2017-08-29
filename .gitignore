@@ -6,6 +6,9 @@ logs
 pids
 *.pid
 *.seed
+.classpath
+.project
+.settings/
 
 *.DS_Store
 
@@ -20,6 +23,8 @@ coverage
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
+
+ target/
 
 # Dependency directory
 # Deployed apps should consider commenting this line out:

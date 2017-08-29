@@ -60,9 +60,9 @@ public class HomeController {
 		try {
 			signedJWT = SignedJWT.parse(idToken);
 			final Payload payload = signedJWT.getPayload();
-			model.put("year", this.repository.findOne(payload.toJSONObject().get("sub").toString()).getModel());
+			model.put("user", this.repository.findOne(payload.toJSONObject().get("sub").toString()).getModel());
 		} catch (Exception e) {
-			model.put("year", "2017");
+			model.put("user", "2018");
 		}
 
 		return "makeDecision";
@@ -100,11 +100,11 @@ public class HomeController {
 			} else{
 				year = 2018;
 				initializeUser(userId);
-				this.repository.save(new Graph(userId, "simulationGraph", "2017"));
-				GraphInput blue2015 = putGraph("blue", "2015");
-				GraphInput blue2016 = putGraph("blue", "2016");
-				GraphInput blue2017 = putGraph("blue", "2017");
-				GraphInput blue2018 = putGraph("blue", "2018");
+				this.repository.save(new Graph(userId, "simulationGraph", "2019"));
+				GraphInput blue2015 = putGraph("blue", 2015);
+				GraphInput blue2016 = putGraph("blue", 2016);
+				GraphInput blue2017 = putGraph("blue", 2017);
+				GraphInput blue2018 = putGraph("blue", 2018);
 				this.inputRepository.save(blue2015);
 				this.inputRepository.save(blue2016);
 				this.inputRepository.save(blue2017);
@@ -148,7 +148,7 @@ public class HomeController {
 			final String userId = payload.toJSONObject().get("sub").toString();
 			this.repository.save(new Graph(userId, "simulationGraph", String.valueOf(Integer.valueOf(year)+1)));
 
-			GraphInput blueGraphInput = new GraphInput("blue"+ year, year, graphInput.toString());
+			GraphInput blueGraphInput = new GraphInput(userId + "_blue"+ year, year, graphInput.toString());
 			this.inputRepository.save(blueGraphInput);
 
 			Graph deductionGraph = repository.findOne("deductions");
@@ -167,40 +167,18 @@ public class HomeController {
 	}
 
 	private void initializeUser(String userId) throws IOException {
-		this.inputRepository.save(putGraph("green", "2015"));
-		this.inputRepository.save(putGraph("green", "2016"));
-		this.inputRepository.save(putGraph("green", "2017"));
-		this.inputRepository.save(putGraph("green", "2018"));
-		this.inputRepository.save(putGraph("green", "2019"));
-		this.inputRepository.save(putGraph("green", "2020"));
-		this.inputRepository.save(putGraph("green", "2021"));
-		this.inputRepository.save(putGraph("green", "2022"));
-
-		this.inputRepository.save(putGraph("red", "2015"));
-		this.inputRepository.save(putGraph("red", "2016"));
-		this.inputRepository.save(putGraph("red", "2017"));
-		this.inputRepository.save(putGraph("red", "2018"));
-		this.inputRepository.save(putGraph("red", "2019"));
-		this.inputRepository.save(putGraph("red", "2020"));
-		this.inputRepository.save(putGraph("red", "2021"));
-		this.inputRepository.save(putGraph("red", "2022"));
-
-		this.inputRepository.save(putGraph("yellow", "2015"));
-		this.inputRepository.save(putGraph("yellow", "2016"));
-		this.inputRepository.save(putGraph("yellow", "2017"));
-		this.inputRepository.save(putGraph("yellow", "2018"));
-		this.inputRepository.save(putGraph("yellow", "2019"));
-		this.inputRepository.save(putGraph("yellow", "2020"));
-		this.inputRepository.save(putGraph("yellow", "2021"));
-		this.inputRepository.save(putGraph("yellow", "2022"));
-
-		this.repository.save(putGraph("marketShare", userId + "_marketShare", "simulationGraph"));
+		for(int year = 2015; year< 2023; year++){
+			this.inputRepository.save(putGraph("green", year));
+			this.inputRepository.save(putGraph("red", year));
+			this.inputRepository.save(putGraph("yellow", year));
+		}
+		this.repository.save(putGraph("/marketShare", userId + "_marketShare", "simulationGraph"));
 //		this.repository.save(putGraph("explorer", userId + "_explorer", "simulationGraph"));
 //		this.repository.save(putGraph("reportsGraph", userId + "_reportsGraph", "simulationGraph"));
 //		this.repository.save(putGraph("reports", userId + "_reports", "simulationGraph"));
 	}
 
-	private GraphInput putGraph(String product, String year){
+	private GraphInput putGraph(String product, int year){
 		StringBuffer buf = new StringBuffer();
 		String str;
 		BufferedReader br = null;
@@ -219,7 +197,8 @@ public class HomeController {
 				e.printStackTrace();
 			}
 		}
-		return new GraphInput(product + year, year, buf.toString());
+		String yearS = String.valueOf(year);
+		return new GraphInput(product + yearS, yearS, buf.toString());
 	}
 
 	private Graph putGraph(String graphPath, String type, String name){
@@ -241,5 +220,30 @@ public class HomeController {
 			}
 		}
 		return new Graph(type, name, buf.toString());
+	}
+
+	@RequestMapping(value = "/deleteUser", method = RequestMethod.GET)
+	public String deleteUser(final HttpServletRequest req) {
+
+		final String idToken = (String) SessionUtils.get(req, "idToken");
+		SignedJWT signedJWT;
+		try {
+			signedJWT = SignedJWT.parse(idToken);
+			final Payload payload = signedJWT.getPayload();
+			String userId = payload.toJSONObject().get("sub").toString();
+
+			for(int year = 2018; year<2023; year++){
+				this.inputRepository.delete(userId+ "_blue" + year);
+			}
+			this.repository.delete(userId);
+			this.repository.delete(userId + "_marketShare");
+			this.repository.delete(userId + "_reports");
+			this.repository.delete(userId + "_reportsGraph");
+			this.repository.delete(userId + "_explorer");
+
+		} catch (Exception e) {
+		}
+
+		return "redirect:" + req.getContextPath() + "/login";
 	}
 }

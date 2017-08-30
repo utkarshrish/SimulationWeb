@@ -161,7 +161,7 @@ class MakeDecision extends React.Component {
                         </Nav>
                         <h3 className="text-muted">Analytics Simulation</h3>
                     </div>
-                    <Nav bsStyle="pills" activeKey={4}>
+                    <Nav bsStyle="tabs" justified activeKey={4}>
                         <NavItem eventKey={1} href="/dashboard">Dashboard</NavItem>
                         <NavItem eventKey={2} href="/reports">Reports</NavItem>
                         <NavItem eventKey={3} href="/explorer">Data Explorer</NavItem>
@@ -207,9 +207,6 @@ class MakeDecision extends React.Component {
                             <h4>Units to Produce in {this.state.year}</h4>
                             <input type="text" value={this.state.productionUnit} name="productionUnit" onChange={this.handleChangeNormal}/>
                             <small className="text-nowrap">units</small> &nbsp;
-                            <div className="col-xs-4">
-                                <label id="toggle-forecast">Forecast Demand</label>
-                            </div>
                             <div className="fill-in" data-field-name="production_decision">Click here to fill in the previous year's value</div>
                         </div>
                         <div className="col-xs-4 forecast-obscure price-decision-cont invalid">
@@ -239,7 +236,9 @@ class MakeDecision extends React.Component {
                                         <input type="text" value={this.state.distribution.inputBox} name={"distribution."+ inputBox} onChange={this.handleChange} />
                                     </div>
                                 )}
-                                <div className="col-xs-2 number trade-channel-total invalid-highlight" data-format="percent" data-format-max="1000">100.0%</div>
+                                <div className="col-xs-2 number trade-channel-total invalid-highlight" data-format="percent" data-format-max="1000">
+                                    {(this.state.distribution.convenience + this.state.distribution.club + this.state.distribution.grocery + this.state.distribution.mass)*100}%
+                                </div>
                             </div>
                         </div>
                         <div className="col-xs-4">
@@ -274,7 +273,8 @@ class MakeDecision extends React.Component {
                                         <input type="text" value={this.state.media.inputBox} name={"media."+ inputBox} onChange={this.handleChange} />
                                     </div>
                                 )}
-                                <div className="col-xs-2 number media-total invalid-highlight" data-format="percent" data-format-max="1000">100.0%</div>
+                                <div className="col-xs-2 number media-total invalid-highlight" data-format="percent" data-format-max="1000">
+                                    {(this.state.media.print + this.state.media.tv + this.state.media.radio + this.state.media.digitalAds)*100}%</div>
                             </div>
                         </div>
                         <div className="col-xs-4">
@@ -295,9 +295,9 @@ class MakeDecision extends React.Component {
                                 {Object.keys(filters).map((filter) =>
                                     <li>
                                         <div>
-                                            <p>{filters[filter]}</p>
-                                            <CheckboxFilters type="checkbox" filters={makeDecisionFormModel[filter]} toggleCheckboxFilters={this.toggleCheckboxFilters}/>
+                                            {filters[filter]}
                                         </div>
+                                        <CheckboxFilters type="checkbox" filters={makeDecisionFormModel[filter]} toggleCheckboxFilters={this.toggleCheckboxFilters}/>
                                     </li>
                                 )}
                             </ul>

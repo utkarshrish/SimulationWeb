@@ -1,15 +1,15 @@
 {
   "unitPrice": 9.0,
   "unitCost" : 6.0,
-  "productionUnit":65000000,
+  "productionUnit":70000000,
   "style": {
     "pods": 1,
     "liquid": 0,
     "powder": 0
   },
   "productPlacement": {
-    "odorElimination": 1,
-    "coldWater": 0,
+    "odorElimination": 0,
+    "coldWater": 1,
     "scent": 0,
     "softness": 0
   },
@@ -27,16 +27,16 @@
   },
   "incomeGroup": {
     "0-19999": 0,
-    "20000-39999": 0,
+    "20000-39999": 1,
     "40000-59999": 1,
     "60000+": 1
   },
   "ethnicity": {
     "northIndian": 1,
-    "southIndian": 1,
+    "southIndian": 0,
     "northEastern": 0,
-    "kashmiri": 0,
-    "other": 0
+    "kashmiri": 1,
+    "other": 1
   },
   "householdSizes": {
     "1": 1,

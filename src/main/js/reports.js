@@ -50,7 +50,7 @@ class Reports extends React.Component {
                         </Nav>
                         <h3 className="text-muted">Analytics Simulation</h3>
                     </div>
-                    <Nav bsStyle="pills" activeKey={2}>
+                    <Nav bsStyle="tabs" justified activeKey={2}>
                         <NavItem eventKey={1} href="/dashboard">Dashboard</NavItem>
                         <NavItem eventKey={2} href="/reports">Reports</NavItem>
                         <NavItem eventKey={3} href="/explorer">Data Explorer</NavItem>

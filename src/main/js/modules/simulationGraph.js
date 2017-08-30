@@ -38,7 +38,7 @@ class SimulationGraph extends React.Component{
         let yAxisName = this.props.graphOption+"YAxis";
         let yAxis = model[yAxisName];
 
-        let viewBox = "0 0 ".concat(width.toString(), " ", height.toString());
+        let viewBox = "-50 0 ".concat(width.toString(), " ", height.toString());
 
         let xLegends = createXLegends(model.xAxis.ticks, model.xAxis.width);
         let yLegends = createYLegends(yAxis.ticks, yAxis.height);

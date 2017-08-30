@@ -37,7 +37,7 @@ public class GraphService {
                 , new TypeToken<Map<String,Map<String, Map<String, BigDecimal>>>>(){}.getType());
 
         Map<String, Object> explorerGraph = new HashMap<>();
-        explorerGraph.put("width", 600);
+        explorerGraph.put("width", 660);
         explorerGraph.put("height", 375);
         explorerGraph.put("graphTransformAxisX", 33);
         explorerGraph.put("graphTransformAxisY", 6);

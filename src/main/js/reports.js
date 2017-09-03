@@ -125,7 +125,12 @@ class ReportsTable extends React.Component{
             }
             let costs = this.props.costs[this.props.graphOption];
             return (
-                <Table condensed hover>
+                <div className="cols-xs-8">
+                    <h4>
+                        <span>Income Statement     </span>
+                        <small>(in $US)</small>
+                    </h4>
+                <Table>
                     <thead>
                         <tr className="l1 number">
                         <td></td>
@@ -143,11 +148,11 @@ class ReportsTable extends React.Component{
                             <td></td>
                         )}
                     </tr>
-                    <CostRow rowCss="l2 number" costs={costs} years={years}
+                    <CostRow rowCss="l3 number" costs={costs} years={years}
                              costProperty="variableCost" costPropertyName="Variable Costs"/>
-                    <CostRow rowCss="l2 number" costs={costs} years={years}
+                    <CostRow rowCss="l3 number" costs={costs} years={years}
                              costProperty="fixedCost" costPropertyName="Fixed Costs"/>
-                    <CostRow rowCss="l2 number" costs={costs} years={years}
+                    <CostRow rowCss="l3 number" costs={costs} years={years}
                              costProperty="otherCost" costPropertyName="Other Costs"/>
                     <CostRow rowCss="l2 number" costs={costs} years={years}
                              costProperty="totalCost" costPropertyName="Total Costs"/>
@@ -159,6 +164,7 @@ class ReportsTable extends React.Component{
                              costProperty="cumulativeOperatingProfit" costPropertyName="Cumulative Operating Profit"/>
                     </tfoot>
                 </Table>
+                </div>
             )
         } else {
             return (
@@ -168,6 +174,7 @@ class ReportsTable extends React.Component{
                                  graphOption={this.props.graphOption}
                                  graphLegends={this.state[this.props.graphOption]["legends"]}
                                  graphLegendsType={this.state[this.props.graphOption]["legendsType"]}
+                                 factor={1}
                 />
             )
         }

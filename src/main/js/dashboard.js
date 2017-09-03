@@ -41,8 +41,6 @@ class Dashboard extends React.Component {
                 {label: "Store", value: marketShareModel[this.state.year]["red"], color: "#cb2027"}
             ];
 
-            const {expandedSector} = this.state;
-
             return (
                 <div className="container">
                     <div className="header clearfix">
@@ -78,6 +76,7 @@ class Dashboard extends React.Component {
                                          graphOption={"operatingProfit"}
                                          graphLegends={["Blue", "Turbo", "Fresh", "Store"]}
                                          graphLegendsType={"s"}
+                                         factor={1.0}
                         />
 
                         <SimulationGraph graph={costModel}
@@ -86,6 +85,7 @@ class Dashboard extends React.Component {
                                          graphOption={"revenue"}
                                          graphLegends={["Blue", "Turbo", "Fresh", "Store"]}
                                          graphLegendsType={"s"}
+                                         factor={1.0}
                         />
 
                     </div>

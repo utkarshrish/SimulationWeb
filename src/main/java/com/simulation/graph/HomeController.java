@@ -114,7 +114,7 @@ public class HomeController {
 				this.inputRepository.save(blue2017);
 				this.inputRepository.save(blue2018);
 
-				this.repository.save(new Graph(payload.toJSONObject().get("sub").toString(), "simulationGraph", "2018"));
+				this.repository.save(new Graph(payload.toJSONObject().get("sub").toString(), "simulationGraph", "2019"));
 
 				final Graph deductionGraph = repository.findOne("deductions");
 				final Graph weightageGraph = repository.findOne("weightage");

@@ -34,7 +34,7 @@ class GraphAxis extends React.Component {
                         <TickItem strategy={this.props.strategy} transformX={this.props.legends[axisTick.text]}
                                   transformY={transformY} text={axisTick.text + this.props.unit}/>
                     )}
-                    <GraphPathItem className = "axis" pathCoordinates={axisPath.pathCoordinates}/>
+                    <GraphPathItem className="axis" pathCoordinates={axisPath.pathCoordinates} factor={1}/>
                 </g>
             );
         }
@@ -57,7 +57,7 @@ class GraphAxis extends React.Component {
             return (
                 <g transform={transformAxis}>
                     {this.props.axisTicks.map((axisTick) => <TickItem strategy={this.props.strategy} transformX={transformX} transformY={this.props.legends[axisTick.text]} text={axisTick.text + this.props.unit}/>)}
-                    <GraphPathItem className = "axis" pathCoordinates={axisPath.pathCoordinates}/>
+                    <GraphPathItem className = "axis" pathCoordinates={axisPath.pathCoordinates} factor={1}/>
                 </g>
             );
         }

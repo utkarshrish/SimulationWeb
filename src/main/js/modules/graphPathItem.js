@@ -13,7 +13,7 @@ class GraphPathItem extends React.Component {
             this.props.pathCoordinates.map(
                 (coordinate) =>
                     path = path + "L" + this.props.legends[coordinate.x] + ","
-                        + this.props.height * (this.props.yMax - coordinate.y)/(this.props.yMax - this.props.negativeYMax)
+                        + this.props.height * (this.props.yMax - coordinate.y*this.props.factor)/(this.props.yMax - this.props.negativeYMax)
                         + " "
             )
         } else {

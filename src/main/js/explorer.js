@@ -18,11 +18,14 @@ class App extends React.Component {
 			graphTypes:[],
 			graphOption: 'operatingProfit',
 			filterFactors: [],
-			selectedCheckboxes: new Set()
+			selectedCheckboxes: new Set(),
+			factor:0.0,
+			explorerFilterFactors: []
 		};
 
 		this.updateGraphFilter = this.updateGraphFilter.bind(this);
 		this.toggleCheckboxFilters = this.toggleCheckboxFilters.bind(this);
+		this.setFactor = this.setFactor.bind(this);
 	}
 
 	componentDidMount() {
@@ -32,9 +35,18 @@ class App extends React.Component {
 		client({method: 'GET', path: '/api/graphs/graphTypes'}).done(response => {
 			this.setState({graphTypes: response.entity});
 		});
-
 		client({method: 'GET', path: '/api/graphs/explorerFilterFactor'}).done(response => {
-			this.setState({filterFactors: JSON.parse(response.entity.model)});
+			let filterFactor = {};
+			filterFactor = JSON.parse(response.entity.model);
+			let explorerFilterFactors = {};
+			for(let filter in filterFactor){
+				for(let factorType in filterFactor[filter]){
+					explorerFilterFactors[factorType] = filterFactor[filter][factorType];
+				}
+			}
+
+			this.setState({filterFactors:filterFactor});
+			this.setState({explorerFilterFactors:explorerFilterFactors});
 		});
 	}
 
@@ -47,12 +59,22 @@ class App extends React.Component {
 
 	toggleCheckboxFilters(label){
 		let selectedCheckboxes = this.state.selectedCheckboxes;
+		let factor = this.state.factor;
 		if (selectedCheckboxes.has(label)) {
+			factor = factor - this.state.explorerFilterFactors[label];
 			selectedCheckboxes.delete(label);
+			this.setState({factor: factor})
 		} else {
+			factor = factor + this.state.explorerFilterFactors[label];
 			selectedCheckboxes.add(label);
+			this.setState({factor: factor})
 		}
 		this.setState({selectedCheckboxes: selectedCheckboxes});
+	}
+
+	setFactor(){
+		this.setState({factor:0.0});
+		this.setState({selectedCheckboxes: new Set()})
 	}
 
 	render() {
@@ -98,12 +120,13 @@ class App extends React.Component {
 									graphOption={this.state.graphOption}
 									graphLegends={["Blue", "Turbo", "Fresh", "Store"]}
 									graphLegendsType="s"
+									factor={this.state.factor<0.01 ? 1.0: this.state.factor}
 							/>
 							<div className="GraphFilters cols-xs-3">
 								<h4>Filters</h4>
 								<Accordion trigger="Start here">
 									{Object.keys(this.state.filterFactors).map((filterFactor) =>
-										<Panel header={filterFactor} eventKey={eventKey++}>
+										<Panel header={filterFactor} eventKey={eventKey++} onSelect={this.setFactor}>
 											{Object.keys(this.state.filterFactors[filterFactor]).map((factorType) =>
 												<Checkbox type="checkbox" label={factorType} filterKey={factorType}
 													handleCheckboxChange={this.toggleCheckboxFilters}/>

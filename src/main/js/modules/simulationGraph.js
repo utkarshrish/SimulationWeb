@@ -45,6 +45,8 @@ class SimulationGraph extends React.Component{
 
         let transformGraphData = "translate(".concat(model.graphTransformAxisX.toString(), ",", model.graphTransformAxisY, ")");
 
+        const factor = this.props.factor;
+
         return (
             <div className="SimulationGraph cols-xs-6">
                 <h4>
@@ -58,14 +60,16 @@ class SimulationGraph extends React.Component{
                                legends={xLegends} strategy="xAxis"
                                axisTicks={model.xAxis.ticks}
                                length={model.xAxis.width}
-                               unit={model.xAxis.unit}/>
+                               unit={model.xAxis.unit}
+                    />
 
                     <GraphAxis transformAxisX={yAxis.transformAxisX}
                                transformAxisY={yAxis.transformAxisY}
                                legends={yLegends} strategy="yAxis"
                                axisTicks={yAxis.ticks}
                                length={yAxis.height}
-                               unit={yAxis.unit}/>
+                               unit={yAxis.unit}
+                    />
 
                     <g className="axis" transform={transformGraphData}>
                         {model[this.props.graphOption].map(
@@ -74,7 +78,9 @@ class SimulationGraph extends React.Component{
                                                pathCoordinates={graphItem.data}
                                                yMax={yAxis.ticks[yAxis.ticks.length-1].text}
                                                negativeYMax={yAxis.ticks[0].text}
-                                               height={yAxis.height}/>
+                                               height={yAxis.height}
+                                               factor={factor}
+                                />
                         )}
                     </g>
                 </svg>

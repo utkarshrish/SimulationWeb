@@ -14,15 +14,15 @@
     "softness": 0
   },
   "distribution": {
-    "convenience": 50,
-    "club": 25,
-    "grocery": 25,
+    "convenience": 0.50,
+    "club": 0.25,
+    "grocery": 0.25,
     "mass": 0
   },
   "media": {
-    "print": 25,
-    "tv": 50,
-    "radio": 25,
+    "print": 0.25,
+    "tv": 0.50,
+    "radio": 0.25,
     "digitalAds": 0
   },
   "incomeGroup": {

@@ -16,6 +16,10 @@ class MakeDecision extends React.Component {
             filters:[],
             style: "pods",
             productPlacement:"odorElimination",
+            boxState: {
+                inputBox:"",
+                divBox:"col-xs-2"
+            },
             distribution: {
                 convenience: 0.0,
                 club: 0.0,
@@ -76,7 +80,7 @@ class MakeDecision extends React.Component {
 
         graphInput["unitPrice"] = this.state.unitPrice;
         graphInput["unitCost"] = this.state.unitCost;
-        graphInput["productionUnit"] = this.state.productionUnit;
+        graphInput["productionUnit"] = this.state.productionUnit*1000000;
         graphInput["distribution"] = this.state.distribution;
         graphInput["media"] = this.state.media;
         graphInput["year"] =  this.state.year;
@@ -112,6 +116,15 @@ class MakeDecision extends React.Component {
         var inputBoxKey = event.target.name.split(".")[1];
         inputBoxGroupName[inputBoxKey] = event.target.value/100;
         this.setState({[event.target.name.split(".")[0]]: inputBoxGroupName});
+        if(this.state.distribution.convenience + this.state.distribution.club + this.state.distribution.grocery + this.state.distribution.mass>1.0){
+
+            this.setState({
+                boxState: {
+                    inputBox:"form-control form-control-danger",
+                    divBox:"col-xs-2 form-group has-error has-feedback"
+                }
+            });
+        }
     }
 
     handleChangeNormal(event) {
@@ -206,14 +219,12 @@ class MakeDecision extends React.Component {
                         <div className="col-xs-4 unit-decision-cont invalid" id="demand">
                             <h4>Units to Produce in {this.state.year}</h4>
                             <input type="text" value={this.state.productionUnit} name="productionUnit" onChange={this.handleChangeNormal}/>
-                            <small className="text-nowrap">units</small> &nbsp;
-                            <div className="fill-in" data-field-name="production_decision">Click here to fill in the previous year's value</div>
+                            <small className="text-nowrap">in million units</small> &nbsp;
                         </div>
                         <div className="col-xs-4 forecast-obscure price-decision-cont invalid">
                             <h4>Channel Price in {this.state.year}</h4>
                             <input type="text" value={this.state.unitPrice} name={"unitPrice"} onChange={this.handleChangeNormal}/>
                             <small className="text-nowrap">per 100 loads</small>
-                            <div className="fill-in" data-field-name="price_decision">Click here to fill in the previous year's value</div>
                         </div>
                     </section>
                     <h4>Trade Channel Spend in {this.state.year}<span data-toggle="popover" data-info="trade-channel-spend" data-original-title="" title=""></span></h4>
@@ -227,13 +238,13 @@ class MakeDecision extends React.Component {
                                 <div className="col-xs-2 number">Total</div>
                             </div>
                         </div>
-                        <div className="col-xs-4">Total Trade Channel Budget: <span data-field="total_trade_channel_spend" data-format="usd-big" data-format-max="1000000">{"$" + tradeChannelSpend}</span></div>
+                        <div className="col-xs-4">Total Trade Channel Budget: <span data-field="total_trade_channel_spend" data-format="usd-big" data-format-max="1000000">{"$" + tradeChannelSpend + "M"}</span></div>
                         <div className="col-xs-8">
                             <div className="row">
                                 <div className="col-xs-2"></div>
                                 {Object.keys(makeDecisionFormModel["distribution"]).map((inputBox) =>
-                                    <div className="col-xs-2">
-                                        <input type="text" value={this.state.distribution.inputBox} name={"distribution."+ inputBox} onChange={this.handleChange} />
+                                    <div className={this.state.boxState.divBox}>
+                                        <input type="text" className={this.state.boxState.inputBox} value={this.state.distribution.inputBox} name={"distribution."+ inputBox} onChange={this.handleChange} />
                                     </div>
                                 )}
                                 <div className="col-xs-2 number trade-channel-total invalid-highlight" data-format="percent" data-format-max="1000">

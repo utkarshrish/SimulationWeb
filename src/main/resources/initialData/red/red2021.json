@@ -21,9 +21,9 @@
   },
   "media": {
     "print": 0,
-    "tv": 50,
+    "tv": 0.50,
     "radio": 0,
-    "digitalAds": 50
+    "digitalAds": 0.50
   },
   "incomeGroup": {
     "0-19999": 0,

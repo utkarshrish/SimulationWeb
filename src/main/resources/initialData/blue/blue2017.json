@@ -14,14 +14,14 @@
     "softness": 0
   },
   "distribution": {
-    "convenience": 25,
+    "convenience": 0.25,
     "club": 0,
-    "grocery": 25,
-    "mass": 50
+    "grocery": 0.25,
+    "mass": 0.50
   },
   "media": {
-    "print": 50,
-    "tv": 50,
+    "print": 0.50,
+    "tv": 0.50,
     "radio": 0,
     "digitalAds": 0
   },

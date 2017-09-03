@@ -29,6 +29,7 @@ public class SimulationService {
     final static BigDecimal MARKETING_FACTOR = new BigDecimal("0.10");
     final static BigDecimal DISTRIBUTION_FACTOR = new BigDecimal("0.10");
     final static BigDecimal DEDUCTION_MAX = new BigDecimal("18.00");
+    final static BigDecimal MARKET_SHARE_DEDUCTION_CAP = new BigDecimal("0.40");
 
     final static Gson gson = new Gson();
     final static Map<String, BigDecimal> BENCHMARK_PRICE;
@@ -87,7 +88,7 @@ public class SimulationService {
     }
 
     private Map<String, BigDecimal> buildProductMarketShare(Map<String, BigDecimal> productYearlyDeduction, Map<String, UserInput> graphInputModels,
-                                                            Graph deduction, Map<String, BigDecimal> yearlyMarketShare){
+                                                            Graph deduction, Map<String, BigDecimal> yearlyMarketShare, Map<String, BigDecimal> marketShare2014){
         Map<String, Map> blueDataPoints = graphInputModels.get("blue").getDataPoint();
         Map<String, Map> redDataPoints = graphInputModels.get("red").getDataPoint();
         Map<String, Map> yellowDataPoints = graphInputModels.get("yellow").getDataPoint();
@@ -134,12 +135,11 @@ public class SimulationService {
 
         for(String product: yearlyMarketShare.keySet()){
             BigDecimal marketShare = yearlyMarketShare.get(product);
+            BigDecimal marketShareCalculated = new BigDecimal("0.0");
             for(String dataPoint : marketShareDeductions.keySet()){
                 if(!product.equalsIgnoreCase("blue")){
                     if(marketShareDeductions.get(dataPoint).contains(product)) {
-                        BigDecimal marketShareCalculated = productMarketShareDeductionPerDataPoint.get(product).get(dataPoint);
-                        marketShare = marketShare.subtract(marketShareCalculated);
-                        blueMarketShare = blueMarketShare.add(marketShareCalculated);
+                        marketShareCalculated = marketShareCalculated.add(productMarketShareDeductionPerDataPoint.get(product).get(dataPoint));
                     }
 //                    marketShare = marketShare.add(productMarketShareDeductionPerDataPoint.get(product).get(dataPoint));
                 }
@@ -149,7 +149,13 @@ public class SimulationService {
 //                    }
 //                }
             }
-            productMarketShare.put(product, marketShare);
+            if(!product.equalsIgnoreCase("blue")) {
+                if(marketShare.subtract(marketShareCalculated).intValue()> marketShare2014.get(product).multiply(MARKET_SHARE_DEDUCTION_CAP).intValue()) {
+                    marketShare = marketShare.subtract(marketShareCalculated);
+                    blueMarketShare = blueMarketShare.add(marketShareCalculated);
+                }
+                productMarketShare.put(product, marketShare);
+            }
         }
         productMarketShare.put("blue", blueMarketShare);
         return productMarketShare;
@@ -166,6 +172,7 @@ public class SimulationService {
         Graph marketShareGraph = repository.findOne(userId + "_marketShare");
         Map<String, Map<String, BigDecimal>> marketShareStored = gson.fromJson(marketShareGraph.getModel()
                 , new TypeToken<Map<String,Map<String, BigDecimal>>>(){}.getType());
+        Map<String, BigDecimal> marketShare2014 = marketShareStored.get("2014");
         Map<String, BigDecimal> yearlyMarketShare = marketShareStored.get(String.valueOf(Integer.valueOf(year)-1));
 
         Map<String, Map> graphWeightageModel = gson.fromJson(weightage.getModel(), new TypeToken<Map<String, Map>>(){}.getType());
@@ -181,7 +188,7 @@ public class SimulationService {
             productYearlyDeduction.put(product, yearlyDeduction);
         }
 
-        Map<String, BigDecimal> productMarketShare = buildProductMarketShare(productYearlyDeduction, graphInputModels, deduction, yearlyMarketShare);
+        Map<String, BigDecimal> productMarketShare = buildProductMarketShare(productYearlyDeduction, graphInputModels, deduction, yearlyMarketShare, marketShare2014);
 
         Map<String, Map<String, BigDecimal>> marketShareYearly = new HashMap<>();
         marketShareYearly.putAll(marketShareStored);

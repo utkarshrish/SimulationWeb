@@ -16,9 +16,23 @@ class MakeDecision extends React.Component {
             filters:[],
             style: "pods",
             productPlacement:"odorElimination",
-            boxState: {
-                inputBox:"",
-                divBox:"col-xs-2"
+            ACTIVE_BUTTON : "btn btn-primary btn-block",
+            ACTIVE_SPAN : "glyphicon glyphicon-remove form-control-feedback",
+            ACTIVE_DIV :"col-xs-2 form-group has-error has-feedback",
+            ACTIVE_INPUT: "form-control",
+            PASSIVE_BUTTON: "btn btn-primary btn-block disabled",
+            PASSIVE_SPAN: "",
+            PASSIVE_DIV: "col-xs-2",
+            PASSIVE_INPUT: "",
+            distributionBox: {
+                input:"",
+                div: "col-xs-2",
+                span: ""
+            },
+            mediaBox: {
+                input:"",
+                div: "col-xs-2",
+                span: ""
             },
             distribution: {
                 convenience: 0.0,
@@ -34,6 +48,7 @@ class MakeDecision extends React.Component {
             },
             unitPrice: 0.0,
             unitCost : 0.0,
+            submitButton : "btn btn-primary btn-block",
             productionUnit: "",
             year: document.getElementById('user').innerText.trim(),
             selectedCheckboxes: new Set()
@@ -112,18 +127,64 @@ class MakeDecision extends React.Component {
 
     handleChange(event) {
         event.preventDefault();
-        var inputBoxGroupName = this.state[event.target.name.split(".")[0]];
-        var inputBoxKey = event.target.name.split(".")[1];
-        inputBoxGroupName[inputBoxKey] = event.target.value/100;
-        this.setState({[event.target.name.split(".")[0]]: inputBoxGroupName});
-        if(this.state.distribution.convenience + this.state.distribution.club + this.state.distribution.grocery + this.state.distribution.mass>1.0){
 
+        var inputGroupName = this.state[event.target.name.split(".")[0]];
+        var inputKey = event.target.name.split(".")[1];
+        inputGroupName[inputKey] = event.target.value/100;
+        this.setState({[event.target.name.split(".")[0]]: inputGroupName});
+
+        let distributionValue = this.state.distribution.club + this.state.distribution.convenience
+            + this.state.distribution.grocery + this.state.distribution.mass;
+        if(distributionValue>1.0){
             this.setState({
-                boxState: {
-                    inputBox:"form-control form-control-danger",
-                    divBox:"col-xs-2 form-group has-error has-feedback"
+                distributionBox: {
+                    input: this.state.ACTIVE_INPUT,
+                    div: this.state.ACTIVE_DIV,
+                    span: this.state.ACTIVE_SPAN
                 }
             });
+            this.setState({
+                submitButton : this.state.PASSIVE_BUTTON
+            })
+        }
+        else{
+            this.setState({
+                distributionBox: {
+                    input: this.state.PASSIVE_INPUT,
+                    div: this.state.PASSIVE_DIV,
+                    span: this.state.PASSIVE_SPAN
+                }
+            });
+            this.setState({
+                submitButton : this.state.ACTIVE_BUTTON
+            })
+        }
+
+        let mediaValue = this.state.media.digitalAds + this.state.media.print
+            + this.state.media.radio + this.state.media.tv;
+        if(mediaValue>1.0){
+            this.setState({
+                mediaBox: {
+                    input: this.state.ACTIVE_INPUT,
+                    div: this.state.ACTIVE_DIV,
+                    span: this.state.ACTIVE_SPAN
+                }
+            });
+            this.setState({
+                submitButton : this.state.PASSIVE_BUTTON
+            })
+        }
+        else{
+            this.setState({
+                mediaBox: {
+                    input: this.state.PASSIVE_INPUT,
+                    div: this.state.PASSIVE_DIV,
+                    span: this.state.PASSIVE_SPAN
+                }
+            });
+            this.setState({
+                submitButton : this.state.ACTIVE_BUTTON
+            })
         }
     }
 
@@ -181,144 +242,146 @@ class MakeDecision extends React.Component {
                         <NavItem eventKey={4} href="/makeDecision"> | Make Decision</NavItem>
                     </Nav>
                     <div className="row">
-                    <form onSubmit={this.handleSubmit}>
-                <div className="decisions">
-                    <section className="row">
-                        <div className="col-xs-4 formulation">
-                            <h4>Formulation in {this.state.year}<span data-toggle="popover" data-info="formulation" data-original-title="" title=""></span></h4>
-                            <div className="btn-group">
-                                <div>
-                                    {Object.keys(makeDecisionFormModel["style"]).map((styleType) =>
-                                        <label className={"btn btn-info btn-xs "}>
-                                            <input type="radio" value={styleType}
-                                                   checked={styleType === this.state.style}
-                                                   onChange={this.handleChangeNormal}
-                                                   name="style"/>
-                                            {makeDecisionFormModel["style"][styleType]}
-                                        </label>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-xs-8 features">
-                            <h4>Product Features and Positioning in {this.state.year}<span data-toggle="popover" data-info="product-features" data-original-title="" title=""></span></h4>
-                            <div className="btn-group">
-                                {Object.keys(makeDecisionFormModel["productPlacement"]).map((styleType) =>
-                                    <label className="btn btn-info btn-xs">
-                                        <input type="radio" value={styleType}
-                                               checked={styleType === this.state.productPlacement}
-                                               onChange={this.handleChangeNormal}
-                                               name="productPlacement"/>
-                                        {makeDecisionFormModel["productPlacement"][styleType]}
-                                    </label>
-                                )}
-                            </div>
-                        </div>
-                    </section>
-                    <section id="forecast-select" className="row">
-                        <div className="col-xs-4 unit-decision-cont invalid" id="demand">
-                            <h4>Units to Produce in {this.state.year}</h4>
-                            <input type="text" value={this.state.productionUnit} name="productionUnit" onChange={this.handleChangeNormal}/>
-                            <small className="text-nowrap">in million units</small> &nbsp;
-                        </div>
-                        <div className="col-xs-4 forecast-obscure price-decision-cont invalid">
-                            <h4>Channel Price in {this.state.year}</h4>
-                            <input type="text" value={this.state.unitPrice} name={"unitPrice"} onChange={this.handleChangeNormal}/>
-                            <small className="text-nowrap">per 100 loads</small>
-                        </div>
-                    </section>
-                    <h4>Trade Channel Spend in {this.state.year}<span data-toggle="popover" data-info="trade-channel-spend" data-original-title="" title=""></span></h4>
-                    <section className="row trade-channel-spend" data-valid="trade_channel_spend_decision">
-                        <div className="col-xs-8">
-                            <div className="row">
-                                <div className="col-xs-2"></div>
-                                {Object.keys(makeDecisionFormModel["distribution"]).map((inputBox) =>
-                                    <div className="col-xs-2 number">{makeDecisionFormModel["distribution"][inputBox]}</div>
-                                )}
-                                <div className="col-xs-2 number">Total</div>
-                            </div>
-                        </div>
-                        <div className="col-xs-4">Total Trade Channel Budget: <span data-field="total_trade_channel_spend" data-format="usd-big" data-format-max="1000000">{"$" + tradeChannelSpend + "M"}</span></div>
-                        <div className="col-xs-8">
-                            <div className="row">
-                                <div className="col-xs-2"></div>
-                                {Object.keys(makeDecisionFormModel["distribution"]).map((inputBox) =>
-                                    <div className={this.state.boxState.divBox}>
-                                        <input type="text" className={this.state.boxState.inputBox} value={this.state.distribution.inputBox} name={"distribution."+ inputBox} onChange={this.handleChange} />
-                                    </div>
-                                )}
-                                <div className="col-xs-2 number trade-channel-total invalid-highlight" data-format="percent" data-format-max="1000">
-                                    {(this.state.distribution.convenience + this.state.distribution.club + this.state.distribution.grocery + this.state.distribution.mass)*100}%
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-xs-4">
-                            <div className="row">
-                                <ProgressBar>
-                                    <ProgressBar bsStyle="success" now={this.state.distribution.convenience * 100} key={1} />
-                                    <ProgressBar bsStyle="info" now={this.state.distribution.club * 100} key={2} />
-                                    <ProgressBar bsStyle="warning" now={this.state.distribution.grocery * 100} key={3} />
-                                    <ProgressBar bsStyle="danger" now={this.state.distribution.mass * 100} key={4} />
-                                </ProgressBar>
-                            </div>
-                        </div>
-
-                    </section>
-                    <h4>Media Spend in {this.state.year}<span data-toggle="popover" data-info="media-spend" data-original-title="" title=""></span></h4>
-                    <section className="row media-spend" data-valid="media_spend_decision">
-                        <div className="col-xs-8">
-                            <div className="row">
-                                <div className="col-xs-2"></div>
-                                {Object.keys(makeDecisionFormModel["media"]).map((inputBox) =>
-                                    <div className="col-xs-2 number">{makeDecisionFormModel["media"][inputBox]}</div>
-                                )}
-                                <div className="col-xs-2 number">Total</div>
-                            </div>
-                        </div>
-                        <div className="col-xs-4">Total Media Budget: <span data-field="total_media_spend" data-format="usd-big" data-format-max="1000000">{"$" + mediaSpend}</span></div>
-                        <div className="col-xs-8">
-                            <div className="row">
-                                <div className="col-xs-2"></div>
-                                {Object.keys(makeDecisionFormModel["media"]).map((inputBox) =>
-                                    <div className="col-xs-2">
-                                        <input type="text" value={this.state.media.inputBox} name={"media."+ inputBox} onChange={this.handleChange} />
-                                    </div>
-                                )}
-                                <div className="col-xs-2 number media-total invalid-highlight" data-format="percent" data-format-max="1000">
-                                    {(this.state.media.print + this.state.media.tv + this.state.media.radio + this.state.media.digitalAds)*100}%</div>
-                            </div>
-                        </div>
-                        <div className="col-xs-4">
-                            <div className="row">
-                                <ProgressBar>
-                                    <ProgressBar bsStyle="success" now={this.state.media.print * 100} key={1} />
-                                    <ProgressBar bsStyle="info" now={this.state.media.tv * 100} key={2} />
-                                    <ProgressBar bsStyle="warning" now={this.state.media.radio * 100} key={3} />
-                                    <ProgressBar bsStyle="danger" now={this.state.media.digitalAds * 100} key={4} />
-                                </ProgressBar>
-                            </div>
-                        </div>
-                    </section>
-                    <h4>Target Market Segment for Decisions<span data-toggle="popover" data-info="target-market-segment" data-original-title="" title=""></span></h4>
-                    <section className="row" data-valid="target_decision">
-                        <div className="col-xs-8" id="filter">
-                            <ul className="filter">
-                                {Object.keys(filters).map((filter) =>
-                                    <li>
-                                        <div>
-                                            {filters[filter]}
+                        <form onSubmit={this.handleSubmit}>
+                            <div className="decisions">
+                                <section className="row">
+                                    <div className="col-xs-4">
+                                        <h4>Formulation in {this.state.year}<span data-toggle="popover" data-info="formulation" data-original-title="" title=""></span></h4>
+                                        <div id="selectionButton" className="btn-group">
+                                            {Object.keys(makeDecisionFormModel["style"]).map((styleType) =>
+                                                <label className={(styleType === this.state.style)?"btn btn-info btn-md select": "btn btn-info btn-md"}>
+                                                    <input type="radio" value={styleType}
+                                                           checked={styleType === this.state.style}
+                                                           onChange={this.handleChangeNormal}
+                                                           name="style"/>
+                                                    {makeDecisionFormModel["style"][styleType]}
+                                                </label>
+                                            )}
                                         </div>
-                                        <CheckboxFilters type="checkbox" filters={makeDecisionFormModel[filter]} toggleCheckboxFilters={this.toggleCheckboxFilters}/>
-                                    </li>
-                                )}
-                            </ul>
-                        </div>
-                    </section>
-                </div>
-                <input type="submit" value="Submit" />
-            </form>
+                                    </div>
+                                    <div className="col-xs-8 features">
+                                        <h4>Product Features and Positioning in {this.state.year}<span data-toggle="popover" data-info="product-features" data-original-title="" title=""></span></h4>
+                                        <div  id="selectionButton" className="btn-group">
+                                            {Object.keys(makeDecisionFormModel["productPlacement"]).map((styleType) =>
+                                                <label className={(styleType === this.state.productPlacement)?"btn btn-info btn-md select": "btn btn-info btn-md"}>
+                                                    <input type="radio" value={styleType}
+                                                           checked={styleType === this.state.productPlacement}
+                                                           onChange={this.handleChangeNormal}
+                                                           name="productPlacement"/>
+                                                    {makeDecisionFormModel["productPlacement"][styleType]}
+                                                </label>
+                                            )}
+                                        </div>
+                                    </div>
+                                </section>
+                                <section id="forecast-select" className="row">
+                                    <div className="col-xs-4 unit-decision-cont invalid" id="demand">
+                                        <h4>Units to Produce in {this.state.year}</h4>
+                                        <input type="text" value={this.state.productionUnit} name="productionUnit" onChange={this.handleChangeNormal}/>
+                                        <small className="text-nowrap">in million units</small> &nbsp;
+                                    </div>
+                                    <div className="col-xs-4 forecast-obscure price-decision-cont invalid">
+                                        <h4>Channel Price in {this.state.year}</h4>
+                                        <input type="text" value={this.state.unitPrice} name={"unitPrice"} onChange={this.handleChangeNormal}/>
+                                        <small className="text-nowrap">per 100 loads</small>
+                                    </div>
+                                </section>
+                                <h4>Trade Channel Spend in {this.state.year}</h4>
+                                <section className="row trade-channel-spend" data-valid="trade_channel_spend_decision">
+                                    <div className="col-xs-8">
+                                        <div className="row">
+                                            <div className="col-xs-2"></div>
+                                            {Object.keys(makeDecisionFormModel["distribution"]).map((input) =>
+                                                <div className="col-xs-2 number">{makeDecisionFormModel["distribution"][input]}</div>
+                                            )}
+                                            <div className="col-xs-2 number">Total</div>
+                                        </div>
+                                    </div>
+                                    <div className="col-xs-4">Total Trade Channel Budget: <span data-field="total_trade_channel_spend" data-format="usd-big" data-format-max="1000000">{"$" + tradeChannelSpend + "M"}</span></div>
+                                    <div className="col-xs-8">
+                                        <div className="row">
+                                            <div className="col-xs-2"></div>
+                                            {Object.keys(makeDecisionFormModel["distribution"]).map((input) =>
+                                                <div className={this.state.distributionBox.div}>
+                                                    <input type="text" className={this.state.distributionBox.input} value={this.state.distribution.input} name={"distribution."+ input} onChange={this.handleChange} />
+                                                    <span className={this.state.distributionBox.span}/>
+                                                </div>
+                                            )}
+                                            <div className="col-xs-2 number trade-channel-total invalid-highlight" data-format="percent" data-format-max="1000">
+                                                {((this.state.distribution.convenience + this.state.distribution.club + this.state.distribution.grocery + this.state.distribution.mass)*100).toFixed(2)}%
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-xs-4">
+                                        <div className="row">
+                                            <ProgressBar>
+                                                <ProgressBar bsStyle="success" now={this.state.distribution.convenience * 100} key={1} />
+                                                <ProgressBar bsStyle="info" now={this.state.distribution.club * 100} key={2} />
+                                                <ProgressBar bsStyle="warning" now={this.state.distribution.grocery * 100} key={3} />
+                                                <ProgressBar bsStyle="danger" now={this.state.distribution.mass * 100} key={4} />
+                                            </ProgressBar>
+                                        </div>
+                                    </div>
+
+                                </section>
+                                <h4>Media Spend in {this.state.year}</h4>
+                                <section className="row media-spend" data-valid="media_spend_decision">
+                                    <div className="col-xs-8">
+                                        <div className="row">
+                                            <div className="col-xs-2"></div>
+                                            {Object.keys(makeDecisionFormModel["media"]).map((input) =>
+                                                <div className="col-xs-2 number">{makeDecisionFormModel["media"][input]}</div>
+                                            )}
+                                            <div className="col-xs-2 number">Total</div>
+                                        </div>
+                                    </div>
+                                    <div className="col-xs-4">Total Media Budget: <span data-field="total_media_spend" data-format="usd-big" data-format-max="1000000">{"$" + mediaSpend}</span></div>
+                                    <div className="col-xs-8">
+                                        <div className="row">
+                                            <div className="col-xs-2"></div>
+                                            {Object.keys(makeDecisionFormModel["media"]).map((input) =>
+                                                <div className={this.state.mediaBox.div}>
+                                                    <input type="text" className={this.state.mediaBox.input} value={this.state.media.input} name={"media."+ input} onChange={this.handleChange} />
+                                                    <span className={this.state.mediaBox.span}/>
+                                                </div>
+                                            )}
+                                            <div className="col-xs-2 number media-total invalid-highlight" data-format="percent" data-format-max="1000">
+                                                {((this.state.media.print + this.state.media.tv + this.state.media.radio + this.state.media.digitalAds)*100).toFixed(2)}%</div>
+                                        </div>
+                                    </div>
+                                    <div className="col-xs-4">
+                                        <div className="row">
+                                            <ProgressBar>
+                                                <ProgressBar bsStyle="success" now={this.state.media.print * 100} key={1} />
+                                                <ProgressBar bsStyle="info" now={this.state.media.tv * 100} key={2} />
+                                                <ProgressBar bsStyle="warning" now={this.state.media.radio * 100} key={3} />
+                                                <ProgressBar bsStyle="danger" now={this.state.media.digitalAds * 100} key={4} />
+                                            </ProgressBar>
+                                        </div>
+                                    </div>
+                                </section>
+                                <h4>Target Market Segment for Decisions</h4>
+                                <section className="row" data-valid="target_decision">
+                                    <div className="col-xs-8" id="filter">
+                                        <ul className="filter">
+                                            {Object.keys(filters).map((filter) =>
+                                                <li>
+                                                    <div>
+                                                        {filters[filter]}
+                                                    </div>
+                                                    <CheckboxFilters type="checkbox" filters={makeDecisionFormModel[filter]} toggleCheckboxFilters={this.toggleCheckboxFilters}/>
+                                                </li>
+                                            )}
+                                        </ul>
+                                    </div>
+                                </section>
+                            </div>
+                            <div className="cols-xs-2">
+                                <button id="submit" type="submit" className={this.state.submitButton}>Make Decision</button>
+                            </div>
+                        </form>
                     </div>
-                    <footer class="footer">
+                    <footer>
                         <p> &copy; 2017 Analytics Simulation</p>
                     </footer>
                 </div>

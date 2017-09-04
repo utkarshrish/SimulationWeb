@@ -11,7 +11,8 @@ class Reports extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            user: document.getElementById('user').innerText.trim(),
+            year: document.getElementById('user').innerText.trim().split("_")[1],
+            user: document.getElementById('user').innerText.trim().split("_")[0],
             reports: [],
             graphOption : "incomeStatement",
             graphTypes : {
@@ -73,7 +74,7 @@ class Reports extends React.Component {
                         </div>
                         <div className="cols-xs-9">
                             <div className="Reports">
-                                <ReportsTable costs={costModel} graphOption={this.state.graphOption}/>
+                                <ReportsTable costs={costModel} graphOption={this.state.graphOption} year={this.state.year}/>
                             </div>
                         </div>
                     </div>
@@ -102,7 +103,7 @@ class ReportsTable extends React.Component{
             production : {
                 "units" : "(in units)",
                 "label": "Production v. Inventory v. Demand",
-                "legends": ["Production", "Inventory", "Demand"],
+                "legends": ["Production", "Demand", "Inventory"],
                 "legendsType": "secondary"
             },
             unitPrice: {
@@ -175,6 +176,7 @@ class ReportsTable extends React.Component{
                                  graphLegends={this.state[this.props.graphOption]["legends"]}
                                  graphLegendsType={this.state[this.props.graphOption]["legendsType"]}
                                  factor={1}
+                                 year={this.props.year}
                 />
             )
         }

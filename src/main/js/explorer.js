@@ -13,7 +13,8 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			user: document.getElementById('user').innerText.trim(),
+			year: document.getElementById('user').innerText.trim().split("_")[1],
+			user: document.getElementById('user').innerText.trim().split("_")[0],
 			graph: [],
 			graphTypes:[],
 			graphOption: 'operatingProfit',
@@ -118,9 +119,10 @@ class App extends React.Component {
 									label={graphTypesModel.graphTypes[this.state.graphOption]["label"]}
 									units={graphTypesModel.graphTypes[this.state.graphOption]["units"]}
 									graphOption={this.state.graphOption}
-									graphLegends={["Blue", "Turbo", "Fresh", "Store"]}
-									graphLegendsType="s"
+									graphLegends={graphTypesModel.graphTypes[this.state.graphOption]["legends"]}
+									graphLegendsType={graphTypesModel.graphTypes[this.state.graphOption]["legendsType"]}
 									factor={this.state.factor<0.01 ? 1.0: this.state.factor}
+									year={this.state.year}
 							/>
 							<div className="GraphFilters cols-xs-3">
 								<h4>Filters</h4>

@@ -80,6 +80,7 @@ class SimulationGraph extends React.Component{
                                                negativeYMax={yAxis.ticks[0].text}
                                                height={yAxis.height}
                                                factor={factor}
+                                               year={this.props.year}
                                 />
                         )}
                     </g>
@@ -90,13 +91,13 @@ class SimulationGraph extends React.Component{
                         <span className={this.props.graphLegendsType + "-1"}/>{this.props.graphLegends[0]}
                     </div>
                     <div className="entry">
-                        <span className={this.props.graphLegendsType + "-2"}/>{this.props.graphLegends[1]}
+                        <span className={this.props.graphLegends[1]!==undefined ? this.props.graphLegendsType + "-2": ""}/>{this.props.graphLegends[1]}
                     </div>
                     <div className="entry">
-                        <span className={this.props.graphLegendsType + "-3"}/>{this.props.graphLegends[2]}
+                        <span className={this.props.graphLegends[2]!==undefined ? this.props.graphLegendsType + "-3": ""}/>{this.props.graphLegends[2]}
                     </div>
                     <div className="entry">
-                        <span className={this.props.graphLegendsType + "-4"}/>{this.props.graphLegends[3]!==undefined ?this.props.graphLegends[3]:""}
+                        <span className={this.props.graphLegends[3]!==undefined ? this.props.graphLegendsType + "-4":""}/>{this.props.graphLegends[3]!==undefined ?this.props.graphLegends[3]:""}
                     </div>
                 </div>
             </div>

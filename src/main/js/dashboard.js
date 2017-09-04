@@ -77,6 +77,7 @@ class Dashboard extends React.Component {
                                          graphLegends={["Blue", "Turbo", "Fresh", "Store"]}
                                          graphLegendsType={"s"}
                                          factor={1.0}
+                                         year={this.state.year}
                         />
 
                         <SimulationGraph graph={costModel}
@@ -86,6 +87,7 @@ class Dashboard extends React.Component {
                                          graphLegends={["Blue", "Turbo", "Fresh", "Store"]}
                                          graphLegendsType={"s"}
                                          factor={1.0}
+                                         year={this.state.year}
                         />
 
                     </div>

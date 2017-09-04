@@ -2,19 +2,63 @@
   "graphTypes": {
     "operatingProfit": {
       "units": "(in $US)",
-      "label": "Operating Profit"
+      "label": "Operating Profit",
+      "legends": ["Blue", "Turbo", "Fresh", "Store"],
+      "legendsType": "s"
     },
     "revenue": {
       "units": "(in $US)",
-      "label": "Revenue"
+      "label": "Revenue",
+      "legends": ["Blue", "Turbo", "Fresh", "Store"],
+      "legendsType": "s"
     },
     "marketShare": {
       "units": "(in %)",
-      "label": "Market Share"
+      "label": "Market Share",
+      "legends": ["Blue", "Turbo", "Fresh", "Store"],
+      "legendsType": "s"
     },
     "actualDemand": {
       "units": "(in units)",
-      "label": "Brand Demand"
+      "label": "Brand Demand",
+      "legends": ["Blue", "Turbo", "Fresh", "Store"],
+      "legendsType": "s"
+    },
+    "brandAttributeDemand": {
+      "units": "(in $US)",
+      "label": "Brand Attribute Demand",
+      "legends": ["Odor elimination", "Cold water", "Scent", "Softness"],
+      "legendsType": "secondary"
+    },
+    "formulationDemand": {
+      "units": "(in $US)",
+      "label": "Formulation Demand",
+      "legends": ["Pods", "Liquid", "Powder"],
+      "legendsType": "secondary"
+    },
+    "households": {
+      "units": "(in $US)",
+      "label": "Households",
+      "legends": ["Households"],
+      "legendsType": "secondary"
+    },
+    "mediaConsumed": {
+      "units": "(in $US)",
+      "label": "Media Consumed",
+      "legends": ["Print", "TV", "Radio", "Digital Ads"],
+      "legendsType": "secondary"
+    },
+    "pricePointDemand": {
+      "units": "(in $US)",
+      "label": "Price Point Demand",
+      "legends": ["$5 or less", "$5 - $7", "$7 - $9", "More than $9"],
+      "legendsType": "secondary"
+    },
+    "tradeChannelDemand": {
+      "units": "(in $US)",
+      "label": "Trade Channel Demand",
+      "legends": ["Convenience", "Club", "Grocery", "Mass"],
+      "legendsType": "secondary"
     }
   }
 }

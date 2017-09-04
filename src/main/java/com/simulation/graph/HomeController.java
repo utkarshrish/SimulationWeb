@@ -48,7 +48,11 @@ public class HomeController {
 			signedJWT = SignedJWT.parse(idToken);
 			payload = signedJWT.getPayload();
 			String userId = payload.toJSONObject().get("sub").toString();
-			model.put("user", userId);
+			int year = 2018;
+			if(this.repository.findOne(payload.toJSONObject().get("sub").toString()) != null){
+				year = Integer.valueOf(this.repository.findOne(userId).getModel())-1;
+			}
+			model.put("user", userId + "_" + year);
 		}
 		catch (ParseException e){
 			logger.info("parsing exception");
@@ -81,7 +85,11 @@ public class HomeController {
 			signedJWT = SignedJWT.parse(idToken);
 			payload = signedJWT.getPayload();
 			String userId = payload.toJSONObject().get("sub").toString();
-			model.put("user", userId);
+			int year = 2018;
+			if(this.repository.findOne(payload.toJSONObject().get("sub").toString()) != null){
+				year = Integer.valueOf(this.repository.findOne(userId).getModel())-1;
+			}
+			model.put("user", userId + "_" + year);
 		}
 		catch (ParseException e){
 			logger.info("parsing exception");

@@ -17,6 +17,7 @@ public class GraphService {
     final static Gson gson = new Gson();
 
     final static List<String> GRAPH_LEGENDS;
+    final static List<String> NON_USER_GRAPH_LEGENDS;
     static {
         GRAPH_LEGENDS = new ArrayList<>();
         GRAPH_LEGENDS.add("operatingProfit");
@@ -27,14 +28,23 @@ public class GraphService {
         GRAPH_LEGENDS.add("productionInputUnits");
         GRAPH_LEGENDS.add("unitPrice");
     }
+    static {
+        NON_USER_GRAPH_LEGENDS = new ArrayList<>();
+        NON_USER_GRAPH_LEGENDS.add("brandAttributeDemand");
+        NON_USER_GRAPH_LEGENDS.add("formulationDemand");
+        NON_USER_GRAPH_LEGENDS.add("households");
+        NON_USER_GRAPH_LEGENDS.add("mediaConsumed");
+        NON_USER_GRAPH_LEGENDS.add("pricePointDemand");
+        NON_USER_GRAPH_LEGENDS.add("tradeChannelDemand");
+    }
 
     @Autowired
     private GraphRepository repository;
 
     public void buildGraph(String userId){
-        Graph reportsGraph = repository.findOne(userId + "_reports");
-        Map<String,Map<String, Map<String, BigDecimal>>> reportsStored = gson.fromJson(reportsGraph.getModel()
-                , new TypeToken<Map<String,Map<String, Map<String, BigDecimal>>>>(){}.getType());
+        final Graph reportsGraph = repository.findOne(userId + "_reports");
+        final Map<String,Map<String, Map<String, BigDecimal>>> reportsStored = gson.fromJson(reportsGraph.getModel(),
+                new TypeToken<Map<String,Map<String, Map<String, BigDecimal>>>>(){}.getType());
 
         Map<String, Object> explorerGraph = new HashMap<>();
         explorerGraph.put("width", 660);
@@ -54,6 +64,16 @@ public class GraphService {
                 explorerGraph.put(graphLegend+"YAxis", yAxis);
             }
         }
+
+        NON_USER_GRAPH_LEGENDS.forEach(graphLegend -> {
+            if(!explorerGraph.containsKey(graphLegend)){
+                final Graph nonUserExplorerGraph = repository.findOne(graphLegend);
+                final Map<String, Object> nonUserGraphData = gson.fromJson(nonUserExplorerGraph.getModel(),
+                        new TypeToken<Map<String, Object>>(){}.getType());
+                explorerGraph.put(graphLegend, nonUserGraphData.get(graphLegend));
+                explorerGraph.put(graphLegend + "YAxis", nonUserGraphData.get(graphLegend + "YAxis"));
+            }
+        });
 
         Graph explorerGraphUpdated = new Graph(userId + "_explorer", "simulationGraph", gson.toJson(explorerGraph));
         this.repository.save(explorerGraphUpdated);

@@ -26,14 +26,14 @@ public class DatabaseLoader implements CommandLineRunner {
 
 		String str = "";
 		StringBuffer buf = new StringBuffer();
-		BufferedReader br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"strategic.json"), "UTF-8"));
-		while ((str = br.readLine()) != null) {
-			buf.append(str);
-		}
-		String graphModel = buf.toString();
+//		BufferedReader br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"strategic.json"), "UTF-8"));
+//		while ((str = br.readLine()) != null) {
+//			buf.append(str);
+//		}
+//		String graphModel = buf.toString();
 
 		buf = new StringBuffer();
-		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"graphType.json"), "UTF-8"));
+		BufferedReader br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"graphType.json"), "UTF-8"));
 		while ((str = br.readLine()) != null) {
 			buf.append(str);
 		}
@@ -53,54 +53,54 @@ public class DatabaseLoader implements CommandLineRunner {
 		}
 		String weightage = buf.toString();
 
-		buf = new StringBuffer();
-		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Blue2015.json"), "UTF-8"));
-		while ((str = br.readLine()) != null) {
-			buf.append(str);
-		}
-		String blue2015 = buf.toString();
-
-		buf = new StringBuffer();
-		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Green2015.json"), "UTF-8"));
-		while ((str = br.readLine()) != null) {
-			buf.append(str);
-		}
-		String green2015 = buf.toString();
-
-		buf = new StringBuffer();
-		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Yellow2015.json"), "UTF-8"));
-		while ((str = br.readLine()) != null) {
-			buf.append(str);
-		}
-		String yellow2015 = buf.toString();
-
-		buf = new StringBuffer();
-		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Red2015.json"), "UTF-8"));
-		while ((str = br.readLine()) != null) {
-			buf.append(str);
-		}
-		String red2015 = buf.toString();
-
-		buf = new StringBuffer();
-		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Red2016.json"), "UTF-8"));
-		while ((str = br.readLine()) != null) {
-			buf.append(str);
-		}
-		String red2016 = buf.toString();
-
-		buf = new StringBuffer();
-		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Yellow2016.json"), "UTF-8"));
-		while ((str = br.readLine()) != null) {
-			buf.append(str);
-		}
-		String yellow2016 = buf.toString();
-
-		buf = new StringBuffer();
-		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Green2016.json"), "UTF-8"));
-		while ((str = br.readLine()) != null) {
-			buf.append(str);
-		}
-		String green2016 = buf.toString();
+//		buf = new StringBuffer();
+//		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Blue2015.json"), "UTF-8"));
+//		while ((str = br.readLine()) != null) {
+//			buf.append(str);
+//		}
+//		String blue2015 = buf.toString();
+//
+//		buf = new StringBuffer();
+//		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Green2015.json"), "UTF-8"));
+//		while ((str = br.readLine()) != null) {
+//			buf.append(str);
+//		}
+//		String green2015 = buf.toString();
+//
+//		buf = new StringBuffer();
+//		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Yellow2015.json"), "UTF-8"));
+//		while ((str = br.readLine()) != null) {
+//			buf.append(str);
+//		}
+//		String yellow2015 = buf.toString();
+//
+//		buf = new StringBuffer();
+//		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Red2015.json"), "UTF-8"));
+//		while ((str = br.readLine()) != null) {
+//			buf.append(str);
+//		}
+//		String red2015 = buf.toString();
+//
+//		buf = new StringBuffer();
+//		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Red2016.json"), "UTF-8"));
+//		while ((str = br.readLine()) != null) {
+//			buf.append(str);
+//		}
+//		String red2016 = buf.toString();
+//
+//		buf = new StringBuffer();
+//		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Yellow2016.json"), "UTF-8"));
+//		while ((str = br.readLine()) != null) {
+//			buf.append(str);
+//		}
+//		String yellow2016 = buf.toString();
+//
+//		buf = new StringBuffer();
+//		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"Green2016.json"), "UTF-8"));
+//		while ((str = br.readLine()) != null) {
+//			buf.append(str);
+//		}
+//		String green2016 = buf.toString();
 
 		buf = new StringBuffer();
 		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"deduction.json"), "UTF-8"));
@@ -130,33 +130,76 @@ public class DatabaseLoader implements CommandLineRunner {
 		}
 		String explorerFilterFactor = buf.toString();
 
-		buf = new StringBuffer();
-		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"reportsGraph.json"), "UTF-8"));
-		while ((str = br.readLine()) != null) {
-			buf.append(str);
-		}
-		String reportsGraph = buf.toString();
+//		buf = new StringBuffer();
+//		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"reportsGraph.json"), "UTF-8"));
+//		while ((str = br.readLine()) != null) {
+//			buf.append(str);
+//		}
+//		String reportsGraph = buf.toString();
+//
+//		buf = new StringBuffer();
+//		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"explorer.json"), "UTF-8"));
+//		while ((str = br.readLine()) != null) {
+//			buf.append(str);
+//		}
+//		String explorer = buf.toString();
+//
+//		buf = new StringBuffer();
+//		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"marketShare.json"), "UTF-8"));
+//		while ((str = br.readLine()) != null) {
+//			buf.append(str);
+//		}
+//		String marketShare = buf.toString();
+//
+//		buf = new StringBuffer();
+//		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"reports.json"), "UTF-8"));
+//		while ((str = br.readLine()) != null) {
+//			buf.append(str);
+//		}
+//		String reports = buf.toString();
 
 		buf = new StringBuffer();
-		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"explorer.json"), "UTF-8"));
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/initialData/explorer/" +"brandAttributeDemand.json"), "UTF-8"));
 		while ((str = br.readLine()) != null) {
 			buf.append(str);
 		}
-		String explorer = buf.toString();
+		String brandAttributeDemand = buf.toString();
 
 		buf = new StringBuffer();
-		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"marketShare.json"), "UTF-8"));
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/initialData/explorer/" +"formulationDemand.json"), "UTF-8"));
 		while ((str = br.readLine()) != null) {
 			buf.append(str);
 		}
-		String marketShare = buf.toString();
+		String formulationDemand = buf.toString();
 
 		buf = new StringBuffer();
-		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"reports.json"), "UTF-8"));
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/initialData/explorer/" +"households.json"), "UTF-8"));
 		while ((str = br.readLine()) != null) {
 			buf.append(str);
 		}
-		String reports = buf.toString();
+		String households = buf.toString();
+
+		buf = new StringBuffer();
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/initialData/explorer/" +"mediaConsumed.json"), "UTF-8"));
+		while ((str = br.readLine()) != null) {
+			buf.append(str);
+		}
+		String mediaConsumed = buf.toString();
+
+		buf = new StringBuffer();
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/initialData/explorer/" +"pricePointDemand.json"), "UTF-8"));
+		while ((str = br.readLine()) != null) {
+			buf.append(str);
+		}
+		String pricePointDemand = buf.toString();
+
+		buf = new StringBuffer();
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/initialData/explorer/" +"tradeChannelDemand.json"), "UTF-8"));
+		while ((str = br.readLine()) != null) {
+			buf.append(str);
+		}
+		String tradeChannelDemand = buf.toString();
+
 
 //		this.repository.save(new Graph("operatingProfit", "simulationGraph", graphModel));
 		this.repository.save(new Graph("graphTypes", "simulationGraph", graphType));
@@ -165,6 +208,12 @@ public class DatabaseLoader implements CommandLineRunner {
 		this.repository.save(new Graph("deductions", "simulationGraph",  deductionScore));
 		this.repository.save(new Graph("makeDecisionForm", "simulationGraph", makeDecisionForm));
 		this.repository.save(new Graph("explorerFilterFactor", "simulationGraph", explorerFilterFactor));
+		this.repository.save(new Graph("brandAttributeDemand", "simulationGraph", brandAttributeDemand));
+		this.repository.save(new Graph("formulationDemand", "simulationGraph", formulationDemand));
+		this.repository.save(new Graph("households", "simulationGraph", households));
+		this.repository.save(new Graph("mediaConsumed", "simulationGraph", mediaConsumed));
+		this.repository.save(new Graph("pricePointDemand", "simulationGraph", pricePointDemand));
+		this.repository.save(new Graph("tradeChannelDemand", "simulationGraph", tradeChannelDemand));
 //		this.repository.save(new Graph("explorer", "simulationGraph", explorer));
 //		this.repository.save(new Graph("reportsGraph", "simulationGraph", reportsGraph));
 //		this.repository.save(new Graph("reports", "simulationGraph", reports));

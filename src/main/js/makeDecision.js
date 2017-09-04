@@ -135,6 +135,9 @@ class MakeDecision extends React.Component {
 
         let distributionValue = this.state.distribution.club + this.state.distribution.convenience
             + this.state.distribution.grocery + this.state.distribution.mass;
+        let mediaValue = this.state.media.digitalAds + this.state.media.print
+            + this.state.media.radio + this.state.media.tv;
+
         if(distributionValue>1.0){
             this.setState({
                 distributionBox: {
@@ -143,9 +146,6 @@ class MakeDecision extends React.Component {
                     span: this.state.ACTIVE_SPAN
                 }
             });
-            this.setState({
-                submitButton : this.state.PASSIVE_BUTTON
-            })
         }
         else{
             this.setState({
@@ -155,13 +155,8 @@ class MakeDecision extends React.Component {
                     span: this.state.PASSIVE_SPAN
                 }
             });
-            this.setState({
-                submitButton : this.state.ACTIVE_BUTTON
-            })
         }
 
-        let mediaValue = this.state.media.digitalAds + this.state.media.print
-            + this.state.media.radio + this.state.media.tv;
         if(mediaValue>1.0){
             this.setState({
                 mediaBox: {
@@ -170,9 +165,6 @@ class MakeDecision extends React.Component {
                     span: this.state.ACTIVE_SPAN
                 }
             });
-            this.setState({
-                submitButton : this.state.PASSIVE_BUTTON
-            })
         }
         else{
             this.setState({
@@ -182,6 +174,13 @@ class MakeDecision extends React.Component {
                     span: this.state.PASSIVE_SPAN
                 }
             });
+        }
+
+        if(mediaValue>1.0 || distributionValue>1.0){
+            this.setState({
+                submitButton : this.state.PASSIVE_BUTTON
+            })
+        } else {
             this.setState({
                 submitButton : this.state.ACTIVE_BUTTON
             })

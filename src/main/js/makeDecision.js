@@ -62,6 +62,7 @@ class MakeDecision extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeNormal = this.handleChangeNormal.bind(this);
         this.toggleCheckboxFilters = this.toggleCheckboxFilters.bind(this);
+        this.handleChangeNormalRadio = this.handleChangeNormalRadio.bind(this);
     }
 
     componentDidMount() {
@@ -219,6 +220,12 @@ class MakeDecision extends React.Component {
         }
     }
 
+    handleChangeNormalRadio(event){
+        this.setState({
+            [event.target.name]: event.target.value
+        });
+    }
+
     render() {
         var filters = {
             "incomeGroup": "Income Group",
@@ -277,7 +284,7 @@ class MakeDecision extends React.Component {
                                                 <label className={(styleType === this.state.style)?"btn btn-info btn-md select": "btn btn-info btn-md"}>
                                                     <input type="radio" value={styleType}
                                                            checked={styleType === this.state.style}
-                                                           onChange={this.handleChangeNormal}
+                                                           onChange={this.handleChangeNormalRadio}
                                                            name="style"/>
                                                     {makeDecisionFormModel["style"][styleType]}
                                                 </label>
@@ -291,7 +298,7 @@ class MakeDecision extends React.Component {
                                                 <label className={(styleType === this.state.productPlacement)?"btn btn-info btn-md select": "btn btn-info btn-md"}>
                                                     <input type="radio" value={styleType}
                                                            checked={styleType === this.state.productPlacement}
-                                                           onChange={this.handleChangeNormal}
+                                                           onChange={this.handleChangeNormalRadio}
                                                            name="productPlacement"/>
                                                     {makeDecisionFormModel["productPlacement"][styleType]}
                                                 </label>
@@ -361,7 +368,7 @@ class MakeDecision extends React.Component {
                                             <div className="col-xs-2 number">Total</div>
                                         </div>
                                     </div>
-                                    <div className="col-xs-4">Total Media Budget: <span data-field="total_media_spend" data-format="usd-big" data-format-max="1000000">{"$" + mediaSpend}</span></div>
+                                    <div className="col-xs-4">Total Media Budget: <span data-field="total_media_spend" data-format="usd-big" data-format-max="1000000">{"$" + mediaSpend+"M"}</span></div>
                                     <div className="col-xs-8">
                                         <div className="row">
                                             <div className="col-xs-2"></div>

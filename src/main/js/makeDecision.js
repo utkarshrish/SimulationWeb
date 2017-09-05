@@ -105,8 +105,6 @@ class MakeDecision extends React.Component {
         graphInput["media"] = this.state.media;
         graphInput["year"] =  this.state.year;
 
-        console.log(JSON.stringify(graphInput));
-
         client({
             method: 'POST',
             path: '/submitGraph',
@@ -116,8 +114,8 @@ class MakeDecision extends React.Component {
                 'Accept': 'application/hal+json'
             }
         }).done(response => {
-            console.log(response.entity);
         });
+        window.setTimeout(function(){ window.location = "/dashboard"; },2000);
     }
 
     toggleCheckboxFilters(label){

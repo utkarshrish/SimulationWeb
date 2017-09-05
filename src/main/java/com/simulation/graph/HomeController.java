@@ -50,7 +50,7 @@ public class HomeController {
 			String userId = payload.toJSONObject().get("sub").toString();
 			int year = 2018;
 			if(this.repository.findOne(payload.toJSONObject().get("sub").toString()) != null){
-				year = Integer.valueOf(this.repository.findOne(userId).getModel())-1;
+				year = Integer.valueOf(this.repository.findOne(userId).getModel());
 			}
 			model.put("user", userId + "_" + year);
 		}
@@ -68,9 +68,9 @@ public class HomeController {
 		try {
 			signedJWT = SignedJWT.parse(idToken);
 			final Payload payload = signedJWT.getPayload();
-			model.put("user", this.repository.findOne(payload.toJSONObject().get("sub").toString()).getModel());
+			model.put("user", Integer.valueOf(this.repository.findOne(payload.toJSONObject().get("sub").toString()).getModel())+1);
 		} catch (Exception e) {
-			model.put("user", "2018");
+			model.put("user", "2019");
 		}
 
 		return "makeDecision";
@@ -87,7 +87,7 @@ public class HomeController {
 			String userId = payload.toJSONObject().get("sub").toString();
 			int year = 2018;
 			if(this.repository.findOne(payload.toJSONObject().get("sub").toString()) != null){
-				year = Integer.valueOf(this.repository.findOne(userId).getModel())-1;
+				year = Integer.valueOf(this.repository.findOne(userId).getModel());
 			}
 			model.put("user", userId + "_" + year);
 		}
@@ -108,11 +108,11 @@ public class HomeController {
 			String userId = payload.toJSONObject().get("sub").toString();
 			int year;
 			if(this.repository.findOne(payload.toJSONObject().get("sub").toString()) != null){
-				year = Integer.valueOf(this.repository.findOne(userId).getModel())-1;
+				year = Integer.valueOf(this.repository.findOne(userId).getModel());
 			} else{
 				year = 2018;
 				initializeUser(userId);
-				this.repository.save(new Graph(userId, "simulationGraph", "2019"));
+				this.repository.save(new Graph(userId, "simulationGraph", "2018"));
 				GraphInput blue2015 = putGraph("blue", 2015);
 				GraphInput blue2016 = putGraph("blue", 2016);
 				GraphInput blue2017 = putGraph("blue", 2017);
@@ -121,8 +121,6 @@ public class HomeController {
 				this.inputRepository.save(blue2016);
 				this.inputRepository.save(blue2017);
 				this.inputRepository.save(blue2018);
-
-				this.repository.save(new Graph(payload.toJSONObject().get("sub").toString(), "simulationGraph", "2019"));
 
 				final Graph deductionGraph = repository.findOne("deductions");
 				final Graph weightageGraph = repository.findOne("weightage");
@@ -149,7 +147,6 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/submitGraph", method = {RequestMethod.POST})
-	@ResponseBody
 	public String saveGraph(final HttpServletRequest req, @RequestBody Map graphInput) throws IOException {
 		String idToken = (String) SessionUtils.get(req, "idToken");
 		SignedJWT signedJWT;
@@ -158,7 +155,7 @@ public class HomeController {
 			final String year = graphInput.get("year").toString();
 			final Payload payload = signedJWT.getPayload();
 			final String userId = payload.toJSONObject().get("sub").toString();
-			this.repository.save(new Graph(userId, "simulationGraph", String.valueOf(Integer.valueOf(year)+1)));
+			this.repository.save(new Graph(userId, "simulationGraph", String.valueOf(Integer.valueOf(year))));
 
 			GraphInput blueGraphInput = new GraphInput(userId + "_blue"+ year, year, graphInput.toString());
 			this.inputRepository.save(blueGraphInput);
@@ -174,8 +171,8 @@ public class HomeController {
 		}
 
 //		return new ResponseEntity("Successfully login", HttpStatus.OK);
-		String redirectUri = req.getScheme() + "://" + req.getServerName()  + "/dashboard";
-		return "redirect:" + redirectUri;
+//		String redirectUri = req.getScheme() + "://" + req.getServerName()  + "/dashboard";
+		return "";
 	}
 
 	private void initializeUser(String userId) throws IOException {

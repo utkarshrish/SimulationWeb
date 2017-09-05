@@ -35,10 +35,10 @@ class Dashboard extends React.Component {
             let costModel = JSON.parse(costs);
             let marketShareModel = JSON.parse(marketShare);
             const marketSharePieModel = [
-                {label: "Blue", value: marketShareModel[this.state.year]["blue"], color: "#00f"},
-                {label: "Turbo", value: marketShareModel[this.state.year]["green"], color: "#009933"},
-                {label: "Fresh", value: marketShareModel[this.state.year]["yellow"], color: "#ff0"},
-                {label: "Store", value: marketShareModel[this.state.year]["red"], color: "#cb2027"}
+                {label: "Blue", value: marketShareModel[this.state.year]["blue"], color: "#00bdd4"},
+                {label: "Turbo", value: marketShareModel[this.state.year]["green"], color: "#8cc24a"},
+                {label: "Fresh", value: marketShareModel[this.state.year]["yellow"], color: "#ffc400"},
+                {label: "Store", value: marketShareModel[this.state.year]["red"], color: "#f0544f"}
             ];
 
             return (

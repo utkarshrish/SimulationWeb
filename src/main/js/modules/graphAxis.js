@@ -29,10 +29,11 @@ class GraphAxis extends React.Component {
             let transformY = 0;
 
             return (
-                <g transform={transformAxis}>
+                <g id={this.props.axisId} transform={transformAxis} opacity={this.props.opacity}>
                     {this.props.axisTicks.map((axisTick) =>
                         <TickItem strategy={this.props.strategy} transformX={this.props.legends[axisTick.text]}
-                                  transformY={transformY} text={axisTick.text + this.props.unit}/>
+                                  transformY={transformY} text={axisTick.text + this.props.unit}
+                        />
                     )}
                     <GraphPathItem className="axis" pathCoordinates={axisPath.pathCoordinates} factor={1}/>
                 </g>
@@ -55,8 +56,14 @@ class GraphAxis extends React.Component {
             let transformX = 0;
 
             return (
-                <g transform={transformAxis}>
-                    {this.props.axisTicks.map((axisTick) => <TickItem strategy={this.props.strategy} transformX={transformX} transformY={this.props.legends[axisTick.text]} text={axisTick.text + this.props.unit}/>)}
+                <g id={this.props.axisId} transform={transformAxis} opacity={this.props.opacity}>
+                    {
+                        this.props.axisTicks.map((axisTick) =>
+                        <TickItem strategy={this.props.strategy}
+                                  transformX={transformX} transformY={this.props.legends[axisTick.text]}
+                                  text={axisTick.text + this.props.unit}
+                        />)
+                    }
                     <GraphPathItem className = "axis" pathCoordinates={axisPath.pathCoordinates} factor={1}/>
                 </g>
             );

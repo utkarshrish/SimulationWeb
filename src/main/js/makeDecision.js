@@ -34,6 +34,11 @@ class MakeDecision extends React.Component {
                 div: "col-xs-2",
                 span: ""
             },
+            userBox: {
+                input:"",
+                div: "col-xs-4",
+                span: ""
+            },
             distribution: {
                 convenience: 0.0,
                 club: 0.0,
@@ -48,7 +53,7 @@ class MakeDecision extends React.Component {
             },
             unitPrice: 0.0,
             unitCost : 0.0,
-            submitButton : "btn btn-primary btn-block",
+            submitButton : "btn btn-primary btn-block disabled",
             productionUnit: "",
             year: document.getElementById('user').innerText.trim(),
             selectedCheckboxes: new Set()
@@ -191,6 +196,29 @@ class MakeDecision extends React.Component {
         this.setState({
             [event.target.name]: event.target.value
         });
+        if(event.target.value && isNaN(event.target.value)){
+            this.setState({
+                userBox: {
+                    input: this.state.ACTIVE_INPUT,
+                    div: "col-xs-4 form-group has-error has-feedback",
+                    span: this.state.ACTIVE_SPAN
+                }
+            });
+            this.setState({
+                submitButton : this.state.PASSIVE_BUTTON
+            })
+        } else {
+            this.setState({
+                userBox: {
+                    input: this.state.PASSIVE_INPUT,
+                    div: "col-xs-4",
+                    span: this.state.PASSIVE_SPAN
+                }
+            });
+            this.setState({
+                submitButton : this.state.ACTIVE_BUTTON
+            })
+        }
     }
 
     render() {
@@ -274,15 +302,16 @@ class MakeDecision extends React.Component {
                                     </div>
                                 </section>
                                 <section id="forecast-select" className="row">
-                                    <div className="col-xs-4 unit-decision-cont invalid" id="demand">
+                                    <div className={this.state.userBox.div}>
                                         <h4>Units to Produce in {this.state.year}</h4>
-                                        <input type="text" value={this.state.productionUnit} name="productionUnit" onChange={this.handleChangeNormal}/>
-                                        <small className="text-nowrap">in million units</small> &nbsp;
+                                        <input type="text" className={this.state.userBox.input} value={this.state.productionUnit} name="productionUnit" onChange={this.handleChangeNormal}/>
+                                        <span className={this.state.userBox.span}/>
+                                        <small className="text-nowrap"> in million units</small> &nbsp;
                                     </div>
-                                    <div className="col-xs-4 forecast-obscure price-decision-cont invalid">
+                                    <div className={this.state.userBox.div}>
                                         <h4>Channel Price in {this.state.year}</h4>
-                                        <input type="text" value={this.state.unitPrice} name={"unitPrice"} onChange={this.handleChangeNormal}/>
-                                        <small className="text-nowrap">per 100 loads</small>
+                                        <input type="text" className={this.state.userBox.input} value={this.state.unitPrice} name="unitPrice" onChange={this.handleChangeNormal}/>
+                                        <small className="text-nowrap"> per 100 loads</small> &nbsp;
                                     </div>
                                 </section>
                                 <h4>Trade Channel Spend in {this.state.year}</h4>

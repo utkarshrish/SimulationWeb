@@ -1,6 +1,7 @@
 const React = require('react');
 const GraphAxis = require('./graphAxis');
 const GraphPathItem = require('./graphPathItem');
+const GraphHoverAxis = require('./graphHoverAxis');
 
 class SimulationGraph extends React.Component{
 
@@ -45,6 +46,17 @@ class SimulationGraph extends React.Component{
 
         let transformGraphData = "translate(".concat(model.graphTransformAxisX.toString(), ",", model.graphTransformAxisY, ")");
 
+        let hoverTicks = {};
+        for(let year = 2015; year<=this.props.year; year++) {
+            let hoverTick = [];
+            for (let count=0; count< model[this.props.graphOption].length; count++) {
+                let tick = {};
+                tick["x"] = year;
+                tick["y"] =  model[this.props.graphOption][count].data[year-2015].y;
+                hoverTick.push(tick);
+            }
+            hoverTicks[year] = hoverTick;
+        }
         const factor = this.props.factor;
 
         return (
@@ -55,22 +67,23 @@ class SimulationGraph extends React.Component{
                 </h4>
                 <svg width={width} viewBox={viewBox} preserveAspectRatio="xMinYMin" className="graph" height={height} aria-labelledby="c-title  c-desc">
 
-                    <GraphAxis transformAxisX={model.xAxis.transformAxisX}
+                    <GraphAxis axisId="xAxis" transformAxisX={model.xAxis.transformAxisX}
                                transformAxisY={model.xAxis.transformAxisY}
                                legends={xLegends} strategy="xAxis"
                                axisTicks={model.xAxis.ticks}
                                length={model.xAxis.width}
                                unit={model.xAxis.unit}
+                               opacity="1"
                     />
 
-                    <GraphAxis transformAxisX={yAxis.transformAxisX}
+                    <GraphAxis axisId="yAxis" transformAxisX={yAxis.transformAxisX}
                                transformAxisY={yAxis.transformAxisY}
                                legends={yLegends} strategy="yAxis"
                                axisTicks={yAxis.ticks}
                                length={yAxis.height}
                                unit={yAxis.unit}
+                               opacity="1"
                     />
-
                     <g className="axis" transform={transformGraphData}>
                         {model[this.props.graphOption].map(
                             (graphItem) =>
@@ -82,6 +95,13 @@ class SimulationGraph extends React.Component{
                                                factor={factor}
                                                year={this.props.year}
                                 />
+                        )}
+                        {Object.keys(hoverTicks).map((year) =>
+                            <GraphHoverAxis axisId={"legend"+ year} xLegends={xLegends} yLegends={yLegends}
+                                hoverTick={hoverTicks[year]} unit={yAxis.unit}
+                                yMax={yAxis.ticks[yAxis.ticks.length-1].text} negativeYMax={yAxis.ticks[0].text}
+                                height={yAxis.height} factor={factor} year={year} opacity="0"
+                            />
                         )}
                     </g>
                 </svg>

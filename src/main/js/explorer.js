@@ -20,13 +20,12 @@ class App extends React.Component {
 			graphOption: 'operatingProfit',
 			filterFactors: [],
 			selectedCheckboxes: new Set(),
-			factor:0.0,
-			explorerFilterFactors: []
+			factor: 1.0,
+			filters:{}
 		};
 
 		this.updateGraphFilter = this.updateGraphFilter.bind(this);
 		this.toggleCheckboxFilters = this.toggleCheckboxFilters.bind(this);
-		this.setFactor = this.setFactor.bind(this);
 	}
 
 	componentDidMount() {
@@ -37,17 +36,7 @@ class App extends React.Component {
 			this.setState({graphTypes: response.entity});
 		});
 		client({method: 'GET', path: '/api/graphs/explorerFilterFactor'}).done(response => {
-			let filterFactor = {};
-			filterFactor = JSON.parse(response.entity.model);
-			let explorerFilterFactors = {};
-			for(let filter in filterFactor){
-				for(let factorType in filterFactor[filter]){
-					explorerFilterFactors[factorType] = filterFactor[filter][factorType];
-				}
-			}
-
-			this.setState({filterFactors:filterFactor});
-			this.setState({explorerFilterFactors:explorerFilterFactors});
+			this.setState({filterFactors: JSON.parse(response.entity.model)});
 		});
 	}
 
@@ -59,23 +48,52 @@ class App extends React.Component {
 	}
 
 	toggleCheckboxFilters(label){
-		let selectedCheckboxes = this.state.selectedCheckboxes;
-		let factor = this.state.factor;
-		if (selectedCheckboxes.has(label)) {
-			factor = factor - this.state.explorerFilterFactors[label];
-			selectedCheckboxes.delete(label);
-			this.setState({factor: factor})
-		} else {
-			factor = factor + this.state.explorerFilterFactors[label];
-			selectedCheckboxes.add(label);
-			this.setState({factor: factor})
+		function addMultiMap(test, key, value) {
+			if (!test[key]) {
+				// Create 1-element array with this value.
+				test[key] = [value];
+			}
+			else {
+				// Append element to existing array.
+				test[key].push(value);
+			}
 		}
-		this.setState({selectedCheckboxes: selectedCheckboxes});
-	}
 
-	setFactor(){
-		this.setState({factor:0.0});
-		this.setState({selectedCheckboxes: new Set()})
+		function sum(input){
+
+			if (toString.call(input) !== "[object Array]")
+				return false;
+
+			var total =  0;
+			for(var i=0;i<input.length;i++)
+			{
+				if(isNaN(input[i])){
+					continue;
+				}
+				total += Number(input[i]);
+			}
+			return total;
+		}
+
+		let selectedCheckboxes = this.state.selectedCheckboxes;
+		if (selectedCheckboxes.has(label)) {
+			selectedCheckboxes.delete(label);
+		} else {
+			selectedCheckboxes.add(label);
+		}
+		let filters = {};
+		for (let item of selectedCheckboxes.values()){
+			addMultiMap(filters, item.split("_")[0], this.state.filterFactors[item.split("_")[0]][item.split("_")[1]]);
+		}
+
+		let factor = 1;
+		for(let filter in filters){
+			factor = factor * sum(filters[filter]);
+		}
+
+		this.setState({selectedCheckboxes: selectedCheckboxes});
+		this.setState({factor: factor});
+		this.setState({filters: filters});
 	}
 
 	render() {
@@ -128,9 +146,9 @@ class App extends React.Component {
 								<h4>Filters</h4>
 								<Accordion trigger="Start here">
 									{Object.keys(this.state.filterFactors).map((filterFactor) =>
-										<Panel header={filterFactor} eventKey={eventKey++} onSelect={this.setFactor}>
+										<Panel header={filterFactor} eventKey={eventKey++}>
 											{Object.keys(this.state.filterFactors[filterFactor]).map((factorType) =>
-												<Checkbox type="checkbox" label={factorType} filterKey={factorType}
+												<Checkbox name={filterFactor} type="checkbox" label={factorType} filterKey={factorType}
 													handleCheckboxChange={this.toggleCheckboxFilters}/>
 											)}
 										</Panel>

@@ -23,14 +23,15 @@ class GraphHoverAxis extends React.Component {
                 }
             ]
         };
+        let factor = this.props.factor;
 
         return (
             <g id={this.props.axisId} opacity={this.props.opacity}>
                 {hoverTick.map((tick) =>
                     <TickItem strategy={"yAxis"} transformX={this.props.xLegends[this.props.year]}
-                              transformY={tick.y} text={tick.y + this.props.unit}
-                              yMax={this.props.yMax}
-                              negativeYMax={this.props.negativeYMax}
+                              transformY={tick.y} text={(tick.y * this.props.factor).toFixed(2) + this.props.unit}
+                              yMax={this.props.yMax * (factor+0.1>1?factor: factor+0.1)}
+                              negativeYMax={this.props.negativeYMax * (factor+0.1>1?factor: factor+0.1)}
                               height={this.props.height}
                               factor={this.props.factor}
                               year={this.props.year}

@@ -74,6 +74,7 @@ class SimulationGraph extends React.Component{
                                length={model.xAxis.width}
                                unit={model.xAxis.unit}
                                opacity="1"
+                               factor={1}
                     />
 
                     <GraphAxis axisId="yAxis" transformAxisX={yAxis.transformAxisX}
@@ -83,14 +84,15 @@ class SimulationGraph extends React.Component{
                                length={yAxis.height}
                                unit={yAxis.unit}
                                opacity="1"
+                               factor={factor+0.1>1?factor: factor+0.1}
                     />
                     <g className="axis" transform={transformGraphData}>
                         {model[this.props.graphOption].map(
                             (graphItem) =>
                                 <GraphPathItem className={graphItem.type} legends={xLegends}
                                                pathCoordinates={graphItem.data}
-                                               yMax={yAxis.ticks[yAxis.ticks.length-1].text}
-                                               negativeYMax={yAxis.ticks[0].text}
+                                               yMax={yAxis.ticks[yAxis.ticks.length-1].text * (factor+0.1>1?factor: factor+0.1)}
+                                               negativeYMax={yAxis.ticks[0].text * (factor+0.1>1?factor: factor+0.1)}
                                                height={yAxis.height}
                                                factor={factor}
                                                year={this.props.year}

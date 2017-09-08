@@ -61,7 +61,7 @@ class GraphAxis extends React.Component {
                         this.props.axisTicks.map((axisTick) =>
                         <TickItem strategy={this.props.strategy}
                                   transformX={transformX} transformY={this.props.legends[axisTick.text]}
-                                  text={axisTick.text + this.props.unit}
+                                  text={(axisTick.text * this.props.factor).toFixed(2) + this.props.unit}
                         />)
                     }
                     <GraphPathItem className = "axis" pathCoordinates={axisPath.pathCoordinates} factor={1}/>

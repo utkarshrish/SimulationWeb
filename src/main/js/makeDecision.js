@@ -14,7 +14,7 @@ class MakeDecision extends React.Component {
             makeDecisionForm: [],
             graphInput:{},
             filters:[],
-            style: "pods",
+            style: "powder",
             productPlacement:"odorElimination",
             ACTIVE_BUTTON : "btn btn-primary btn-block",
             ACTIVE_SPAN : "glyphicon glyphicon-remove form-control-feedback",

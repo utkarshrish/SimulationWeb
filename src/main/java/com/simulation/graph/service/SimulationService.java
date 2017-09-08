@@ -29,7 +29,7 @@ public class SimulationService {
     final static BigDecimal MARKETING_FACTOR = new BigDecimal("0.10");
     final static BigDecimal DISTRIBUTION_FACTOR = new BigDecimal("0.10");
     final static BigDecimal DEDUCTION_MAX = new BigDecimal("18.00");
-    final static BigDecimal MARKET_SHARE_DEDUCTION_CAP = new BigDecimal("0.40");
+    final static BigDecimal MARKET_SHARE_DEDUCTION_CAP = new BigDecimal("0.60");
 
     final static Gson gson = new Gson();
     final static Map<String, BigDecimal> BENCHMARK_PRICE;
@@ -84,7 +84,7 @@ public class SimulationService {
 //        BigDecimal priceScore = graphInputModel.getUnitPrice().min(PRICE_BENCHMARK);
 //        priceScore =  BENCHMARK_PRICE.get(product).add(BENCHMARK_PRICE.get(product).subtract(priceScore));
 
-        BigDecimal totalScore = productScore.add(priceScore).max(BASE_SCORE);
+        BigDecimal totalScore = productScore.add(priceScore);
 
         return totalScore.subtract(BASE_SCORE).divide(BENCHMARK_SCORE.subtract(BASE_SCORE), BigDecimal.ROUND_HALF_EVEN);
     }
@@ -149,18 +149,12 @@ public class SimulationService {
                     if(marketShareDeductions.get(dataPoint).contains(product)) {
                         marketShareCalculated = marketShareCalculated.add(productMarketShareDeductionPerDataPoint.get(product).get(dataPoint));
                     }
-//                    marketShare = marketShare.add(productMarketShareDeductionPerDataPoint.get(product).get(dataPoint));
                 }
-//                else {
-//                    if(marketShareDeductions.get(dataPoint).contains(product)) {
-//                        marketShare = marketShare.subtract(productMarketShareDeductionPerDataPoint.get(product).get(dataPoint));
-//                    }
-//                }
             }
             if(!product.equalsIgnoreCase("blue")) {
                 if(marketShare.subtract(marketShareCalculated).intValue()> marketShare2014.get(product).multiply(MARKET_SHARE_DEDUCTION_CAP).intValue()) {
-                    marketShare = marketShare.subtract(marketShareCalculated);
-                    blueMarketShare = blueMarketShare.add(marketShareCalculated);
+                    marketShare = marketShare.subtract(marketShareCalculated.abs());
+                    blueMarketShare = blueMarketShare.add(marketShareCalculated.abs());
                 }
                 productMarketShare.put(product, marketShare);
             }

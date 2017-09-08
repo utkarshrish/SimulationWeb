@@ -70,11 +70,13 @@ class Dashboard extends React.Component {
                                 </h4>
                                 <PieChart
                                     data={ marketSharePieModel }
+                                    expandedSector={this.state.expandedSector}
                                     sectorStrokeWidth={0}
-                                    viewBoxWidth={50}
+                                    viewBoxWidth={40}
                                     onSectorHover={this.handleMouseEnterOnSector}
                                     expandOnHover
                                     shrinkOnTouchEnd
+                                    expandPx={2}
                                 />
                                 <div>
                                     {

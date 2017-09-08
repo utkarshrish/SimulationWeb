@@ -14,7 +14,7 @@ class GraphPathItem extends React.Component {
                 (coordinate) => {
                     if (coordinate.x <= this.props.year) {
                         path = path + "L" + this.props.legends[coordinate.x] + ","
-                            + this.props.height * (this.props.yMax - coordinate.y * this.props.factor) / (this.props.yMax - this.props.negativeYMax)
+                            + this.props.height * (this.props.yMax - (Math.abs(coordinate.y)/1000>1?(coordinate.y/1000000).toFixed(2):coordinate.y) * this.props.factor) / (this.props.yMax - this.props.negativeYMax)
                             + " "
                     }
                 }

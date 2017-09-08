@@ -1,11 +1,11 @@
 {
-  "unitPrice": 7.0,
+  "unitPrice": 5.0,
   "unitCost" : 4.0,
-  "productionUnit":25000000,
+  "productionUnit":22000000,
   "style": {
-    "pods": 1,
+    "pods": 0,
     "liquid": 0,
-    "powder": 0
+    "powder": 1
   },
   "productPlacement": {
     "odorElimination": 0,
@@ -14,25 +14,25 @@
     "softness": 0
   },
   "distribution": {
-    "convenience": 0.25,
-    "club": 0,
-    "grocery": 0.25,
-    "mass": 0.50
+    "convenience": 25,
+    "club": 25,
+    "grocery": 25,
+    "mass": 25
   },
   "media": {
-    "print": 0,
-    "tv": 0.50,
-    "radio": 0.50,
-    "digitalAds": 0
+    "print": 25,
+    "tv": 25,
+    "radio": 25,
+    "digitalAds": 25
   },
   "incomeGroup": {
     "0-19999": 1,
     "20000-39999": 1,
-    "40000-59999": 0,
+    "40000-59999": 1,
     "60000+": 1
   },
   "ethnicity": {
-    "northIndian": 0,
+    "northIndian": 1,
     "southIndian": 1,
     "northEastern": 1,
     "kashmiri": 1,
@@ -42,7 +42,7 @@
     "1": 1,
     "2": 1,
     "3": 1,
-    "4": 0,
+    "4": 1,
     "5+": 1
   },
   "region": {
@@ -50,7 +50,7 @@
     "northWest": 1,
     "eastern": 1,
     "central": 1,
-    "western": 0,
+    "western": 1,
     "south": 1,
     "north": 1
   },

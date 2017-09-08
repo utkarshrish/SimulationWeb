@@ -276,6 +276,19 @@ class MakeDecision extends React.Component {
                     <div className="row">
                         <form onSubmit={this.handleSubmit}>
                             <div className="decisions">
+                                <section id="forecast-select" className="row">
+                                    <div className={this.state.userBox.div}>
+                                        <h4>Units to Produce in {this.state.year}</h4>
+                                        <input type="text" className={this.state.userBox.input} value={this.state.productionUnit} name="productionUnit" onChange={this.handleChangeNormal}/>
+                                        <span className={this.state.userBox.span}/>
+                                        <small className="text-nowrap"> in million units</small> &nbsp;
+                                    </div>
+                                    <div className={this.state.userBox.div}>
+                                        <h4>Channel Price in {this.state.year}</h4>
+                                        <input type="text" className={this.state.userBox.input} value={this.state.unitPrice} name="unitPrice" onChange={this.handleChangeNormal}/>
+                                        <small className="text-nowrap"> per 100 loads</small> &nbsp;
+                                    </div>
+                                </section>
                                 <section className="row">
                                     <div className="col-xs-4">
                                         <h4>Formulation in {this.state.year}<span data-toggle="popover" data-info="formulation" data-original-title="" title=""></span></h4>
@@ -304,19 +317,6 @@ class MakeDecision extends React.Component {
                                                 </label>
                                             )}
                                         </div>
-                                    </div>
-                                </section>
-                                <section id="forecast-select" className="row">
-                                    <div className={this.state.userBox.div}>
-                                        <h4>Units to Produce in {this.state.year}</h4>
-                                        <input type="text" className={this.state.userBox.input} value={this.state.productionUnit} name="productionUnit" onChange={this.handleChangeNormal}/>
-                                        <span className={this.state.userBox.span}/>
-                                        <small className="text-nowrap"> in million units</small> &nbsp;
-                                    </div>
-                                    <div className={this.state.userBox.div}>
-                                        <h4>Channel Price in {this.state.year}</h4>
-                                        <input type="text" className={this.state.userBox.input} value={this.state.unitPrice} name="unitPrice" onChange={this.handleChangeNormal}/>
-                                        <small className="text-nowrap"> per 100 loads</small> &nbsp;
                                     </div>
                                 </section>
                                 <h4>Trade Channel Spend in {this.state.year}</h4>

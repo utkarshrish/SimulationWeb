@@ -15,8 +15,14 @@ class Dashboard extends React.Component {
             user: document.getElementById('user').innerText.trim().split("_")[0],
             dashboard: [],
             marketData: [],
-            years:["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022"]
+            years:["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022"],
+            expandedSector: null
         };
+        this.handleMouseEnterOnSector = this.handleMouseEnterOnSector.bind(this)
+    }
+
+    handleMouseEnterOnSector(sector) {
+        this.setState({expandedSector: sector})
     }
 
     componentDidMount() {
@@ -56,29 +62,43 @@ class Dashboard extends React.Component {
                         <NavItem eventKey={4} href="/makeDecision"> | Make Decision</NavItem>
                     </Nav>
                     <div className="row">
-                        <div className="cols-xs-6">
-                            <h4>
-                                <span>Market Share      </span>
-                                <small>(in %)</small>
-                            </h4>
-                            <div className="cols-xs-4">
+                        <div className="cols-xs-12">
+                            <div id="upperChart" className="cols-xs-6">
+                                <h4>
+                                    <span>Market Share      </span>
+                                    <small>(in %)</small>
+                                </h4>
                                 <PieChart
-                                data={ marketSharePieModel }
-                                sectorStrokeWidth={0}
-                                viewBoxWidth={50}
-                            />
+                                    data={ marketSharePieModel }
+                                    sectorStrokeWidth={0}
+                                    viewBoxWidth={50}
+                                    onSectorHover={this.handleMouseEnterOnSector}
+                                    expandOnHover
+                                    shrinkOnTouchEnd
+                                />
+                                <div>
+                                    {
+                                        marketSharePieModel.map((element, i) => (
+                                            <div key={i}>
+                                                <span style={{fontWeight: this.state.expandedSector === i ? "bold" : null,
+                                                              color: element.color}}>
+                                                    {element.label} : {element.value.toFixed(2)}
+                                                </span>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
                             </div>
+                            <SimulationGraph graph={costModel}
+                                             label={"Profitability"}
+                                             units={"(in $US)"}
+                                             graphOption={"operatingProfit"}
+                                             graphLegends={["Blue", "Turbo", "Fresh", "Store"]}
+                                             graphLegendsType={"s"}
+                                             factor={1.0}
+                                             year={this.state.year}
+                            />
                         </div>
-
-                        <SimulationGraph graph={costModel}
-                                         label={"Profitability"}
-                                         units={"(in $US)"}
-                                         graphOption={"operatingProfit"}
-                                         graphLegends={["Blue", "Turbo", "Fresh", "Store"]}
-                                         graphLegendsType={"s"}
-                                         factor={1.0}
-                                         year={this.state.year}
-                        />
 
                         <SimulationGraph graph={costModel}
                                          label={"Revenue"}

@@ -83,7 +83,9 @@ class App extends React.Component {
 		}
 		let filters = {};
 		for (let item of selectedCheckboxes.values()){
-			addMultiMap(filters, item.split("_")[0], this.state.filterFactors[item.split("_")[0]][item.split("_")[1]]);
+			if(item.split("_")[0]!=="Region") {
+				addMultiMap(filters, item.split("_")[0], this.state.filterFactors[item.split("_")[0]][item.split("_")[1]]);
+			}
 		}
 
 		let factor = 1;

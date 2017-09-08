@@ -72,7 +72,7 @@ class SimulationGraph extends React.Component{
                                legends={xLegends} strategy="xAxis"
                                axisTicks={model.xAxis.ticks}
                                length={model.xAxis.width}
-                               unit={model.xAxis.unit}
+                               unit={""}
                                opacity="1"
                                factor={1}
                     />

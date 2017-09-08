@@ -1,10 +1,27 @@
 #dashboard {
   .cols-xs-6{
     width: 50%;
+    float:left;
   }
 
   .cols-xs-4{
     height:400px;
     width: 400px;
+    display: inline-block;
+    float: left;
+  }
+  #upperChart {
+    display: inline-block;
+    .cols-xs-6{
+      width: 50%;
+      float:right;
+    }
+    svg:not(:root) {
+      height: 400px;
+      float: left;
+    }
+  }
+  svg:not(:root) {
+    height: 400px;
   }
 }

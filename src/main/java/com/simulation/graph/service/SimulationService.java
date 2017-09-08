@@ -74,9 +74,17 @@ public class SimulationService {
             productScore = productScore.add(graphScore.get(dataPoint));
         }
 
-        BigDecimal priceScore = graphInputModel.getUnitPrice().min(PRICE_BENCHMARK);
-        priceScore =  BENCHMARK_PRICE.get(product).add(BENCHMARK_PRICE.get(product).subtract(priceScore));
-        BigDecimal totalScore = productScore.add(priceScore);
+        BigDecimal priceScore;
+        if(graphInputModel.getUnitPrice().intValue() > new BigDecimal("6.00").intValue()){
+            priceScore = graphInputModel.getUnitPrice().subtract(new BigDecimal("5.00")).multiply(new BigDecimal("-5.00"));
+        } else {
+            priceScore = graphInputModel.getUnitPrice().subtract(new BigDecimal("7.00")).multiply(new BigDecimal("-3.00"));
+        }
+
+//        BigDecimal priceScore = graphInputModel.getUnitPrice().min(PRICE_BENCHMARK);
+//        priceScore =  BENCHMARK_PRICE.get(product).add(BENCHMARK_PRICE.get(product).subtract(priceScore));
+
+        BigDecimal totalScore = productScore.add(priceScore).max(BASE_SCORE);
 
         return totalScore.subtract(BASE_SCORE).divide(BENCHMARK_SCORE.subtract(BASE_SCORE), BigDecimal.ROUND_HALF_EVEN);
     }

@@ -152,9 +152,10 @@ public class SimulationService {
                 }
             }
             if(!product.equalsIgnoreCase("blue")) {
-                if(marketShare.subtract(marketShareCalculated).intValue()> marketShare2014.get(product).multiply(MARKET_SHARE_DEDUCTION_CAP).intValue()) {
-                    marketShare = marketShare.subtract(marketShareCalculated.abs());
-                    blueMarketShare = blueMarketShare.add(marketShareCalculated.abs());
+                if(((marketShare.subtract(marketShareCalculated)).compareTo(marketShare2014.get(product).multiply(MARKET_SHARE_DEDUCTION_CAP))>0)
+                        && (blueMarketShare.add(marketShareCalculated)).compareTo(marketShare2014.get("blue").multiply(MARKET_SHARE_DEDUCTION_CAP))>0) {
+                    marketShare = marketShare.subtract(marketShareCalculated);
+                    blueMarketShare = blueMarketShare.add(marketShareCalculated);
                 }
                 productMarketShare.put(product, marketShare);
             }

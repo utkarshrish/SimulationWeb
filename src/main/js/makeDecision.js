@@ -244,19 +244,19 @@ class MakeDecision extends React.Component {
             var mediaSpend;
             if(productionUnit.indexOf("M") > 0){
                 productionUnit = productionUnit.match(/\d+/)[0];
-                tradeChannelSpend = 0.4 * productionUnit * this.state.unitPrice ;
-                mediaSpend = 0.3 * productionUnit * this.state.unitPrice;
+                tradeChannelSpend = 0.1 * productionUnit * this.state.unitPrice ;
+                mediaSpend = 0.1 * productionUnit * this.state.unitPrice;
                 tradeChannelSpend = tradeChannelSpend + "M";
                 mediaSpend = mediaSpend + "M";
             } else if(productionUnit.indexOf("m") > 0){
                 productionUnit = productionUnit.match(/\d+/)[0];
-                tradeChannelSpend = 0.4 * productionUnit * this.state.unitPrice ;
-                mediaSpend = 0.3 * productionUnit * this.state.unitPrice;
+                tradeChannelSpend = 0.1 * productionUnit * this.state.unitPrice ;
+                mediaSpend = 0.1 * productionUnit * this.state.unitPrice;
                 tradeChannelSpend = tradeChannelSpend + "m";
                 mediaSpend = mediaSpend + "m";
             } else {
-                tradeChannelSpend = 0.4 * productionUnit * this.state.unitPrice ;
-                mediaSpend = 0.3 * productionUnit * this.state.unitPrice;
+                tradeChannelSpend = 0.1 * productionUnit * this.state.unitPrice ;
+                mediaSpend = 0.1 * productionUnit * this.state.unitPrice;
             }
             return (
 

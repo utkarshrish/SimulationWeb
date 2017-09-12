@@ -1,7 +1,7 @@
 {
   "unitPrice": 5.0,
   "unitCost" : 4.0,
-  "productionUnit":20000000,
+  "productionUnit":16000000,
   "style": {
     "pods": 0,
     "liquid": 0,
@@ -9,21 +9,21 @@
   },
   "productPlacement": {
     "odorElimination": 0,
-    "coldWater": 0,
-    "scent": 1,
+    "coldWater": 1,
+    "scent": 0,
     "softness": 0
   },
   "distribution": {
-    "convenience": 0.25,
-    "club": 0.25,
-    "grocery": 0.25,
-    "mass": 0.25
+    "convenience": 25,
+    "club": 25,
+    "grocery": 25,
+    "mass": 25
   },
   "media": {
-    "print": 0.25,
-    "tv": 0.25,
-    "radio": 0.25,
-    "digitalAds": 0.25
+    "print": 25,
+    "tv": 25,
+    "radio": 25,
+    "digitalAds": 25
   },
   "incomeGroup": {
     "0-19999": 1,

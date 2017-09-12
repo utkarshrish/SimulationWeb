@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class SimulationService {
@@ -33,6 +35,7 @@ public class SimulationService {
 
     final static Gson gson = new Gson();
     final static Map<String, BigDecimal> BENCHMARK_PRICE;
+    final static List<BigDecimal> MARKET_SHARE_DISTRIBUTION;
 
     static{
         BENCHMARK_PRICE = new HashMap<>();
@@ -40,6 +43,12 @@ public class SimulationService {
         BENCHMARK_PRICE.put("red", RED_BENCHMARK_PRICE);
         BENCHMARK_PRICE.put("yellow", YELLOW_BENCHMARK_PRICE);
         BENCHMARK_PRICE.put("green", GREEN_BENCHMARK_PRICE);
+
+        MARKET_SHARE_DISTRIBUTION = new ArrayList<>();
+        MARKET_SHARE_DISTRIBUTION.add(new BigDecimal("5.00"));
+        MARKET_SHARE_DISTRIBUTION.add(new BigDecimal("7.00"));
+        MARKET_SHARE_DISTRIBUTION.add(new BigDecimal("9.00"));
+        MARKET_SHARE_DISTRIBUTION.add(new BigDecimal("10.00"));
     }
 
     @Autowired
@@ -51,24 +60,23 @@ public class SimulationService {
     private BigDecimal calculateDeltaScore(UserInput graphInputModel, Map<String, Map> graphWeightageModel, String product){
         Map<String, BigDecimal> graphScore = new HashMap<>();
 
-        BigDecimal score = new BigDecimal(0.0);
         Map<String, Map> dataPointMap = graphInputModel.getDataPoint();
         Map graphWeightageDataPointModelMap = graphWeightageModel.get("weightage");
 
         for(String dataPoint: dataPointMap.keySet()){
             Map dataInput = dataPointMap.get(dataPoint);
             Map graphWeightageDataPointModel = (Map)graphWeightageDataPointModelMap.get(dataPoint);
-            BigDecimal dataInputScore = new BigDecimal("0.00");
+            BigDecimal dataInputScore = BigDecimal.ZERO;
             for(Object type : dataInput.keySet()){
                 BigDecimal weightagePerDatapoint = new BigDecimal(graphWeightageDataPointModel.get(type).toString());
                 BigDecimal dataInputPerDatapoint = new BigDecimal(dataInput.get(type.toString()).toString());
                 dataInputScore =  dataInputScore.add(dataInputPerDatapoint.multiply(weightagePerDatapoint));
             }
-            score = new BigDecimal(graphWeightageDataPointModel.get("score").toString());
+            final BigDecimal score = new BigDecimal(graphWeightageDataPointModel.get("score").toString());
             graphScore.put(dataPoint, score.multiply(dataInputScore));
         }
 
-        BigDecimal productScore = new BigDecimal("0.00");
+        BigDecimal productScore = BigDecimal.ZERO;
 
         for(String dataPoint: graphScore.keySet()){
             productScore = productScore.add(graphScore.get(dataPoint));
@@ -118,6 +126,7 @@ public class SimulationService {
                     if (new BigDecimal(greenDataPoints.get(dataPoint).get(subDataPoint).toString()).doubleValue() > 0.0) {
                         productMarketShare.add("green");
                     }
+                    productMarketShare.add("blue");
                 }
             }
             marketShareDeductions.put(dataPoint, productMarketShare);
@@ -137,32 +146,82 @@ public class SimulationService {
             productMarketShareDeductionPerDataPoint.put(product, marketShareDeductionPerDataPoint);
         }
 
-        Map<String, BigDecimal> productMarketShare = new HashMap<>();
-
-        BigDecimal blueMarketShare = yearlyMarketShare.get("blue");
-
+        Map<String, BigDecimal> marketShareMap = new HashMap<>();
+        int count =0;
+        BigDecimal minMarketShare = BigDecimal.ONE;
         for(String product: yearlyMarketShare.keySet()){
-            BigDecimal marketShare = yearlyMarketShare.get(product);
-            BigDecimal marketShareCalculated = new BigDecimal("0.0");
+            BigDecimal marketShareCalculated = BigDecimal.ZERO;
             for(String dataPoint : marketShareDeductions.keySet()){
-                if(!product.equalsIgnoreCase("blue")){
-                    if(marketShareDeductions.get(dataPoint).contains(product)) {
-                        marketShareCalculated = marketShareCalculated.add(productMarketShareDeductionPerDataPoint.get(product).get(dataPoint));
-                    }
-                }
+//                if(marketShareDeductions.get(dataPoint).contains(product)) {
+                    marketShareCalculated = marketShareCalculated.add(productMarketShareDeductionPerDataPoint.get(product).get(dataPoint));
+//                }
             }
-            if(!product.equalsIgnoreCase("blue")) {
-                if(((marketShare.subtract(marketShareCalculated)).compareTo(marketShare2014.get(product).multiply(MARKET_SHARE_DEDUCTION_CAP))>0)
-                        && (blueMarketShare.add(marketShareCalculated)).compareTo(marketShare2014.get("blue").multiply(MARKET_SHARE_DEDUCTION_CAP))>0) {
-                    marketShare = marketShare.subtract(marketShareCalculated);
-                    blueMarketShare = blueMarketShare.add(marketShareCalculated);
-                }
-                productMarketShare.put(product, marketShare);
+            if(marketShareCalculated.compareTo(BigDecimal.ZERO)<0){
+                count++;
             }
+            if(marketShareCalculated.abs().compareTo(minMarketShare)<0){
+                minMarketShare = marketShareCalculated;
+            }
+            marketShareMap.put(product, marketShareCalculated);
+
+//            if(!product.equalsIgnoreCase("blue")) {
+//                if(((marketShare.subtract(marketShareCalculated)).compareTo(marketShare2014.get(product).multiply(MARKET_SHARE_DEDUCTION_CAP))>0)
+//                        && (blueMarketShare.add(marketShareCalculated)).compareTo(marketShare2014.get("blue").multiply(MARKET_SHARE_DEDUCTION_CAP))>0) {
+//                    marketShare = marketShare.subtract(marketShareCalculated);
+//                    blueMarketShare = blueMarketShare.add(marketShareCalculated);
+//                }
+//                productMarketShare.put(product, marketShare);
+//            }
         }
-        productMarketShare.put("blue", blueMarketShare);
+
+        final BigDecimal a = minMarketShare;
+        final BigDecimal marketShareDistribution = MARKET_SHARE_DISTRIBUTION.get(count);
+
+        marketShareMap = marketShareMap.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> e.getValue().divide(a, BigDecimal.ROUND_HALF_EVEN).multiply(marketShareDistribution)
+                ));
+
+        marketShareMap = marketShareMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> e.getValue(),
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                ));
+//        marketShareMap.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().divide(a, BigDecimal.ROUND_HALF_EVEN)));
+
+
+        BigDecimal deductFactorSum = BigDecimal.ZERO;
+        BigDecimal addFactorSum = BigDecimal.ZERO;
+        int i=0;
+        for(String product: marketShareMap.keySet()){
+            if(i<2){
+                deductFactorSum = deductFactorSum.add(marketShareMap.get(product).abs());
+            } else{
+                addFactorSum = addFactorSum.add(marketShareMap.get(product).abs());
+            }
+            i++;
+        }
+
+        final Map<String, BigDecimal> productMarketShare = new HashMap<>();
+        i=0;
+        for(String product: marketShareMap.keySet()) {
+            BigDecimal marketShare = yearlyMarketShare.get(product);
+            if (i < 2) {
+                marketShare = marketShare.subtract(marketShareMap.get(product).abs().divide(deductFactorSum, BigDecimal.ROUND_HALF_EVEN));
+            } else {
+                marketShare = marketShare.add(marketShareMap.get(product).abs().divide(addFactorSum, BigDecimal.ROUND_HALF_EVEN));
+            }
+            productMarketShare.put(product, marketShare);
+            i++;
+        }
+
         return productMarketShare;
     }
+
 
     public void buildReports(String userId, Map graphInput, Graph deduction, Graph weightage, String year){
         final Map<String, UserInput> graphInputModels = new HashMap<>();
@@ -199,14 +258,18 @@ public class SimulationService {
 
         for(String product: yearlyMarketShare.keySet()) {
             UserInput graphInputModel = graphInputModels.get(product);
+            
+            final BigDecimal distributionFactor = spendFactor(graphInputModel, "distribution");
+            final BigDecimal marketingFactor = spendFactor(graphInputModel, "media");
+            
             BigDecimal productionInputUnits = graphInputModel.getProductionUnit();
             BigDecimal maxProductionUnitsDemand = yearlyMarketShare.get(product).multiply(OVERALL_MARKET_SHARE_IN_UNIT).divide(new BigDecimal(100.00), BigDecimal.ROUND_HALF_EVEN);
             BigDecimal actualDemand = productionInputUnits.min(maxProductionUnitsDemand);
             BigDecimal inventory = productionInputUnits.subtract(actualDemand);
             BigDecimal unitCost = UNIT_COST_PRICE.multiply(calculateUnitCost(graphInputModel, "style")).multiply(calculateUnitCost(graphInputModel,"productPlacement"));
             BigDecimal variableCost = unitCost.multiply(productionInputUnits);
-            BigDecimal marketingCost = MARKETING_FACTOR.multiply(unitCost.multiply(productionInputUnits));
-            BigDecimal distributionCost = DISTRIBUTION_FACTOR.multiply(unitCost.multiply(productionInputUnits));
+            BigDecimal marketingCost = MARKETING_FACTOR.multiply(graphInputModels.get(product).getUnitPrice().multiply(productionInputUnits)).multiply(marketingFactor);
+            BigDecimal distributionCost = DISTRIBUTION_FACTOR.multiply(graphInputModels.get(product).getUnitPrice().multiply(productionInputUnits)).multiply(distributionFactor);
             BigDecimal totalCost = variableCost.add(marketingCost).add(distributionCost).add(FIXED_COST);
             BigDecimal revenue = graphInputModel.getUnitPrice().multiply(actualDemand);
             BigDecimal operatingProfit = revenue.subtract(totalCost);
@@ -249,6 +312,14 @@ public class SimulationService {
 
         Graph costYearlyUpdated = new Graph(userId + "_reports", "simulationGraph", gson.toJson(costYearly));
         this.repository.save(costYearlyUpdated);
+    }
+
+    private BigDecimal spendFactor(UserInput graphInputModel, String spendType){
+        BigDecimal factor = BigDecimal.ZERO;
+        for(Object spend :graphInputModel.getDataPoint().get(spendType).keySet()){
+            factor.add(new BigDecimal(graphInputModel.getDataPoint().get(spendType).get(spend).toString()));
+        }
+        return factor;
     }
 
     public void buildReports(String userId, String graphInput, Graph deduction, Graph weightage, String year){
@@ -311,7 +382,7 @@ public class SimulationService {
     private BigDecimal calculateYearlyDeductions(Map<String, Map<String, BigDecimal>> graphDeductions, String productName, Map<String, BigDecimal> marketShareModel, BigDecimal delta){
         Map<String, BigDecimal> productDeductionPoints = graphDeductions.get(productName);
         BigDecimal deductionYearCap = productDeductionPoints.get(DEDUCTION_CAP).multiply(marketShareModel.get(productName));
-        BigDecimal deductionYearScore = new BigDecimal("0.00");
+        BigDecimal deductionYearScore = BigDecimal.ZERO;
         for(String dataPoint: productDeductionPoints.keySet()){
             deductionYearScore =  deductionYearScore.add(productDeductionPoints.get(dataPoint));
         }

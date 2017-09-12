@@ -14,16 +14,16 @@
     "softness": 0
   },
   "distribution": {
-    "convenience": 50,
-    "club": 50,
-    "grocery": 0,
-    "mass": 0
+    "convenience": 0.50,
+    "club": 0.50,
+    "grocery": 0.00,
+    "mass": 0.00
   },
   "media": {
-    "print": 0,
-    "tv": 50,
-    "radio": 0,
-    "digitalAds": 50
+    "print": 0.00,
+    "tv": 0.50,
+    "radio": 0.0,
+    "digitalAds": 0.50
   },
   "incomeGroup": {
     "0-19999": 1,

@@ -11,19 +11,19 @@
     "odorElimination": 0,
     "coldWater": 1,
     "scent": 0,
-    "softness": 
+    "softness": 0
   },
   "distribution": {
-    "convenience": 50,
-    "club": 25,
-    "grocery": 0,
-    "mass": 25
+    "convenience": 0.50,
+    "club": 0.25,
+    "grocery": 0.00,
+    "mass": 0.25
   },
   "media": {
-    "print": 50,
-    "tv": 25,
-    "radio": 0,
-    "digitalAds": 25
+    "print": 0.50,
+    "tv": 0.25,
+    "radio": 0.00,
+    "digitalAds": 0.25
   },
   "incomeGroup": {
     "0-19999": 1,

@@ -200,6 +200,12 @@ public class DatabaseLoader implements CommandLineRunner {
 		}
 		String tradeChannelDemand = buf.toString();
 
+		buf = new StringBuffer();
+		br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/initialData/explorer/" +"blueAverage.json"), "UTF-8"));
+		while ((str = br.readLine()) != null) {
+			buf.append(str);
+		}
+		String blueAverage = buf.toString();
 
 //		this.repository.save(new Graph("operatingProfit", "simulationGraph", graphModel));
 		this.repository.save(new Graph("graphTypes", "simulationGraph", graphType));
@@ -214,6 +220,7 @@ public class DatabaseLoader implements CommandLineRunner {
 		this.repository.save(new Graph("mediaConsumed", "simulationGraph", mediaConsumed));
 		this.repository.save(new Graph("pricePointDemand", "simulationGraph", pricePointDemand));
 		this.repository.save(new Graph("tradeChannelDemand", "simulationGraph", tradeChannelDemand));
+		this.repository.save(new Graph("blueAverage", "simulationGraph", blueAverage));
 //		this.repository.save(new Graph("explorer", "simulationGraph", explorer));
 //		this.repository.save(new Graph("reportsGraph", "simulationGraph", reportsGraph));
 //		this.repository.save(new Graph("reports", "simulationGraph", reports));

@@ -79,6 +79,11 @@ public class GraphService {
         this.repository.save(explorerGraphUpdated);
     }
 
+    private List<Map<String, Object>> createMarketShareAverage(Map<String, BigDecimal> reportsStored, String type){
+        List<Map<String, Object>> graphDataProductList = new ArrayList<>();
+        return graphDataProductList;
+    }
+
     private List<Map<String, Object>> createGraphData(Map<String, Map<String, Map<String, BigDecimal>>> reportsStored, String type){
         List<Map<String, Object>> graphDataProductList = new ArrayList<>();
         Map<String, Object> productDataMap;

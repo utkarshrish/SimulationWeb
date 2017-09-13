@@ -16,11 +16,11 @@ import java.util.stream.Collectors;
 @Service
 public class SimulationService {
 
-    final static BigDecimal BENCHMARK_SCORE = new BigDecimal("85.33");
+    final static BigDecimal BENCHMARK_SCORE = new BigDecimal("120.00");
     final static BigDecimal PRICE_FACTOR = new BigDecimal("3.00");
     final static BigDecimal UNIT_COST_PRICE = new BigDecimal("3.00");
     final static BigDecimal PRICE_BENCHMARK = new BigDecimal("12.00");
-    final static BigDecimal BASE_SCORE = BENCHMARK_SCORE.multiply(new BigDecimal("0.6"));
+    final static BigDecimal BASE_SCORE = new BigDecimal("85.00");
     final static BigDecimal BLUE_BENCHMARK_PRICE = new BigDecimal("6.00");
     final static BigDecimal RED_BENCHMARK_PRICE = new BigDecimal("6.00");
     final static BigDecimal YELLOW_BENCHMARK_PRICE = new BigDecimal("6.00");
@@ -249,11 +249,19 @@ public class SimulationService {
         for(String product: yearlyMarketShare.keySet()) {
             UserInput graphInputModel = graphInputModels.get(product);
             BigDecimal yearDelta = calculateDeltaScore(graphInputModel, graphWeightageModel, product);
-            BigDecimal yearlyDeduction = calculateYearlyDeductions(graphDeductions, product, yearlyMarketShare, yearDelta);
-            productYearlyDeduction.put(product, yearlyDeduction);
+//            BigDecimal yearlyDeduction = calculateYearlyDeductions(graphDeductions, product, yearlyMarketShare, yearDelta);
+            productYearlyDeduction.put(product, yearDelta);
         }
 
         Map<String, BigDecimal> productMarketShare = buildProductMarketShare(productYearlyDeduction, graphInputModels.get("blue").getDataPoint().keySet(), deduction, yearlyMarketShare);
+
+        Graph blueAverage = repository.findOne("blueAverage");
+        Map<String, BigDecimal> blueAverageMap = gson.fromJson(blueAverage.getModel(),new TypeToken<Map<String, BigDecimal>>(){}.getType());
+        final BigDecimal blueAverageMarketShare = (blueAverageMap.get(year).add(productMarketShare.get("blue"))).divide(blueAverageMap.get("count").add(BigDecimal.ONE), BigDecimal.ROUND_HALF_EVEN);
+        blueAverageMap.put(year, blueAverageMarketShare);
+
+        Graph blueAverageUpdated = new Graph("blueAverage", "simulationGraph", gson.toJson(blueAverageMap));
+        this.repository.save(blueAverageUpdated);
 
         Map<String, Map<String, BigDecimal>> marketShareYearly = new HashMap<>();
         marketShareYearly.putAll(marketShareStored);

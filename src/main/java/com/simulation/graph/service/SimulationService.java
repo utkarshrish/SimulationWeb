@@ -45,10 +45,10 @@ public class SimulationService {
         BENCHMARK_PRICE.put("green", GREEN_BENCHMARK_PRICE);
 
         MARKET_SHARE_DISTRIBUTION = new ArrayList<>();
-        MARKET_SHARE_DISTRIBUTION.add(new BigDecimal("10.00"));
-        MARKET_SHARE_DISTRIBUTION.add(new BigDecimal("12.00"));
-        MARKET_SHARE_DISTRIBUTION.add(new BigDecimal("14.00"));
-        MARKET_SHARE_DISTRIBUTION.add(new BigDecimal("16.00"));
+        MARKET_SHARE_DISTRIBUTION.add(new BigDecimal("5.00"));
+        MARKET_SHARE_DISTRIBUTION.add(new BigDecimal("7.00"));
+        MARKET_SHARE_DISTRIBUTION.add(new BigDecimal("9.00"));
+        MARKET_SHARE_DISTRIBUTION.add(new BigDecimal("11.00"));
     }
 
     @Autowired
@@ -148,7 +148,7 @@ public class SimulationService {
 
         Map<String, BigDecimal> marketShareMap = new HashMap<>();
         int count =0;
-        BigDecimal minMarketShare = BigDecimal.ONE;
+        BigDecimal minMarketShare = new BigDecimal("4000000.00");
         for(String product: yearlyMarketShare.keySet()){
             BigDecimal marketShareCalculated = BigDecimal.ZERO;
             for(String dataPoint : dataPoints){
@@ -180,7 +180,7 @@ public class SimulationService {
         marketShareMap = marketShareMap.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
-                        e -> e.getValue().divide(a, BigDecimal.ROUND_HALF_EVEN).multiply(marketShareDistribution)
+                        e -> e.getValue().divide(a, BigDecimal.ROUND_HALF_EVEN)
                 ));
 
         marketShareMap = marketShareMap.entrySet().stream()
@@ -210,10 +210,13 @@ public class SimulationService {
         i=0;
         for(String product: marketShareMap.keySet()) {
             BigDecimal marketShare = yearlyMarketShare.get(product);
+
             if (i < 2) {
-                marketShare = marketShare.subtract(marketShareMap.get(product).abs().divide(deductFactorSum, BigDecimal.ROUND_HALF_EVEN));
+                final BigDecimal factor = marketShareMap.get(product).abs().divide(deductFactorSum, BigDecimal.ROUND_HALF_EVEN);
+                marketShare = marketShare.subtract(factor.multiply(marketShareDistribution));
             } else {
-                marketShare = marketShare.add(marketShareMap.get(product).abs().divide(addFactorSum, BigDecimal.ROUND_HALF_EVEN));
+                final BigDecimal factor = marketShareMap.get(product).abs().divide(addFactorSum, BigDecimal.ROUND_HALF_EVEN);
+                marketShare = marketShare.add(factor.multiply(marketShareDistribution));
             }
             productMarketShare.put(product, marketShare);
             i++;

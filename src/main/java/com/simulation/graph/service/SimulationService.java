@@ -45,10 +45,10 @@ public class SimulationService {
         BENCHMARK_PRICE.put("green", GREEN_BENCHMARK_PRICE);
 
         MARKET_SHARE_DISTRIBUTION = new ArrayList<>();
-        MARKET_SHARE_DISTRIBUTION.add(new BigDecimal("5.00"));
-        MARKET_SHARE_DISTRIBUTION.add(new BigDecimal("7.00"));
-        MARKET_SHARE_DISTRIBUTION.add(new BigDecimal("9.00"));
         MARKET_SHARE_DISTRIBUTION.add(new BigDecimal("10.00"));
+        MARKET_SHARE_DISTRIBUTION.add(new BigDecimal("12.00"));
+        MARKET_SHARE_DISTRIBUTION.add(new BigDecimal("14.00"));
+        MARKET_SHARE_DISTRIBUTION.add(new BigDecimal("16.00"));
     }
 
     @Autowired
@@ -103,34 +103,34 @@ public class SimulationService {
         return buildGraphInput(graphInputModel);
     }
 
-    private Map<String, BigDecimal> buildProductMarketShare(Map<String, BigDecimal> productYearlyDeduction, Map<String, UserInput> graphInputModels,
-                                                            Graph deduction, Map<String, BigDecimal> yearlyMarketShare, Map<String, BigDecimal> marketShare2014){
-        Map<String, Map> blueDataPoints = graphInputModels.get("blue").getDataPoint();
-        Map<String, Map> redDataPoints = graphInputModels.get("red").getDataPoint();
-        Map<String, Map> yellowDataPoints = graphInputModels.get("yellow").getDataPoint();
-        Map<String, Map> greenDataPoints = graphInputModels.get("green").getDataPoint();
+    private Map<String, BigDecimal> buildProductMarketShare(Map<String, BigDecimal> productYearlyDeduction, Set<String> dataPoints,
+                                                            Graph deduction, Map<String, BigDecimal> yearlyMarketShare){
+//        Map<String, Map> blueDataPoints = graphInputModels.get("blue").getDataPoint();
+//        Map<String, Map> redDataPoints = graphInputModels.get("red").getDataPoint();
+//        Map<String, Map> yellowDataPoints = graphInputModels.get("yellow").getDataPoint();
+//        Map<String, Map> greenDataPoints = graphInputModels.get("green").getDataPoint();
 
-        Map<String, Set<String>> marketShareDeductions = new HashMap<>();
-
-        for(String dataPoint: blueDataPoints.keySet()){
-            Set<String> productMarketShare = new HashSet<>();
-            Map marketSharePerDataPoint = blueDataPoints.get(dataPoint);
-            for(Object subDataPoint : marketSharePerDataPoint.keySet()) {
-                if ( new BigDecimal(marketSharePerDataPoint.get(subDataPoint.toString()).toString()).doubleValue() > 0.0) {
-                    if (new BigDecimal(redDataPoints.get(dataPoint).get(subDataPoint).toString()).doubleValue() > 0.0) {
-                        productMarketShare.add("red");
-                    }
-                    if (new BigDecimal(yellowDataPoints.get(dataPoint).get(subDataPoint).toString()).doubleValue() > 0.0) {
-                        productMarketShare.add("yellow");
-                    }
-                    if (new BigDecimal(greenDataPoints.get(dataPoint).get(subDataPoint).toString()).doubleValue() > 0.0) {
-                        productMarketShare.add("green");
-                    }
-                    productMarketShare.add("blue");
-                }
-            }
-            marketShareDeductions.put(dataPoint, productMarketShare);
-        }
+//        Map<String, Set<String>> marketShareDeductions = new HashMap<>();
+//
+//        for(String dataPoint: blueDataPoints.keySet()){
+//            Set<String> productMarketShare = new HashSet<>();
+//            Map marketSharePerDataPoint = blueDataPoints.get(dataPoint);
+//            for(Object subDataPoint : marketSharePerDataPoint.keySet()) {
+//                if ( new BigDecimal(marketSharePerDataPoint.get(subDataPoint.toString()).toString()).doubleValue() > 0.0) {
+//                    if (new BigDecimal(redDataPoints.get(dataPoint).get(subDataPoint).toString()).doubleValue() > 0.0) {
+//                        productMarketShare.add("red");
+//                    }
+//                    if (new BigDecimal(yellowDataPoints.get(dataPoint).get(subDataPoint).toString()).doubleValue() > 0.0) {
+//                        productMarketShare.add("yellow");
+//                    }
+//                    if (new BigDecimal(greenDataPoints.get(dataPoint).get(subDataPoint).toString()).doubleValue() > 0.0) {
+//                        productMarketShare.add("green");
+//                    }
+//                    productMarketShare.add("blue");
+//                }
+//            }
+//            marketShareDeductions.put(dataPoint, productMarketShare);
+//        }
 
         Map<String, Map<String, BigDecimal>> marketSharePerDataPoint = gson.fromJson(deduction.getModel(),
                 new TypeToken<Map<String, Map<String, BigDecimal>>>(){}.getType());
@@ -139,7 +139,7 @@ public class SimulationService {
 
         for(String product: yearlyMarketShare.keySet()) {
             Map<String, BigDecimal> marketShareDeductionPerDataPoint = new HashMap<>();
-            for (String dataPoint : marketShareDeductions.keySet()) {
+            for (String dataPoint : dataPoints) {
                 marketShareDeductionPerDataPoint.put(dataPoint, productYearlyDeduction.get(product)
                         .multiply(marketSharePerDataPoint.get(product).get(dataPoint)));
             }
@@ -151,7 +151,7 @@ public class SimulationService {
         BigDecimal minMarketShare = BigDecimal.ONE;
         for(String product: yearlyMarketShare.keySet()){
             BigDecimal marketShareCalculated = BigDecimal.ZERO;
-            for(String dataPoint : marketShareDeductions.keySet()){
+            for(String dataPoint : dataPoints){
 //                if(marketShareDeductions.get(dataPoint).contains(product)) {
                     marketShareCalculated = marketShareCalculated.add(productMarketShareDeductionPerDataPoint.get(product).get(dataPoint));
 //                }
@@ -234,7 +234,7 @@ public class SimulationService {
         Graph marketShareGraph = repository.findOne(userId + "_marketShare");
         Map<String, Map<String, BigDecimal>> marketShareStored = gson.fromJson(marketShareGraph.getModel()
                 , new TypeToken<Map<String,Map<String, BigDecimal>>>(){}.getType());
-        Map<String, BigDecimal> marketShare2014 = marketShareStored.get("2014");
+//        Map<String, BigDecimal> marketShare2014 = marketShareStored.get("2014");
         Map<String, BigDecimal> yearlyMarketShare = marketShareStored.get(String.valueOf(Integer.valueOf(year)-1));
 
         Map<String, Map> graphWeightageModel = gson.fromJson(weightage.getModel(), new TypeToken<Map<String, Map>>(){}.getType());
@@ -250,7 +250,7 @@ public class SimulationService {
             productYearlyDeduction.put(product, yearlyDeduction);
         }
 
-        Map<String, BigDecimal> productMarketShare = buildProductMarketShare(productYearlyDeduction, graphInputModels, deduction, yearlyMarketShare, marketShare2014);
+        Map<String, BigDecimal> productMarketShare = buildProductMarketShare(productYearlyDeduction, graphInputModels.get("blue").getDataPoint().keySet(), deduction, yearlyMarketShare);
 
         Map<String, Map<String, BigDecimal>> marketShareYearly = new HashMap<>();
         marketShareYearly.putAll(marketShareStored);

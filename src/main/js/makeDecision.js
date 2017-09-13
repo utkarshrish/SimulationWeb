@@ -1,10 +1,9 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
-const Nav = require('react-bootstrap/lib/Nav');
-const NavItem = require('react-bootstrap/lib/NavItem');
 const ProgressBar = require('react-bootstrap/lib/ProgressBar');
 const client = require('./client');
 const CheckboxFilters = require('./modules/checkboxForm');
+const GraphNavigation = require('./modules/graphNavigation');
 
 class MakeDecision extends React.Component {
 
@@ -234,6 +233,11 @@ class MakeDecision extends React.Component {
             "region": "Region",
             "age":"Age"
         };
+        if(this.state.year>2022){
+            this.setState({
+                submitButton : "btn btn-primary btn-block disabled"
+            });
+        }
 
         var makeDecisionForm = this.state.makeDecisionForm.model;
         if(makeDecisionForm !== undefined){
@@ -261,18 +265,7 @@ class MakeDecision extends React.Component {
             return (
 
                 <div className="container">
-                    <div className="header clearfix">
-                        <Nav bsStyle="pills" pullRight="true">
-                            <NavItem eventKey={1} href="/logout">Logout</NavItem>
-                        </Nav>
-                        <h3 className="text-muted">Analytics Simulation</h3>
-                    </div>
-                    <Nav bsStyle="tabs" justified activeKey={4}>
-                        <NavItem eventKey={1} href="/dashboard">Dashboard</NavItem>
-                        <NavItem eventKey={2} href="/reports">Reports</NavItem>
-                        <NavItem eventKey={3} href="/explorer">Data Explorer</NavItem>
-                        <NavItem eventKey={4} href="/makeDecision"> | Make Decision</NavItem>
-                    </Nav>
+                    <GraphNavigation year={this.props.year} capYear={2023} activeKey={4}/>
                     <div className="row">
                         <form onSubmit={this.handleSubmit}>
                             <div className="decisions">
@@ -330,7 +323,7 @@ class MakeDecision extends React.Component {
                                             <div className="col-xs-2 number">Total</div>
                                         </div>
                                     </div>
-                                    <div className="col-xs-4">Total Trade Channel Budget: <span data-field="total_trade_channel_spend" data-format="usd-big" data-format-max="1000000">{"$" + tradeChannelSpend + "M"}</span></div>
+                                    <div className="col-xs-4">Total Trade Channel Budget: <span data-field="total_trade_channel_spend" data-format="usd-big" data-format-max="1000000">{"$" + tradeChannelSpend.toFixed(2) + "M"}</span></div>
                                     <div className="col-xs-8">
                                         <div className="row">
                                             <div className="col-xs-2"></div>
@@ -368,7 +361,7 @@ class MakeDecision extends React.Component {
                                             <div className="col-xs-2 number">Total</div>
                                         </div>
                                     </div>
-                                    <div className="col-xs-4">Total Media Budget: <span data-field="total_media_spend" data-format="usd-big" data-format-max="1000000">{"$" + mediaSpend+"M"}</span></div>
+                                    <div className="col-xs-4">Total Media Budget: <span data-field="total_media_spend" data-format="usd-big" data-format-max="1000000">{"$" + mediaSpend.toFixed(2) +"M"}</span></div>
                                     <div className="col-xs-8">
                                         <div className="row">
                                             <div className="col-xs-2"></div>

@@ -1,10 +1,9 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
-const Nav = require('react-bootstrap/lib/Nav');
 const Table = require('react-bootstrap/lib/Table');
-const NavItem = require('react-bootstrap/lib/NavItem');
 const client = require('./client');
 const SimulationGraph = require('./modules/simulationGraph');
+const GraphNavigation = require('./modules/graphNavigation');
 
 class Reports extends React.Component {
 
@@ -45,18 +44,7 @@ class Reports extends React.Component {
             let costModel = JSON.parse(costs);
             return (
                 <div className="container">
-                    <div className="header clearfix">
-                        <Nav bsStyle="pills" pullRight="true">
-                            <NavItem eventKey={1} href="/logout">Logout</NavItem>
-                        </Nav>
-                        <h3 className="text-muted">Analytics Simulation</h3>
-                    </div>
-                    <Nav bsStyle="tabs" justified activeKey={2}>
-                        <NavItem eventKey={1} href="/dashboard">Dashboard</NavItem>
-                        <NavItem eventKey={2} href="/reports">Reports</NavItem>
-                        <NavItem eventKey={3} href="/explorer">Data Explorer</NavItem>
-                        <NavItem eventKey={4} href="/makeDecision"> | Make Decision</NavItem>
-                    </Nav>
+                    <GraphNavigation year={this.props.year} capYear={2022} activeKey={2}/>
                     <div className="row">
                         <div className="cols-xs-3">
                             <ul>

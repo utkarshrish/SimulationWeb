@@ -1,5 +1,7 @@
 package com.simulation.graph;
 
+import com.simulation.graph.model.UserInput;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -105,5 +107,41 @@ public class GraphUtil {
             return value.movePointLeft(9).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
         }
         return value.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+
+    public static UserInput buildGraphInput(Map graphInput){
+        UserInput graphInputModel = new UserInput();
+        BigDecimal unitPrice = convertMillion(graphInput.get("unitPrice").toString());
+        graphInputModel.setUnitPrice(unitPrice);
+
+        BigDecimal productionUnit = convertMillion(graphInput.get("productionUnit").toString());
+        graphInputModel.setProductionUnit(productionUnit);
+
+        BigDecimal unitCost = convertMillion(graphInput.get("unitCost").toString());
+        graphInputModel.setUnitCost(unitCost);
+
+        HashMap<String, Map> blueDataPoints = new HashMap<>();
+        blueDataPoints.put("style",(Map)graphInput.get("style"));
+        blueDataPoints.put("productPlacement",(Map)graphInput.get("productPlacement"));
+        blueDataPoints.put("distribution",(Map)graphInput.get("distribution"));
+        blueDataPoints.put("media",(Map)graphInput.get("media"));
+        blueDataPoints.put("incomeGroup",(Map)graphInput.get("incomeGroup"));
+        blueDataPoints.put("ethnicity",(Map)graphInput.get("ethnicity"));
+        blueDataPoints.put("householdSizes",(Map)graphInput.get("householdSizes"));
+        blueDataPoints.put("region",(Map)graphInput.get("region"));
+        blueDataPoints.put("age",(Map)graphInput.get("age"));
+        graphInputModel.setDataPoint(blueDataPoints);
+        return graphInputModel;
+    }
+
+    private static BigDecimal convertMillion(String input){
+        if(input.indexOf("M")>0){
+            BigDecimal number = new BigDecimal(input.split("M")[0]);
+            return number.movePointRight(6);
+        } else if(input.indexOf("m")>0){
+            BigDecimal number = new BigDecimal(input.split("m")[0]);
+            return number.movePointRight(6);
+        }
+        return new BigDecimal(input);
     }
 }

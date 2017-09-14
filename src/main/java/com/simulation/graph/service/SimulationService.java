@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.simulation.graph.GraphInputRepository;
 import com.simulation.graph.GraphRepository;
+import com.simulation.graph.GraphUtil;
 import com.simulation.graph.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -100,7 +101,7 @@ public class SimulationService {
     private UserInput buildGraphInput(String product, String year){
         GraphInput graphInput = this.inputRepository.findOne(product + year);
         Map graphInputModel = gson.fromJson(graphInput.getUserInput(), Map.class);
-        return buildGraphInput(graphInputModel);
+        return GraphUtil.buildGraphInput(graphInputModel);
     }
 
     private Map<String, BigDecimal> buildProductMarketShare(Map<String, BigDecimal> productYearlyDeduction, Set<String> dataPoints,
@@ -231,7 +232,7 @@ public class SimulationService {
         graphInputModels.put("red", buildGraphInput("red", year));
         graphInputModels.put("green", buildGraphInput("green", year));
         graphInputModels.put("yellow", buildGraphInput("yellow", year));
-        graphInputModels.put("blue", buildGraphInput(graphInput));
+        graphInputModels.put("blue", GraphUtil.buildGraphInput(graphInput));
 //        graphInputModels.put("blue", buildGraphInput("blue", year));
 
         Graph marketShareGraph = repository.findOne(userId + "_marketShare");
@@ -328,49 +329,13 @@ public class SimulationService {
     private BigDecimal spendFactor(UserInput graphInputModel, String spendType){
         BigDecimal factor = BigDecimal.ZERO;
         for(Object spend :graphInputModel.getDataPoint().get(spendType).keySet()){
-            factor.add(new BigDecimal(graphInputModel.getDataPoint().get(spendType).get(spend).toString()));
+            factor = factor.add(new BigDecimal(graphInputModel.getDataPoint().get(spendType).get(spend).toString()));
         }
         return factor;
     }
 
     public void buildReports(String userId, String graphInput, Graph deduction, Graph weightage, String year){
         buildReports(userId, gson.fromJson(graphInput, Map.class), deduction, weightage, year);
-    }
-
-    private UserInput buildGraphInput(Map graphInput){
-        UserInput graphInputModel = new UserInput();
-        BigDecimal unitPrice = convertMillion(graphInput.get("unitPrice").toString());
-        graphInputModel.setUnitPrice(unitPrice);
-
-        BigDecimal productionUnit = convertMillion(graphInput.get("productionUnit").toString());
-        graphInputModel.setProductionUnit(productionUnit);
-
-        BigDecimal unitCost = convertMillion(graphInput.get("unitCost").toString());
-        graphInputModel.setUnitCost(unitCost);
-
-        HashMap<String, Map> blueDataPoints = new HashMap<>();
-        blueDataPoints.put("style",(Map)graphInput.get("style"));
-        blueDataPoints.put("productPlacement",(Map)graphInput.get("productPlacement"));
-        blueDataPoints.put("distribution",(Map)graphInput.get("distribution"));
-        blueDataPoints.put("media",(Map)graphInput.get("media"));
-        blueDataPoints.put("incomeGroup",(Map)graphInput.get("incomeGroup"));
-        blueDataPoints.put("ethnicity",(Map)graphInput.get("ethnicity"));
-        blueDataPoints.put("householdSizes",(Map)graphInput.get("householdSizes"));
-        blueDataPoints.put("region",(Map)graphInput.get("region"));
-        blueDataPoints.put("age",(Map)graphInput.get("age"));
-        graphInputModel.setDataPoint(blueDataPoints);
-        return graphInputModel;
-    }
-
-    private BigDecimal convertMillion(String input){
-        if(input.indexOf("M")>0){
-            BigDecimal number = new BigDecimal(input.split("M")[0]);
-            return number.movePointRight(6);
-        } else if(input.indexOf("m")>0){
-            BigDecimal number = new BigDecimal(input.split("m")[0]);
-            return number.movePointRight(6);
-        }
-        return new BigDecimal(input);
     }
 
     private BigDecimal calculateUnitCost(UserInput graphInputModel, String dataPoint){

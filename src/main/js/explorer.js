@@ -106,7 +106,7 @@ class App extends React.Component {
 			let eventKey = 1;
 			return (
 				<div className="container">
-					<GraphNavigation year={this.props.year} capYear={2022} activeKey={3}/>
+					<GraphNavigation year={this.state.year} capYear={2022} activeKey={3}/>
 					<div className="row">
 						<div className="cols-xs-12">
 							<div className="GraphTypes cols-xs-3">

@@ -265,7 +265,7 @@ class MakeDecision extends React.Component {
             return (
 
                 <div className="container">
-                    <GraphNavigation year={this.props.year} capYear={2023} activeKey={4}/>
+                    <GraphNavigation year={this.state.year} capYear={2023} activeKey={4}/>
                     <div className="row">
                         <form onSubmit={this.handleSubmit}>
                             <div className="decisions">

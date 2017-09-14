@@ -1,9 +1,12 @@
 package com.simulation.graph;
 
 import com.auth0.SessionUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.nimbusds.jose.Payload;
 import com.simulation.graph.model.Graph;
 import com.simulation.graph.model.GraphInput;
+import com.simulation.graph.model.UserInput;
 import com.simulation.graph.service.GraphService;
 import com.simulation.graph.service.ReportService;
 import com.simulation.graph.service.SimulationService;
@@ -16,7 +19,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -38,6 +44,7 @@ public class HomeController {
 	private GraphInputRepository inputRepository;
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	final static Gson gson = new Gson();
 
 	@RequestMapping(value = "/explorer")
 	public String index(final HttpServletRequest req, Map<String, Object> model) {
@@ -97,6 +104,27 @@ public class HomeController {
 		return "reports";
 	}
 
+	@RequestMapping(value = "/decisionHistory")
+	public String decisionHistory(final HttpServletRequest req, Map<String, Object> model) {
+		final String idToken = (String) SessionUtils.get(req, "idToken");
+		SignedJWT signedJWT;
+		final Payload payload;
+		try {
+			signedJWT = SignedJWT.parse(idToken);
+			payload = signedJWT.getPayload();
+			String userId = payload.toJSONObject().get("sub").toString();
+			int year = 2018;
+			if(this.repository.findOne(payload.toJSONObject().get("sub").toString()) != null){
+				year = Integer.valueOf(this.repository.findOne(userId).getModel());
+			}
+			model.put("user", userId + "_" + year);
+		}
+		catch (ParseException e){
+			logger.info("parsing exception");
+		}
+		return "decisionHistory";
+	}
+
 	@RequestMapping(value = "/dashboard")
 	public String dashboard(final HttpServletRequest req, Map<String, Object> model) throws IOException {
 		String idToken = (String) SessionUtils.get(req, "idToken");
@@ -107,7 +135,7 @@ public class HomeController {
 			payload = signedJWT.getPayload();
 			String userId = payload.toJSONObject().get("sub").toString();
 			int year;
-			if(this.repository.findOne(payload.toJSONObject().get("sub").toString()) != null){
+			if(this.repository.findOne(userId) != null){
 				year = Integer.valueOf(this.repository.findOne(userId).getModel());
 			} else{
 				year = 2018;
@@ -157,7 +185,15 @@ public class HomeController {
 			final String userId = payload.toJSONObject().get("sub").toString();
 			this.repository.save(new Graph(userId, "simulationGraph", String.valueOf(Integer.valueOf(year))));
 
-			GraphInput blueGraphInput = new GraphInput(userId + "_blue"+ year, year, graphInput.toString());
+			final List<UserInput> userInputs = new ArrayList<>();
+			GraphInput graphInputs = this.inputRepository.findOne(userId);
+			if(graphInputs != null){
+				userInputs.addAll(gson.fromJson(graphInputs.getUserInput()
+						, new TypeToken<List<UserInput>>(){}.getType()));
+			}
+			userInputs.add(GraphUtil.buildGraphInput(graphInput));
+
+			GraphInput blueGraphInput = new GraphInput(userId, year, gson.toJson(userInputs));
 			this.inputRepository.save(blueGraphInput);
 
 			Graph deductionGraph = repository.findOne("deductions");
@@ -229,9 +265,8 @@ public class HomeController {
 			final Payload payload = signedJWT.getPayload();
 			String userId = payload.toJSONObject().get("sub").toString();
 
-			for(int year = 2018; year<2023; year++){
-				this.inputRepository.delete(userId+ "_blue" + year);
-			}
+			this.inputRepository.delete(userId);
+
 			this.repository.delete(userId);
 			this.repository.delete(userId + "_marketShare");
 			this.repository.delete(userId + "_reports");

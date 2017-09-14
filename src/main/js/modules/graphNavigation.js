@@ -20,26 +20,46 @@ class GraphNavigation extends React.Component {
                         <NavItem eventKey={2} href="/reports">Reports</NavItem>
                         <NavItem eventKey={3} href="/explorer">Data Explorer</NavItem>
                         <NavItem eventKey={4} disabled href="/makeDecision"> | Make Decision</NavItem>
+                        <NavItem eventKey={5} href="/decisionHistory">Decision History</NavItem>
                     </Nav>
                     <Button bsStyle="danger">Game Over</Button>
                     <Button bsStyle="danger">Start Over</Button>
                 </div>
             );
-        } else{
-            return(
-                <div className="header clearfix">
-                    <Nav bsStyle="pills" pullRight="true">
-                        <NavItem eventKey={1} href="/logout">Logout</NavItem>
-                    </Nav>
-                    <h3 className="text-muted">Analytics Simulation</h3>
-                    <Nav bsStyle="tabs" justified activeKey={this.props.activeKey}>
-                        <NavItem eventKey={1} href="/dashboard">Dashboard</NavItem>
-                        <NavItem eventKey={2} href="/reports">Reports</NavItem>
-                        <NavItem eventKey={3} href="/explorer">Data Explorer</NavItem>
-                        <NavItem eventKey={4} href="/makeDecision"> | Make Decision</NavItem>
-                    </Nav>
-                </div>
-            );
+        } else {
+            if(this.props.year>=2019){
+                return(
+                    <div className="header clearfix">
+                        <Nav bsStyle="pills" pullRight="true">
+                            <NavItem eventKey={1} href="/logout">Logout</NavItem>
+                        </Nav>
+                        <h3 className="text-muted">Analytics Simulation</h3>
+                        <Nav bsStyle="tabs" justified activeKey={this.props.activeKey}>
+                            <NavItem eventKey={1} href="/dashboard">Dashboard</NavItem>
+                            <NavItem eventKey={2} href="/reports">Reports</NavItem>
+                            <NavItem eventKey={3} href="/explorer">Data Explorer</NavItem>
+                            <NavItem eventKey={4} href="/makeDecision"> | Make Decision</NavItem>
+                            <NavItem eventKey={5} href="/decisionHistory">Decision History</NavItem>
+                        </Nav>
+                    </div>
+                );
+            } else {
+                return(
+                    <div className="header clearfix">
+                        <Nav bsStyle="pills" pullRight="true">
+                            <NavItem eventKey={1} href="/logout">Logout</NavItem>
+                        </Nav>
+                        <h3 className="text-muted">Analytics Simulation</h3>
+                        <Nav bsStyle="tabs" justified activeKey={this.props.activeKey}>
+                            <NavItem eventKey={1} href="/dashboard">Dashboard</NavItem>
+                            <NavItem eventKey={2} href="/reports">Reports</NavItem>
+                            <NavItem eventKey={3} href="/explorer">Data Explorer</NavItem>
+                            <NavItem eventKey={4} href="/makeDecision"> | Make Decision</NavItem>
+                            <NavItem eventKey={5} disabled href="/decisionHistory">Decision History</NavItem>
+                        </Nav>
+                    </div>
+                );
+            }
         }
     }
 }

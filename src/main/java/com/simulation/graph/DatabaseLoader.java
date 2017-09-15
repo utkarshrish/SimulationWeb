@@ -23,7 +23,8 @@ public class DatabaseLoader implements CommandLineRunner {
 
 	@Override
 	public void run(String... strings) throws Exception {
-
+		this.repository.deleteAll();
+		this.inputRepository.deleteAll();
 		String str = "";
 		StringBuffer buf = new StringBuffer();
 //		BufferedReader br = new BufferedReader(new InputStreamReader(DatabaseLoader.class.getResourceAsStream("/" +"strategic.json"), "UTF-8"));

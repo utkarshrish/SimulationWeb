@@ -53,7 +53,7 @@ public class GraphService {
         explorerGraph.put("graphTransformAxisY", 6);
         explorerGraph.put("xAxis", GraphUtil.createXAxis());
         explorerGraph.put("marketShareYAxis", GraphUtil.createYAxis(0, 100, "%"));
-        explorerGraph.put("operatingProfitYAxis", GraphUtil.createYAxis(-180, 300, "M"));
+        explorerGraph.put("operatingProfitYAxis", GraphUtil.createYAxis(-150, 200, "M"));
 
         for(String graphLegend: GRAPH_LEGENDS){
             final List<Map<String, Object>> graphData = createGraphData(reportsStored, graphLegend);
@@ -77,11 +77,6 @@ public class GraphService {
 
         Graph explorerGraphUpdated = new Graph(userId + "_explorer", "simulationGraph", gson.toJson(explorerGraph));
         this.repository.save(explorerGraphUpdated);
-    }
-
-    private List<Map<String, Object>> createMarketShareAverage(Map<String, BigDecimal> reportsStored, String type){
-        List<Map<String, Object>> graphDataProductList = new ArrayList<>();
-        return graphDataProductList;
     }
 
     private List<Map<String, Object>> createGraphData(Map<String, Map<String, Map<String, BigDecimal>>> reportsStored, String type){

@@ -19,7 +19,9 @@ class Reports extends React.Component {
                 production : "Production v. Demand",
                 unitPrice: "Pricing"
             },
-            years:["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022"]
+            years:["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022"],
+            marketData: [],
+            blueAverage: {}
         };
 
         this.updateGraphFilter = this.updateGraphFilter.bind(this);
@@ -28,6 +30,12 @@ class Reports extends React.Component {
     componentDidMount() {
         client({method: 'GET', path: '/api/graphs/'+ this.state.user + '_' +'reportsGraph'}).done(response => {
             this.setState({reports: response.entity});
+        });
+        client({method: 'GET', path: '/api/graphs/'+ this.state.user + '_' +'marketShare'}).done(response => {
+            this.setState({marketData: JSON.parse(response.entity.model)});
+        });
+        client({method: 'GET', path: '/api/graphs/blueAverage'}).done(response => {
+            this.setState({blueAverage: JSON.parse(response.entity.model)});
         });
     }
 
@@ -41,28 +49,33 @@ class Reports extends React.Component {
     render() {
         let costs = this.state.reports.model;
         if(costs !==undefined){
+            let graphTypes = this.state.graphTypes;
+            if(this.state.year>=2019){
+                graphTypes["trend"] = "Market Share Trend";
+            }
             let costModel = JSON.parse(costs);
             return (
                 <div className="container">
-                    <GraphNavigation year={this.state.year} capYear={2022} activeKey={2}/>
+                    <GraphNavigation title="Analytics Simulation| Reports" year={this.state.year} capYear={2022} activeKey={2}/>
                     <div className="row">
-                        <div className="cols-xs-3">
+                        <div className="col-xs-3">
                             <ul>
-                                {Object.keys(this.state.graphTypes).map((graphType) =>
+                                {Object.keys(graphTypes).map((graphType) =>
                                     <li>
                                         <label>
                                             <input type="radio" name="variable" value={graphType}
                                                    checked={graphType === this.state.graphOption}
                                                    onChange={this.updateGraphFilter}/>
-                                            {this.state.graphTypes[graphType]}
+                                            {graphTypes[graphType]}
                                         </label>
                                     </li>
                                 )}
                             </ul>
                         </div>
-                        <div className="cols-xs-9">
+                        <div className="col-xs-9">
                             <div className="Reports">
-                                <ReportsTable costs={costModel} graphOption={this.state.graphOption} year={this.state.year}/>
+                                <ReportsTable costs={costModel} graphOption={this.state.graphOption}
+                                              year={this.state.year} marketData={this.state.marketData} blueAverage={this.state.blueAverage}/>
                             </div>
                         </div>
                     </div>
@@ -100,6 +113,12 @@ class ReportsTable extends React.Component{
                 "legends": ["Blue", "Turbo", "Fresh", "Store"],
                 "legendsType": "s"
             },
+            blueAverage: {
+                2019: 16.87,
+                2020: 19.38,
+                2021: 21.43,
+                2022: 27.00
+            },
             years:["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022"]
         };
     }
@@ -114,47 +133,95 @@ class ReportsTable extends React.Component{
             }
             let costs = this.props.costs[this.props.graphOption];
             return (
-                <div className="cols-xs-8">
+                <div className="col-xs-12">
                     <h4>
                         <span>Income Statement     </span>
                         <small>(in $US)</small>
                     </h4>
-                <Table>
-                    <thead>
+                    <Table>
+                        <thead>
                         <tr className="l1 number">
-                        <td></td>
-                        {this.state.years.map((year) =>
-                            <td>{year}</td>
-                        )}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <CostRow rowCss="l2 number" costs={costs} years={years} costProperty="revenue"
-                             costPropertyName="Revenue"/>
-                    <tr className="l2 number">
-                        <td>Costs</td>
-                        {this.state.years.map((year) =>
                             <td></td>
-                        )}
-                    </tr>
-                    <CostRow rowCss="l3 number" costs={costs} years={years}
-                             costProperty="variableCost" costPropertyName="Variable Costs"/>
-                    <CostRow rowCss="l3 number" costs={costs} years={years}
-                             costProperty="fixedCost" costPropertyName="Fixed Costs"/>
-                    <CostRow rowCss="l3 number" costs={costs} years={years}
-                             costProperty="otherCost" costPropertyName="Other Costs"/>
-                    <CostRow rowCss="l2 number" costs={costs} years={years}
-                             costProperty="totalCost" costPropertyName="Total Costs"/>
-                    <CostRow rowCss="l2 number" costs={costs} years={years}
-                             costProperty="operatingProfit" costPropertyName="Operating Profit"/>
-                    </tbody>
-                    <tfoot>
-                    <CostRow rowCss="l2 number" costs={costs} years={years}
-                             costProperty="cumulativeOperatingProfit" costPropertyName="Cumulative Operating Profit"/>
-                    </tfoot>
-                </Table>
+                            {this.state.years.map((year) =>
+                                <td>{year}</td>
+                            )}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <CostRow rowCss="l2 number" costs={costs} years={years} costProperty="revenue"
+                                 costPropertyName="Revenue"/>
+                        <tr className="l2 number">
+                            <td>Costs</td>
+                            {this.state.years.map((year) =>
+                                <td></td>
+                            )}
+                        </tr>
+                        <CostRow rowCss="l3 number" costs={costs} years={years}
+                                 costProperty="variableCost" costPropertyName="Variable Costs"/>
+                        <CostRow rowCss="l3 number" costs={costs} years={years}
+                                 costProperty="fixedCost" costPropertyName="Fixed Costs"/>
+                        <CostRow rowCss="l3 number" costs={costs} years={years}
+                                 costProperty="otherCost" costPropertyName="Other Costs"/>
+                        <CostRow rowCss="l2 number" costs={costs} years={years}
+                                 costProperty="totalCost" costPropertyName="Total Costs"/>
+                        <CostRow rowCss="l2 number" costs={costs} years={years}
+                                 costProperty="operatingProfit" costPropertyName="Operating Profit"/>
+                        </tbody>
+                        <tfoot>
+                        <CostRow rowCss="l2 number" costs={costs} years={years}
+                                 costProperty="cumulativeOperatingProfit" costPropertyName="Cumulative Operating Profit"/>
+                        </tfoot>
+                    </Table>
                 </div>
             )
+        } else if(this.props.graphOption == "trend"){
+            let playedYears = [];
+            for (let year = 2019; year <= this.props.year; year++){
+                playedYears.push(year);
+            }
+            if(this.props.marketData && this.state.blueAverage) {
+                return (
+                    <div className="col-xs-12">
+                        <h4>
+                            <span>Market Share Trend     </span>
+                            <small>(in %)</small>
+                        </h4>
+                        <Table>
+                            <thead>
+                            <tr className="l1 number">
+                                <td></td>
+                                <td>2019</td>
+                                <td>2020</td>
+                                <td>2021</td>
+                                <td>2022</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr className="l2 number">
+                                <td>Blue's Market Share</td>
+                                {playedYears.map((playedYear)=>
+                                    <td>
+                                        {this.props.marketData[playedYear]["blue"].toFixed(2)}
+                                    </td>
+                                )}
+                            </tr>
+                            <tr className="l2 number">
+                                <td>Global Blue's Average Market Share</td>
+                                {playedYears.map((playedYear)=>
+                                    <td>
+                                        {this.state.blueAverage[playedYear]}
+                                    </td>
+                                )}
+                            </tr>
+                            </tbody>
+                        </Table>
+                    </div>
+                )
+            } else {
+                return (
+                    <p>A</p>
+                )
+            }
         } else {
             return (
                 <SimulationGraph graph={this.props.costs}

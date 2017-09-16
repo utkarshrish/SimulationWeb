@@ -50,9 +50,9 @@ class Dashboard extends React.Component {
 
             return (
                 <div className="container">
-                    <GraphNavigation year={this.state.year} capYear={2022}  activeKey={1}/>
+                    <GraphNavigation title="Analytics Simulation| Dashboard" year={this.state.year} capYear={2022}  activeKey={1}/>
                     <div className="row">
-                        <div className="cols-xs-12">
+                        <div className="col-xs-12">
                             <div id="upperChart" className="cols-xs-6">
                                 <h4>
                                     <span>Market Share      </span>

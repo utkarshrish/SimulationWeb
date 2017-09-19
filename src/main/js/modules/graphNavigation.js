@@ -53,7 +53,7 @@ class GraphNavigation extends React.Component {
         return(
             <div className="header clearfix">
                 <Nav id="logout" bsStyle="tabs" pullRight="true">
-                    <NavItem eventKey={1} onClick={this.openShowPrepare}>Show Description</NavItem>
+                    <NavItem eventKey={1} onClick={this.openShowPrepare}>Read Notes</NavItem>
                     <NavItem eventKey={2} href="/logout">Logout</NavItem>
                 </Nav>
                 <Nav bsStyle="tabs" justified activeKey={this.props.activeKey}>

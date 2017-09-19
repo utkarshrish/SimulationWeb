@@ -105,7 +105,8 @@ class Explorer extends React.Component {
 			let eventKey = 1;
 			return (
 				<div className="container">
-					<GraphNavigation title="Analytics Simulation| Explorer" year={this.state.year} capYear={2022} activeKey={3}/>
+					<GraphNavigation title="Analytics Simulation| Explorer" year={this.state.year} capYear={2022}
+									 activeKey={3} showPrepare={false}/>
 					<div className="row">
 						<div className="cols-xs-12">
 							<div className="GraphTypes cols-xs-3">

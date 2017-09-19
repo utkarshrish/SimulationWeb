@@ -268,7 +268,8 @@ class MakeDecision extends React.Component {
             return (
 
                 <div className="container">
-                    <GraphNavigation title="Analytics Simulation| Make Decision" year={this.state.year} capYear={2023} activeKey={4}/>
+                    <GraphNavigation title="Analytics Simulation| Make Decision" year={this.state.year} capYear={2023}
+                                     activeKey={4} showPrepare={false}/>
                     <div className="row">
                         <form onSubmit={this.handleSubmit}>
                             <div className="col-xs-12 decisions">

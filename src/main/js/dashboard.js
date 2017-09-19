@@ -4,8 +4,6 @@ const client = require('./client');
 const SimulationGraph = require('./modules/simulationGraph');
 import PieChart from "react-svg-piechart"
 const GraphNavigation = require('./modules/graphNavigation');
-const Modal = require('react-bootstrap/lib/Modal');
-const Button = require('react-bootstrap/lib/Button');
 
 class Dashboard extends React.Component {
 
@@ -17,8 +15,7 @@ class Dashboard extends React.Component {
             dashboard: [],
             marketData: [],
             years:["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022"],
-            expandedSector: null,
-            showPrepare: document.getElementById('user').innerText.trim().split("_")[1] === "2018"
+            expandedSector: null
         };
         this.handleMouseEnterOnSector = this.handleMouseEnterOnSector.bind(this)
     }
@@ -37,8 +34,6 @@ class Dashboard extends React.Component {
     }
 
     render() {
-        let prepare = () => this.setState({ showPrepare: false});
-
         let costs = this.state.dashboard.model;
         let marketShare = this.state.marketData.model;
         if(costs !== undefined && marketShare !== undefined){
@@ -55,57 +50,9 @@ class Dashboard extends React.Component {
 
             return (
                 <div className="container">
-                    <GraphNavigation title="Analytics Simulation| Dashboard" year={this.state.year} capYear={2022}  activeKey={1}/>
-                    <div className="modal-container" style={{height: 200}}>
-                        <Modal
-                            show={this.state.showPrepare}
-                            onHide={prepare}
-                            container={this}
-                            aria-labelledby="contained-modal-title"
-                        >
-                            <Modal.Header closeButton>
-                                <Modal.Title id="contained-modal-title">Background</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <p>
-                                    You have just been hired as a brand manager at Blue, a multinational consumer goods company. Recently the firm invested in the development of a series of systems and processes that allow the use of up-to-date data and advanced analytics to drive informed decision making about Blue. It is 2018. The system is populated with 4 years of historical data.
-                                </p>
-                                <p>
-                                    As brand manager for K-W’s Blue laundry detergent, you are tasked to lead the brand's turnaround. Use the Vision platform to to develop your strategy and grow Blue’s market share over the next 4 years.
-                                </p>
-                                <p>
-                                    Your objectives:
-                                </p>
-                                <p>
-                                    Use the Blue dashboard, reports and data explorer screens to identify issues and opportunities for Blue in the market.
-                                </p>
-                                <p>
-                                    Make decisions that support the Blue brand:
-                                </p>
-                                <p>
-                                    ◦ Predict market demand and set production
-                                </p>
-                                <p>
-                                    ◦ Set channel price
-                                </p>
-                                <p>
-                                    ◦ Make formulation decisions
-                                </p>
-                                <p>
-                                    ◦ Determine promotional spending decisions
-                                </p>
-                                <p>
-                                    ◦ Communicate your strategy to your managers
-                                </p>
-                                <p>
-                                    The simulation begins in 2019. Make decisions for 4 years, ending in 2022.
-                                </p>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button id="prepare" onClick={prepare}>Prepare</Button>
-                            </Modal.Footer>
-                        </Modal>
-                    </div>
+                    <GraphNavigation title="Analytics Simulation| Dashboard" year={this.state.year} capYear={2022}
+                                     activeKey={1} showPrepare={this.state.year == 2018}/>
+
                     <div className="row">
                         <div className="col-xs-12">
                             <div id="upperChart" className="cols-xs-6">

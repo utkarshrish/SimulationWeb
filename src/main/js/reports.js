@@ -55,7 +55,8 @@ class Reports extends React.Component {
             let costModel = JSON.parse(costs);
             return (
                 <div className="container">
-                    <GraphNavigation title="Analytics Simulation| Reports" year={this.state.year} capYear={2022} activeKey={2}/>
+                    <GraphNavigation title="Analytics Simulation| Reports" year={this.state.year} capYear={2022}
+                                     activeKey={2} showPrepare={false}/>
                     <div className="row">
                         <div className="col-xs-3">
                             <ul>

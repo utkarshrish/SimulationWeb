@@ -52,7 +52,8 @@ class DecisionHistory extends React.Component{
             }
             return (
                 <div className="container">
-                    <GraphNavigation title="Analytics Simulation| Decision History" year={this.state.year+2019} capYear={2022} activeKey={5}/>
+                    <GraphNavigation title="Analytics Simulation| Decision History" year={this.state.year+2019} capYear={2022}
+                                     activeKey={5} showPrepare={false}/>
                     <div className="row">
                         <div className="col-xs-7">
                             <Table>

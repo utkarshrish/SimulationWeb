@@ -7,7 +7,7 @@ const client = require('./client');
 const SimulationGraph = require('./modules/simulationGraph');
 const GraphNavigation = require('./modules/graphNavigation');
 
-class App extends React.Component {
+class Explorer extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -40,7 +40,6 @@ class App extends React.Component {
 	}
 
 	updateGraphFilter(changeEvent) {
-		event.preventDefault();
 		this.setState({
 			graphOption: changeEvent.target.value
 		});
@@ -161,7 +160,7 @@ class App extends React.Component {
 }
 
 ReactDOM.render(
-	<App />,
+	<Explorer />,
 	document.getElementById('explorer')
 )
 

@@ -40,7 +40,6 @@ class Reports extends React.Component {
     }
 
     updateGraphFilter(changeEvent) {
-        event.preventDefault();
         this.setState({
             graphOption: changeEvent.target.value
         });

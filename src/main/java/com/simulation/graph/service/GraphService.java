@@ -54,12 +54,14 @@ public class GraphService {
         explorerGraph.put("xAxis", GraphUtil.createXAxis());
         explorerGraph.put("marketShareYAxis", GraphUtil.createYAxis(0, 100, "%"));
         explorerGraph.put("operatingProfitYAxis", GraphUtil.createYAxis(-150, 200, "M"));
+        explorerGraph.put("unitPriceYAxis", GraphUtil.createYAxis(-150, 200, "in $US"));
 
         for(String graphLegend: GRAPH_LEGENDS){
             final List<Map<String, Object>> graphData = createGraphData(reportsStored, graphLegend);
             explorerGraph.put(graphLegend, graphData);
 
-            if(!graphLegend.equalsIgnoreCase("marketShare") && !graphLegend.equalsIgnoreCase("operatingProfit")){
+            if(!graphLegend.equalsIgnoreCase("marketShare") && !graphLegend.equalsIgnoreCase("operatingProfit")
+                    && !graphLegend.equalsIgnoreCase("unitPriceYAxis")){
                 Map<String, Object> yAxis = createYAxis(reportsStored, graphLegend);
                 explorerGraph.put(graphLegend+"YAxis", yAxis);
             }

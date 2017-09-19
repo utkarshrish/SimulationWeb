@@ -78,44 +78,47 @@ class MakeDecision extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-
-        let graphInput = {};
-        var selectedCheckboxes = this.state.selectedCheckboxes;
-        var makeDecisionFormModel = JSON.parse(this.state.makeDecisionForm.model);
-        var allFilterKeys = [];
-        for(var filter in makeDecisionFormModel){
-            var graphFilter = new Object();
-            for(var filterKey in makeDecisionFormModel[filter]){
-                allFilterKeys.push(filterKey);
-                if(selectedCheckboxes.has(makeDecisionFormModel[filter][filterKey])>0
-                    || this.state.style === filterKey
-                    || this.state.productPlacement === filterKey){
-                    graphFilter[filterKey] = 1;
-                } else{
-                    graphFilter[filterKey] = 0;
+        if(this.state.submitButton === 'btn btn-primary btn-block') {
+            let graphInput = {};
+            var selectedCheckboxes = this.state.selectedCheckboxes;
+            var makeDecisionFormModel = JSON.parse(this.state.makeDecisionForm.model);
+            var allFilterKeys = [];
+            for (var filter in makeDecisionFormModel) {
+                var graphFilter = new Object();
+                for (var filterKey in makeDecisionFormModel[filter]) {
+                    allFilterKeys.push(filterKey);
+                    if (selectedCheckboxes.has(makeDecisionFormModel[filter][filterKey]) > 0
+                        || this.state.style === filterKey
+                        || this.state.productPlacement === filterKey) {
+                        graphFilter[filterKey] = 1;
+                    } else {
+                        graphFilter[filterKey] = 0;
+                    }
                 }
+                graphInput[filter] = graphFilter;
             }
-            graphInput[filter] = graphFilter;
+
+            graphInput["unitPrice"] = this.state.unitPrice;
+            graphInput["unitCost"] = this.state.unitCost;
+            graphInput["productionUnit"] = this.state.productionUnit * 1000000;
+            graphInput["distribution"] = this.state.distribution;
+            graphInput["media"] = this.state.media;
+            graphInput["year"] = this.state.year;
+
+            client({
+                method: 'POST',
+                path: '/submitGraph',
+                entity: graphInput,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/hal+json'
+                }
+            }).done(response => {
+            });
+            window.setTimeout(function () {
+                window.location = "/dashboard";
+            }, 2000);
         }
-
-        graphInput["unitPrice"] = this.state.unitPrice;
-        graphInput["unitCost"] = this.state.unitCost;
-        graphInput["productionUnit"] = this.state.productionUnit*1000000;
-        graphInput["distribution"] = this.state.distribution;
-        graphInput["media"] = this.state.media;
-        graphInput["year"] =  this.state.year;
-
-        client({
-            method: 'POST',
-            path: '/submitGraph',
-            entity: graphInput,
-            headers:    {
-                'Content-Type': 'application/json',
-                'Accept': 'application/hal+json'
-            }
-        }).done(response => {
-        });
-        window.setTimeout(function(){ window.location = "/dashboard"; },2000);
     }
 
     toggleCheckboxFilters(label){
